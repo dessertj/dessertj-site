@@ -85,7 +85,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>site</outputDirectory>
+                            <outputDirectory>docs</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${project.build.directory}/generated-docs</directory>
