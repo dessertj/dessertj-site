@@ -373,3 +373,5 @@ use the following code:
     dessert(batchItemInfra).uses(sc.packageTreeOf("java")).only();
     
 The resulting failure lists all dependencies besides the Java runtime classes.
+
+(small modifcation)
