@@ -1,0 +1,2 @@
+!pragma graphviz_dot smetana
+skinparam monochrome true

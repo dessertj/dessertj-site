@@ -1,11 +1,16 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+# ignore maven files
+**/target/
+
+# ignore backup files
+*~
+
+# ignore eclipse specific files
+/bin/
+/.settings/
+/.project
+/.classpath
+
+# ignore IDEA specific files
+/out/
+/.idea/
+*.iml
