@@ -1,0 +1,8 @@
+== Contributing to Dessert
+
+If you're missing some feature or find a bug the open an issue.
+
+If you have questions the please use _Discussions_.
+
+If you just want to send (positive) feedback, the use dessert@spricom.de. But don't
+expect to get an answer, because I'm doing all this in my spare time.

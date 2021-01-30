@@ -1,0 +1,18 @@
+== Basics
+
+Dessert is library to detect dependency violations. Hence it detects if there is something
+that dependends on something else that it should not. Therefore dessert needs means to
+express what's meant be _something_ and _something else_ and _should not depend on_.
+
+Dessert checks dependencies between java classes. A class is represented by `Clazz`.
+A `Clazz` stands for anything for which there is a separate .class file (interfaces,
+annotation, enums, inner-classes, module specifications and plain classes).
+
+The `Clazz` is the smallest unit of granularity dessert can work with. The biggest
+unit is the `Classpath`. The `Classpath` contains all classes within your application.
+
+To specify dependency assertions you have to tear the `Classpath` down into smaller pieces.
+Imagine the `Classpath` to be a big cake you have to slice down. Thus the most import concept
+of _dessert_ is the `Slice`. The smallest `Slice` is a `Clazz` and the biggest `Slice` is
+the `Classpath`.
+
