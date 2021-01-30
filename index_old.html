@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
-<title>The Dessert Library</title>
+<title>dessert</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,16 +441,47 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>The Dessert Library</h1>
+<h1>dessert</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#basics">Basics</a></li>
-<li><a href="#contributing-to-dessert">Contributing to Dessert</a></li>
-<li><a href="#frequently-asked-questsions">Frequently asked Questsions</a>
+<li><a href="#features">Features</a></li>
+<li><a href="#goals">Goals</a></li>
+<li><a href="#getting-started">Getting Started</a>
 <ul class="sectlevel2">
-<li><a href="#when-will-be-there-a-1-0-version">When will be there a 1.0 version</a></li>
+<li><a href="#minimal-maven-pom">Minimal Maven POM</a></li>
+<li><a href="#minimal-gradle-buildfile">Minimal Gradle Buildfile</a></li>
+<li><a href="#samples">Samples</a></li>
+</ul>
+</li>
+<li><a href="#basics">Basics</a>
+<ul class="sectlevel1">
+<li><a href="#classes-and-their-dependencies">Classes and their dependencies</a></li>
+<li><a href="#building-blocks">Building Blocks</a></li>
+<li><a href="#main-elements-of-the-dessert-api">Main Elements of the Dessert API</a>
+<ul class="sectlevel3">
+<li><a href="#slice">Slice</a></li>
+<li><a href="#sliceentry">SliceEntry</a></li>
+<li><a href="#slicecontext">SliceContext</a></li>
+<li><a href="#sliceassertions">SliceAssertions</a></li>
+</ul>
+</li>
+<li><a href="#groups-and-cycles">Groups and Cycles</a>
+<ul class="sectlevel3">
+<li><a href="#slicegroup">SliceGroup</a></li>
+<li><a href="#cycle-detection">Cycle detection</a></li>
+<li><a href="#enforcing-nesting-rules">Enforcing nesting rules</a></li>
+</ul>
+</li>
+<li><a href="#duplicates">Duplicates</a></li>
+</ul>
+</li>
+<li><a href="#examples">Examples</a>
+<ul class="sectlevel1">
+<li><a href="#architecture-verification-and-documentation">Architecture verification and documentation</a></li>
+<li><a href="#verifying-an-implementation-pattern">Verifying an implementation pattern</a></li>
+<li><a href="#detecting-usage-of-internal-classes">Detecting Usage of internal Classes</a></li>
+<li><a href="#explorative-analyzation-of-libraries">Explorative Analyzation of Libraries</a></li>
 </ul>
 </li>
 </ul>
@@ -466,66 +497,605 @@ dependencies. It is intended to be used within unit-tests.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="features"><a class="anchor" href="#features"></a>Features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Checking dependency rules</p>
+</li>
+<li>
+<p>Detection of cyclic dependencies</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="goals"><a class="anchor" href="#goals"></a>Goals</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>No additional dependencies but plain Java 6 or above</p>
+</li>
+<li>
+<p>Simple and intuitive API (motivated by [AssertJ](<a href="https://joel-costigliola.github.io/assertj/)" class="bare">https://joel-costigliola.github.io/assertj/)</a>)</p>
+</li>
+<li>
+<p>Assertions should be robust against refactorings (no strings for class or package names required)</p>
+</li>
+<li>
+<p>Easy and seamless integration with other testing or assertion frameworks</p>
+</li>
+<li>
+<p>Speed</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="getting-started"><a class="anchor" href="#getting-started"></a>Getting Started</h2>
 <div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="basics"><a class="anchor" href="#basics"></a>Basics</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Dessert is library to detect dependency violations. Hence it detects if there is something
-that dependends on something else that it should not. Therefore dessert needs means to
-express what&#8217;s meant be <em>something</em> and <em>something else</em> and <em>should not depend on</em>.</p>
+<p>After having included the test dependency <code>com.github.hajo70:dessert:0.3</code> from the
+<code>https://jitpack.io</code> repository a test checking all dependencies of the dessert library can
+be implemented like this:</p>
 </div>
-<div class="paragraph">
-<p>Dessert checks dependencies between java classes. A class is represented by <code>Clazz</code>.
-A <code>Clazz</code> stands for anything for which there is a separate .class file (interfaces,
-annotation, enums, inner-classes, module specifications and plain classes).</p>
-</div>
-<div class="paragraph">
-<p>The <code>Clazz</code> is the smallest unit of granularity dessert can work with. The biggest
-unit is the <code>Classpath</code>. The <code>Classpath</code> contains all classes within your application.</p>
-</div>
-<div class="paragraph">
-<p>To specify dependency assertions you have to tear the <code>Classpath</code> down into smaller pieces.
-Imagine the <code>Classpath</code> to be a big cake you have to slice down. Thus the most import concept
-of <em>dessert</em> is the <code>Slice</code>. The smallest <code>Slice</code> is a <code>Clazz</code> and the biggest <code>Slice</code> is
-the <code>Classpath</code>.</p>
+<div class="literalblock">
+<div class="content">
+<pre>@Test
+public void checkDessertDependencies() throws IOException {
+    SliceContext sc = new SliceContext();
+    Slice dessert = sc.packageTreeOf("de.spricom.dessert")
+            .without(sc.packageTreeOf("de.spricom.dessert.test"));
+    Slice java = sc.packageTreeOf("java");
+    SliceAssertions.assertThat(dessert).usesOnly(java);
+}</pre>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="contributing-to-dessert"><a class="anchor" href="#contributing-to-dessert"></a>Contributing to Dessert</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>If you&#8217;re missing some feature or find a bug the open an issue.</p>
-</div>
-<div class="paragraph">
-<p>If you have questions the please use <em>Discussions</em>.</p>
-</div>
-<div class="paragraph">
-<p>If you just want to send (positive) feedback, the use <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>. But don&#8217;t
-expect to get an answer, because I&#8217;m doing all this in my spare time.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>Frequently asked Questsions</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>When will be there a 1.0 version</h3>
+<h3 id="minimal-maven-pom"><a class="anchor" href="#minimal-maven-pom"></a>Minimal Maven POM</h3>
 <div class="paragraph">
-<p>As along as I don&#8217;t have any feedback of someone who is using this library, there is no reason to keep the
-API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
-If you are using <em>dessert</em> and if you&#8217;re fine with the API then send an e-mail to <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>.
-As soon as there are enough e-mails I&#8217;ll release a 1.0.0 and try to keep the API backwards compatible
-from that moment on.</p>
+<p>A copy of the following Maven POM can be used to get started with dessert:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;groupId&gt;com.company.samples&lt;/groupId&gt;
+&lt;artifactId&gt;dessert-sample&lt;/artifactId&gt;
+&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.github.hajo70&lt;/groupId&gt;
+        &lt;artifactId&gt;dessert&lt;/artifactId&gt;
+        &lt;version&gt;0.3&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;junit&lt;/groupId&gt;
+        &lt;artifactId&gt;junit&lt;/artifactId&gt;
+        &lt;version&gt;4.12&lt;/version&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>    &lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;jitpack.io&lt;/id&gt;
+            &lt;url&gt;https://jitpack.io&lt;/url&gt;
+        &lt;/repository&gt;
+    &lt;/repositories&gt;
+&lt;/project&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="minimal-gradle-buildfile"><a class="anchor" href="#minimal-gradle-buildfile"></a>Minimal Gradle Buildfile</h3>
+<div class="paragraph">
+<p>The corresponding Gradle build file looks like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>apply plugin: 'java'</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>repositories {
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>dependencies {
+    testCompile 'com.github.hajo70:dessert:0.3'
+    testCompile 'junit:junit:4.12'
+}</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="samples"><a class="anchor" href="#samples"></a>Samples</h3>
+<div class="paragraph">
+<p>There is a separate [dessert-samples](<a href="https://github.com/hajo70/dessert-samples" class="bare">https://github.com/hajo70/dessert-samples</a>) project
+showing how to use dessert with features of Java 8.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="basics" class="sect0"><a class="anchor" href="#basics"></a>Basics</h1>
+<div class="sect1">
+<h2 id="classes-and-their-dependencies"><a class="anchor" href="#classes-and-their-dependencies"></a>Classes and their dependencies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The goal of dependency checking is finding unwanted dependencies. Dessert does this be analyzing
+.class files. The java compiler generates a .class file for each</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>class</p>
+</li>
+<li>
+<p>interface</p>
+</li>
+<li>
+<p>annotation</p>
+</li>
+<li>
+<p>(anonymous) innerclass or inner interface</p>
+</li>
+<li>
+<p>enum class</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>The old documentation of dessert 0.3 can be found <a href="index_old.html">here</a>.</p>
+<p><strong>Note: A java source file can define more than one class.</strong></p>
 </div>
+<div class="paragraph">
+<p>Such a .class file X depends on another .class file Y if X uses Y, thus</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>X extends or implements Y</p>
+</li>
+<li>
+<p>X has a field of type Y,</p>
+</li>
+<li>
+<p>X uses Y in a method signature (parameter, return value, throws clause)</p>
+</li>
+<li>
+<p>X has a local variable of Y</p>
+</li>
+<li>
+<p>X uses a (static) method of Y (direct call or method reference)</p>
+</li>
+<li>
+<p>X throws Y</p>
+</li>
+<li>
+<p>X implements Y within a λ-expression</p>
+</li>
+<li>
+<p>X is an inner class of Y (or the other way round)</p>
+</li>
+<li>
+<p>X uses generic type of Y</p>
+</li>
+<li>
+<p>X is annotated with Y</p>
+</li>
+<li>
+<p>X uses Y as an annotation parameter</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong>
+- Import statements are no relevant, because they don&#8217;t appear in a .class file.
+- It&#8217;s not possible to detect all of these uses (i. e. local variables, method references)
+  by reflection.
+- Jdeps does not consider classes used in annotation parameters as a dependency, but dessert does
+  (see [JDK-8134625](<a href="https://bugs.openjdk.java.net/browse/JDK-8134625)" class="bare">https://bugs.openjdk.java.net/browse/JDK-8134625)</a>).
+- The compiler my have removed some source dependency that cannot be detected in the .class file
+  anymore.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="building-blocks"><a class="anchor" href="#building-blocks"></a>Building Blocks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a clean software design each class belongs to some building block. Each build block has
+defined interfaces and clear dependencies. In complex systems building blocks may be composed
+from other building blocks or they may be organized in layers or vertical slices.</p>
+</div>
+<div class="paragraph">
+<p>Ideally there is a clear and intuitive mapping between the physical package structure and the
+building blocks of a software:</p>
+</div>
+<div class="paragraph">
+<p>![Structural Architecture](structural-architecture.svg)</p>
+</div>
+<div class="paragraph">
+<p>Dessert helps you to move towards such a clean software design and alarms you immediately
+if you are moving backward.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="main-elements-of-the-dessert-api"><a class="anchor" href="#main-elements-of-the-dessert-api"></a>Main Elements of the Dessert API</h2>
+<div class="sectionbody">
+<div class="sect3">
+<h4 id="slice"><a class="anchor" href="#slice"></a>Slice</h4>
+<div class="paragraph">
+<p>For dessert your software is just a bunch of classes. Hence you have to cut it down to
+pieces that make up building blocks. In dessert such a piece is a called a <code>Slice</code>.
+A <code>Slice</code> is an arbitrary slice of the set of all classes that belong to a software.
+A <code>Slice</code> is immutable. The method <code>slice</code> can be used to create as smaller <code>Slice</code> from
+a existing <code>Slice</code>. Two slices can be combined with the methods <code>with</code> (union) and
+<code>without</code> (difference) to a new <code>Slice</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sliceentry"><a class="anchor" href="#sliceentry"></a>SliceEntry</h4>
+<div class="paragraph">
+<p>Each <code>SliceEntry</code> represents a .class file. It has methods like <code>getClassName()</code> or
+<code>getClazz()</code> to access the details of the .class to be used for predicates. It&#8217;s most
+important method is <code>getUsedClasses()</code> which is used by the <code>SliceAssertions</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="slicecontext"><a class="anchor" href="#slicecontext"></a>SliceContext</h4>
+<div class="paragraph">
+<p>The <code>SliceContext</code> is the entry point to dessert, a factory for slices. To get your
+initial slices you can use the methods <code>packageOf</code>, <code>packageTreeOf</code> or <code>sliceOf</code>.
+The <code>SliceContext</code> implements the fly-weight pattern for slice entries. Hence for
+two <em>SliceEntry</em> objects x and y that originate from the same <code>SliceContext</code>
+x.equals(y) is equivalent to x == y. Of nothing else is specified the <code>SliceContext</code>
+operates on the current class-path.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sliceassertions"><a class="anchor" href="#sliceassertions"></a>SliceAssertions</h4>
+<div class="paragraph">
+<p><code>SliceAssertions</code> is a utility class that provides a fluent API with static methods
+analogous to [AssertJ](<a href="https://joel-costigliola.github.io/assertj/" class="bare">https://joel-costigliola.github.io/assertj/</a>). It&#8217;s most important
+method is <code>assertThat</code> or it&#8217;s synonym <code>dessert</code>, so that it can be used with static
+imports without conflicting with AssertJ. The most important methods of the fluent API
+are <code>doesNotUse</code>, <code>usesOnly</code> or the combination of <code>uses</code>, <code>and</code> and <code>only()</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="groups-and-cycles"><a class="anchor" href="#groups-and-cycles"></a>Groups and Cycles</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The problem with a dependency cycle is: there is no starting point. Thus, you cannot use
+or test a class involved in a cycle without having all other classes available. (By using
+a mocking framework limited testing of an isolated class is possible.) Small
+cycles between classes are often necessary, but big intertwined cycles make your software
+a ball of wool. In such an environment testing is a nightmare because each simple test
+needs a very complex setup that initializes all parts of the software. It is not possible
+to re-use such a software without replicating the whole infrastructure with all its system
+requirements, even if only a small part is required.</p>
+</div>
+<div class="sect3">
+<h4 id="slicegroup"><a class="anchor" href="#slicegroup"></a>SliceGroup</h4>
+<div class="paragraph">
+<p>For cycle detection dessert provides the concept of a <code>SliceGroup</code>. As the name says, a
+<code>SliceGroup</code> is a group of <code>Slice</code> objects. The <code>SliceGroup</code> has the static convenience
+factory methods <code>splitByPackage</code> and <code>splitByEntry</code> to split up a <code>Slice</code> into smaller
+corresponding slices. By providing a <code>SlicePartioner</code> an arbitrary criterium can be used
+to split up a <code>Slice</code>. All <code>SliceEntry</code> objects the <code>partKey</code> method maps to the same
+string will be in the same <code>Slice</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>Cycle detection</h4>
+<div class="paragraph">
+<p>To detect cycles for a <code>SliceGroup</code> <strong>sg</strong> you can use:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceGroup&lt;PackageSlice&gt; sg = SliceGroup.splitByPackage(slice);
+SliceAssertions.dessert(sg).isCycleFree();</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This can be shortend to:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceAssertions.dessert(slice).splitByPackage().isCycleFree();</pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="enforcing-nesting-rules"><a class="anchor" href="#enforcing-nesting-rules"></a>Enforcing nesting rules</h4>
+<div class="paragraph">
+<p>One method to prevent package cycles is establishing dependency rules for nested packages. For
+example dessert follows the rule a deeper nested package must not use a class from it&#8217;s parent
+package. <code>SliceGroup</code> implements the <code>Iterator</code> interface, hence the following code can be used
+to enforce this rule:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Slice slice = new SliceContext().packageTreeOf("de.spricom.dessert");
+SliceGroup&lt;PackageSlice&gt; packages = SliceGroup.splitByPackage(slice);</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>packages.forEach(pckg -&gt; SliceAssertions.assertThat(pckg)
+        .doesNotUse(pckg.getParentPackage(packages)));</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The code above disallows only dependencies to direct parent packages. To disallow dependencies
+to any ancestor package one could write:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Slice slice = new SliceContext().packageTreeOf("de.spricom.dessert");
+SliceGroup&lt;PackageSlice&gt; packages = SliceGroup.splitByPackage(slice);</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>packages.forEach(pckg -&gt; SliceAssertions.assertThat(pckg)
+        .doesNotUse(slice.slice(entry -&gt; pckg.getParentPackageName().startsWith(entry.getPackageName()))));</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="duplicates"><a class="anchor" href="#duplicates"></a>Duplicates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A common source of errors are duplicate .class files on the class-path. To load a class only it&#8217;s fully qualified
+name is required. Therefore, the ClassLoader scans the entries on the class-path for the first .class file with
+that name. Thus, the order on the class-path matters. The same .class file may appear in different libraries and
+the one loaded by the ClassLoader may not be the one you want.</p>
+</div>
+<div class="paragraph">
+<p>For dessert two <code>SliceEntry</code> objects are only equal if they point to the same .class file, thus their <code>getURI</code>
+method returns the same value. The ``getAlternatives()`` method returns all <code>SliceEntry</code> objects found by dessert
+that have the same fully qualified classname. Ideally there is only one alternative - the <code>SliceEntry</code> itself.</p>
+</div>
+<div class="paragraph">
+<p>By default the <code>SliceContext</code> scans the whole class-path and finds all duplicates (to be precise it scans all
+jar&#8217;s and class-directories visible to its <code>Resolver</code>). The <code>duplicates</code> method returns a <code>Slice</code> containing
+all duplicates. Hence the following code can be used to ensure there are none:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>ConcreteSlice duplicates = new SliceContext().duplicates();
+StringBuilder sb = new StringBuilder();
+duplicates.getSliceEntries().forEach(entry -&gt; sb.append(entry.getURI()).append("\n"));
+assertThat(duplicates.getSliceEntries()).as(sb.toString()).isEmpty();</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note: The <code>SliceEntry</code> method <code>getClazz()</code> uses the system classloader to load a class with the corresponding
+name. Hence it always returns the same implementation and not necessarily the one that corresponds the
+<code>SliceEntry</code>'s .class file. This will be fixed in a future version.</strong></p>
+</div>
+<div class="paragraph">
+<p><strong>Note: When dependency checking considers always all <code>SliceEntry</code> objects that belong to the <code>Slice</code> even if
+some are duplicates.</strong></p>
+</div>
+</div>
+</div>
+<h1 id="examples" class="sect0"><a class="anchor" href="#examples"></a>Examples</h1>
+<div class="paragraph">
+<p>Besides the samples given for [cycle detection](#cycle-detection) and finding [duplicates](#duplicates) here
+are some typical samples of using dessert.</p>
+</div>
+<div class="sect1">
+<h2 id="architecture-verification-and-documentation"><a class="anchor" href="#architecture-verification-and-documentation"></a>Architecture verification and documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each architecture verification requires two steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Defining the building blocks</p>
+</li>
+<li>
+<p>Checking dependencies between these building blocks</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For example the [spring batch architecture](<a href="https://docs.spring.io/spring-batch/trunk/reference/html/spring-batch-intro.html#springBatchArchitecture" class="bare">https://docs.spring.io/spring-batch/trunk/reference/html/spring-batch-intro.html#springBatchArchitecture</a>)
+could be verified like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceContext sc = new SliceContext();</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// defining the building blocks of spring-batch
+Slice springBatchCore = sc.packageTreeOf("org.springframework.batch.core");
+Slice springBatchTest = sc.packageTreeOf("org.springframework.batch.test");
+Slice springBatchInfrastructure =
+        sc.packageTreeOf("org.springframework.batch")
+                .without(springBatchCore)
+                .without(springBatchTest);</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// checking for disallowed dependencies
+SliceAssertions.assertThat(springBatchInfrastructure).doesNotUse(springBatchCore);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The package name can be replaced by a class located in the package. This makes the code more robust
+against refactorings, but harder to read:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Slice springBatchCore = sc.packageTreeOf(Job.class);
+Slice springBatchTest = sc.packageTreeOf(StepRunner.class);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The methods <code>doesNotUse</code> and <code>usesOnly</code> accept any number of building blocks:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceAssertions.assertThat(springBatchInfrastructure).doesNotUse(springBatchCore, springBatchTest);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For <code>usesOnly</code> there is a fluent alternative for a long list of dependencies:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceContext sc = new SliceContext();
+Slice springBatchCore = sc.packageTreeOf(Job.class);</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>// make sure a building block does not introduce unintended dependencies
+SliceAssertions.assertThat(springBatchCore)
+        .uses(sc.packageTreeOf("org.springframework"))
+        .and(sc.packageTreeOf("java"))
+        .and(sc.packageTreeOf("org.apache.commons.logging"))
+        .and(sc.packageTreeOf("org.aspectj.lang.annotation"))
+        .and(sc.packageTreeOf("org.aopalliance"))
+        .and(sc.packageTreeOf("com.thoughtworks.xstream"))
+        .and(sc.packageTreeOf("com.fasterxml.jackson"))
+        .and(sc.packageTreeOf("org.w3c.dom"))
+        .only();</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Such a test not only verifies the architecture but it also documents it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="verifying-an-implementation-pattern"><a class="anchor" href="#verifying-an-implementation-pattern"></a>Verifying an implementation pattern</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The motivation of the [MVP pattern in GWT applications](<a href="http://www.gwtproject.org/articles/mvp-architecture.html" class="bare">http://www.gwtproject.org/articles/mvp-architecture.html</a>)
+was to separate view code that requires a JavaScript environment from view logic that is executable in a pure
+Java environment and can be tested by simple unit-tests. Therefore, the presenter must use the view implementation
+only through an interface. This can be checked like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Slice presenters = mvp.slice(se -&gt; se.getClassName().endsWith("Presenter"));
+Slice views = mvp.slice(se -&gt; se.getClassName().endsWith("ViewImpl"));
+assertThat(presenters).doesNotUse(views);</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The sample above assumes a naming conventions for presenters and view implementations. Alternatively presenters
+and view implementations can be recognized by an interface they implement or a superclass they extend:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Slice presenters = mvp.slice(se -&gt; Presenter.class.isAssignableFrom(se.getClazz()));
+Slice views = mvp.slice(se -&gt; ViewBase.class.isAssignableFrom(se.getClazz()));</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This sample shows that a <code>Slice</code> can be an arbitrary set of classes, it&#8217;s not tied to a building block.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="detecting-usage-of-internal-classes"><a class="anchor" href="#detecting-usage-of-internal-classes"></a>Detecting Usage of internal Classes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Every library has a public API and some internal classes required by the library itself to accomplish
+its task. These internal classes should not be used by other applications, because they are subject to
+change without notice. Before Java 9 there was no way to make sure no internal classes are used. Dessert
+can detect such usages even in older versions of Java. For example, if you want to migrate your software
+to Java 9 you should make sure no internal JDK classes are used. This can be done like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceContext sc = new SliceContext();
+Slice dessert = sc.packageTreeOf("de.spricom.dessert");</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>assertThat(dessert).doesNotUse(
+        sc.packageTreeOf("com.sun"),
+        sc.packageTreeOf("sun"));</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s better practice to explicitly specify the allowed packages than to specify what is not allowed:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>assertThat(dessert).usesOnly(sc.packageTreeOf("java"));</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="explorative-analyzation-of-libraries"><a class="anchor" href="#explorative-analyzation-of-libraries"></a>Explorative Analyzation of Libraries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Typically each library comes with a bunch of dependencies. Even worse, some frameworks (i. e. Spring Boot)
+initialize and start services if some library appears on the class-path. Let&#8217;s say you want to convert
+an CSV file to XML. Therefore, you want to use the corresponding item-reader and -writer of Spring Batch
+without all the overhead of the framework. To find out what dependencies you need for that case you could
+use the following code:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SliceContext sc = new SliceContext();
+Slice batchItemInfra = sc.packageTreeOf("org.springframework.batch.item.file")
+        .with(sc.packageTreeOf("org.springframework.batch.item.xml"));</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>dessert(batchItemInfra).uses(sc.packageTreeOf("java")).only();</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting failure lists all dependencies besides the Java runtime classes.</p>
+</div>
+<div class="paragraph">
+<p>(small modifcation)</p>
 </div>
 </div>
 </div>
