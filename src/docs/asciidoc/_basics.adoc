@@ -1,18 +1,51 @@
-== Basics
+== User Documentation
 
-Dessert is library to detect dependency violations. Hence it detects if there is something
-that dependends on something else that it should not. Therefore dessert needs means to
-express what's meant be _something_ and _something else_ and _should not depend on_.
+=== Background
+
+Dessert is a library to detect dependency violations. Hence it detects if there is something
+that dependends on something else it should not. Therefore dessert needs means to
+express what's meant be _something_, _something else_ and _should not depend on_.
 
 Dessert checks dependencies between java classes. A class is represented by `Clazz`.
 A `Clazz` stands for anything for which there is a separate .class file (interfaces,
-annotation, enums, inner-classes, module specifications and plain classes).
+annotation, enums, inner-classes, module specification or plain java class).
 
 The `Clazz` is the smallest unit of granularity dessert can work with. The biggest
 unit is the `Classpath`. The `Classpath` contains all classes within your application.
 
 To specify dependency assertions you have to tear the `Classpath` down into smaller pieces.
-Imagine the `Classpath` to be a big cake you have to slice down. Thus the most import concept
+Imagine the `Classpath` is a big cake you have slice down. Thus the most import concept
 of _dessert_ is the `Slice`. The smallest `Slice` is a `Clazz` and the biggest `Slice` is
 the `Classpath`.
+
+=== Design Goals and Features
+
+If you're considering to use _dessert_ you probably have problems with dependencies.
+Hence the most important design goal was to not introduce any additional dependency
+that might cause you a headache.
+
+* No other dependencies but pure java
+* Support a wide range of java versions an execution environments
+* Easy and seamless integration with other testing or assertion frameworks
+* Simple and intuitive API (motivated by [AssertJ](https://joel-costigliola.github.io/assertj/))
+* Assertions should be robust against refactorings (no strings for class- or package names required)
+* Compatibility to the https://docs.oracle.com/en/java/javase/15/docs/specs/man/jdeps.html[_jdeps_] utility.
+* Focus on dependency assertions and nothing else
+* Support for projects of any scale
+* Speed
+
+The design goals lead to these features:
+
+* Supports any JDK from Java 6 to Java 15
+* Has only dependencies to classes within the `java.base` module
+* Annalyzes more than 10000 classes per second on a typical developer machine
+  footnote:[See the https://github.com/hajo70/dessert-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java[dessert-tests] project for a corresponding performanc test.]
+* Detects any dependency _jdeps_ detects.
+  footnote:[This has been verified for more that 40000 classes. See https://github.com/hajo70/dessert-tests[dessert-tests] for details. Please open an issue if you encounter
+  any class for which this is not true.] (This is not true the other way round,
+  see the FAQ why this is so.)
+* Performs the dependency analysis as late as possible to prevent any unnecessary analysis.
+  Thus its safe to use on big projects with lots of dependencies.
+
+=== The Slice
 

@@ -1,4 +1,4 @@
-== Contributing to Dessert
+== Getting Involved
 
 If you're missing some feature or find a bug the open an issue.
 

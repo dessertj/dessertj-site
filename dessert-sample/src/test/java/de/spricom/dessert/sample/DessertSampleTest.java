@@ -1,4 +1,4 @@
-package de.spricom.dessert;
+package de.spricom.dessert.sample;
 
 import de.spricom.dessert.assertions.SliceAssertions;
 import de.spricom.dessert.slicing.Classpath;

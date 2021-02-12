@@ -9,7 +9,7 @@ Add the dependency to your project:
 include::{sample-dir}/pom.xml[tags=dep]
 ----
 
-If you wan't to try the most current snapshot version add specify the repository:
+If you wan't to try the most current snapshot version specify the repository:
 
 [source, xml, indent=0]
 ----
@@ -20,7 +20,7 @@ A first dependency test:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/DessertSampleTest.java[tags=fails]
+include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.java[tags=fails]
 ----
 
 Each _dessert_ test starts with the `Classpath`. Dessert is all about slicing down the `Classpath` and checking the dependencies between the slices. The `Classpath` is the whole cake. A `Clazz` represents a single .class file, the smalles possible `Slice`. A `Root` represents a classes directory, a .jar file or a module. All of them are slices, hence they implement the `Slice` interface. `SliceAssertion` provides a static `assertThat` method to check for unwanted dependencies between slices.
@@ -29,25 +29,14 @@ The test above will fail, because it has a dependency to the junit-jupiter-api.j
 following output:
 
 ----
-java.lang.AssertionError: Illegal Dependencies:
-de.spricom.dessert.DessertSampleTest
- -> de.spricom.dessert.assertions.SliceAssert
- -> de.spricom.dessert.assertions.SliceAssertions
- -> de.spricom.dessert.slicing.Classpath
- -> de.spricom.dessert.slicing.Clazz
- -> de.spricom.dessert.slicing.Root
- -> de.spricom.dessert.slicing.Slice
- -> java.lang.Class
- -> java.lang.Object
- -> java.lang.String
- -> org.junit.jupiter.api.Test
+include::{sample-dir}/target/docgen/willFail.txt[]
 ----
 
 The following test shows some other methods to get slices from the `Classpath`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/DessertSampleTest.java[tags=succeeds]
+include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.java[tags=succeeds]
 ----
 
 The _java..*_ slice represents all classes in the `java` package or any nested package.
