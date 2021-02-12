@@ -446,8 +446,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#getting-started">Getting Started</a></li>
-<li><a href="#basics">Basics</a></li>
-<li><a href="#contributing-to-dessert">Contributing to Dessert</a></li>
+<li><a href="#user-documentation">User Documentation</a>
+<ul class="sectlevel2">
+<li><a href="#background">Background</a></li>
+<li><a href="#design-goals-and-features">Design Goals and Features</a></li>
+<li><a href="#the-slice">The Slice</a></li>
+</ul>
+</li>
+<li><a href="#getting-involved">Getting Involved</a></li>
 <li><a href="#frequently-asked-questsions">Frequently asked Questsions</a>
 <ul class="sectlevel2">
 <li><a href="#when-will-be-there-a-1-0-version">When will be there a 1.0 version</a></li>
@@ -482,7 +488,7 @@ dependencies. It is intended to be used within unit-tests.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If you wan&#8217;t to try the most current snapshot version add specify the repository:</p>
+<p>If you wan&#8217;t to try the most current snapshot version specify the repository:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -521,18 +527,7 @@ following output:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>java.lang.AssertionError: Illegal Dependencies:
-de.spricom.dessert.DessertSampleTest
- -&gt; de.spricom.dessert.assertions.SliceAssert
- -&gt; de.spricom.dessert.assertions.SliceAssertions
- -&gt; de.spricom.dessert.slicing.Classpath
- -&gt; de.spricom.dessert.slicing.Clazz
- -&gt; de.spricom.dessert.slicing.Root
- -&gt; de.spricom.dessert.slicing.Slice
- -&gt; java.lang.Class
- -&gt; java.lang.Object
- -&gt; java.lang.String
- -&gt; org.junit.jupiter.api.Test</pre>
+<pre>Unresolved directive in _getting_started.adoc - include::/home/runner/work/dessert-site/dessert-site/dessert-sample/target/docgen/willFail.txt[]</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -560,17 +555,19 @@ union of all the slices passed.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="basics"><a class="anchor" href="#basics"></a>Basics</h2>
+<h2 id="user-documentation"><a class="anchor" href="#user-documentation"></a>User Documentation</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="background"><a class="anchor" href="#background"></a>Background</h3>
 <div class="paragraph">
-<p>Dessert is library to detect dependency violations. Hence it detects if there is something
-that dependends on something else that it should not. Therefore dessert needs means to
-express what&#8217;s meant be <em>something</em> and <em>something else</em> and <em>should not depend on</em>.</p>
+<p>Dessert is a library to detect dependency violations. Hence it detects if there is something
+that dependends on something else it should not. Therefore dessert needs means to
+express what&#8217;s meant be <em>something</em>, <em>something else</em> and <em>should not depend on</em>.</p>
 </div>
 <div class="paragraph">
 <p>Dessert checks dependencies between java classes. A class is represented by <code>Clazz</code>.
 A <code>Clazz</code> stands for anything for which there is a separate .class file (interfaces,
-annotation, enums, inner-classes, module specifications and plain classes).</p>
+annotation, enums, inner-classes, module specification or plain java class).</p>
 </div>
 <div class="paragraph">
 <p>The <code>Clazz</code> is the smallest unit of granularity dessert can work with. The biggest
@@ -578,14 +575,84 @@ unit is the <code>Classpath</code>. The <code>Classpath</code> contains all clas
 </div>
 <div class="paragraph">
 <p>To specify dependency assertions you have to tear the <code>Classpath</code> down into smaller pieces.
-Imagine the <code>Classpath</code> to be a big cake you have to slice down. Thus the most import concept
+Imagine the <code>Classpath</code> is a big cake you have slice down. Thus the most import concept
 of <em>dessert</em> is the <code>Slice</code>. The smallest <code>Slice</code> is a <code>Clazz</code> and the biggest <code>Slice</code> is
 the <code>Classpath</code>.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>Design Goals and Features</h3>
+<div class="paragraph">
+<p>If you&#8217;re considering to use <em>dessert</em> you probably have problems with dependencies.
+Hence the most important design goal was to not introduce any additional dependency
+that might cause you a headache.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No other dependencies but pure java</p>
+</li>
+<li>
+<p>Support a wide range of java versions an execution environments</p>
+</li>
+<li>
+<p>Easy and seamless integration with other testing or assertion frameworks</p>
+</li>
+<li>
+<p>Simple and intuitive API (motivated by [AssertJ](<a href="https://joel-costigliola.github.io/assertj/)" class="bare">https://joel-costigliola.github.io/assertj/)</a>)</p>
+</li>
+<li>
+<p>Assertions should be robust against refactorings (no strings for class- or package names required)</p>
+</li>
+<li>
+<p>Compatibility to the <a href="https://docs.oracle.com/en/java/javase/15/docs/specs/man/jdeps.html"><em>jdeps</em></a> utility.</p>
+</li>
+<li>
+<p>Focus on dependency assertions and nothing else</p>
+</li>
+<li>
+<p>Support for projects of any scale</p>
+</li>
+<li>
+<p>Speed</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The design goals lead to these features:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Supports any JDK from Java 6 to Java 15</p>
+</li>
+<li>
+<p>Has only dependencies to classes within the <code>java.base</code> module</p>
+</li>
+<li>
+<p>Annalyzes more than 10000 classes per second on a typical developer machine
+<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</li>
+<li>
+<p>Detects any dependency <em>jdeps</em> detects.
+<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup> (This is not true the other way round,
+see the FAQ why this is so.)</p>
+</li>
+<li>
+<p>Performs the dependency analysis as late as possible to prevent any unnecessary analysis.
+Thus its safe to use on big projects with lots of dependencies.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="the-slice"><a class="anchor" href="#the-slice"></a>The Slice</h3>
+
+</div>
+</div>
 </div>
 <div class="sect1">
-<h2 id="contributing-to-dessert"><a class="anchor" href="#contributing-to-dessert"></a>Contributing to Dessert</h2>
+<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>Getting Involved</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re missing some feature or find a bug the open an issue.</p>
@@ -618,9 +685,18 @@ from that moment on.</p>
 </div>
 </div>
 </div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. See the <a href="https://github.com/hajo70/dessert-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java">dessert-tests</a> project for a corresponding performanc test.
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. This has been verified for more that 40000 classes. See <a href="https://github.com/hajo70/dessert-tests">dessert-tests</a> for details. Please open an issue if you encounter any class for which this is not true.
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-12 17:13:31 UTC
+Last updated 2021-02-12 19:02:21 UTC
 </div>
 </div>
 </body>
