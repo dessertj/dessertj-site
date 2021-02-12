@@ -527,7 +527,18 @@ following output:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Unresolved directive in _getting_started.adoc - include::/home/runner/work/dessert-site/dessert-site/dessert-sample/target/docgen/willFail.txt[]</pre>
+<pre>java.lang.AssertionError: Illegal Dependencies:
+de.spricom.dessert.sample.DessertSampleTest
+ -&gt; de.spricom.dessert.assertions.SliceAssert
+ -&gt; de.spricom.dessert.assertions.SliceAssertions
+ -&gt; de.spricom.dessert.slicing.Classpath
+ -&gt; de.spricom.dessert.slicing.Clazz
+ -&gt; de.spricom.dessert.slicing.Root
+ -&gt; de.spricom.dessert.slicing.Slice
+ -&gt; java.lang.Class
+ -&gt; java.lang.Object
+ -&gt; java.lang.String
+ -&gt; org.junit.jupiter.api.Test</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -696,7 +707,7 @@ from that moment on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-12 19:09:26 UTC
+Last updated 2021-02-12 19:41:02 UTC
 </div>
 </div>
 </body>
