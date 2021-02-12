@@ -468,7 +468,95 @@ dependencies. It is intended to be used within unit-tests.</p>
 <div class="sect1">
 <h2 id="getting-started"><a class="anchor" href="#getting-started"></a>Getting Started</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Add the dependency to your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
+    &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
+    &lt;version&gt;0.4.0-SNAPSHOT&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you wan&#8217;t to try the most current snapshot version add specify the repository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;ossrh&lt;/id&gt;
+        &lt;name&gt;OSSRH Snapshot Repository&lt;/name&gt;
+        &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A first dependency test:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+void willFail() {
+    Classpath cp = new Classpath();
+    Clazz me = cp.asClazz(this.getClass());
+    Root root = cp.rootOf(Test.class);
+    SliceAssertions.assertThat(me).usesNot(root);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each <em>dessert</em> test starts with the <code>Classpath</code>. Dessert is all about slicing down the <code>Classpath</code> and checking the dependencies between the slices. The <code>Classpath</code> is the whole cake. A <code>Clazz</code> represents a single .class file, the smalles possible <code>Slice</code>. A <code>Root</code> represents a classes directory, a .jar file or a module. All of them are slices, hence they implement the <code>Slice</code> interface. <code>SliceAssertion</code> provides a static <code>assertThat</code> method to check for unwanted dependencies between slices.</p>
+</div>
+<div class="paragraph">
+<p>The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus it produces the
+following output:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java.lang.AssertionError: Illegal Dependencies:
+de.spricom.dessert.DessertSampleTest
+ -&gt; de.spricom.dessert.assertions.SliceAssert
+ -&gt; de.spricom.dessert.assertions.SliceAssertions
+ -&gt; de.spricom.dessert.slicing.Classpath
+ -&gt; de.spricom.dessert.slicing.Clazz
+ -&gt; de.spricom.dessert.slicing.Root
+ -&gt; de.spricom.dessert.slicing.Slice
+ -&gt; java.lang.Class
+ -&gt; java.lang.Object
+ -&gt; java.lang.String
+ -&gt; org.junit.jupiter.api.Test</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following test shows some other methods to get slices from the <code>Classpath</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+void willSucceed() {
+    Classpath cp = new Classpath();
+    Slice myPackage = cp.packageOf(this.getClass());
+    Slice java = cp.slice("java..*");
+    Slice junit = cp.packageOf(Test.class);
+    SliceAssertions.dessert(myPackage).usesOnly(java, junit, cp.slice("..dessert.*.*"));
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <em>java..*</em> slice represents all classes in the <code>java</code> package or any nested package.
+The <code>dessert</code> method is an alias for <code>assertThat</code> to prevent name collisions with other
+libraries. It stands for <em>dependency assert that</em>. All the assertion methods of
+<code>SliceAssertions</code> accept more than one slice, like <code>usesOnly</code>. They treat the slices as an
+union of all the slices passed.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -503,7 +591,7 @@ the <code>Classpath</code>.</p>
 <p>If you&#8217;re missing some feature or find a bug the open an issue.</p>
 </div>
 <div class="paragraph">
-<p>If you have questions the please use <em>Discussions</em>.</p>
+<p>If you have questions then please use <em>Discussions</em>.</p>
 </div>
 <div class="paragraph">
 <p>If you just want to send (positive) feedback, the use <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>. But don&#8217;t
@@ -532,7 +620,7 @@ from that moment on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-30 23:48:45 UTC
+Last updated 2021-02-12 17:13:31 UTC
 </div>
 </div>
 </body>
