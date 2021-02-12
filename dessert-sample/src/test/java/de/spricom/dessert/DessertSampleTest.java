@@ -1,0 +1,32 @@
+package de.spricom.dessert;
+
+import de.spricom.dessert.assertions.SliceAssertions;
+import de.spricom.dessert.slicing.Classpath;
+import de.spricom.dessert.slicing.Clazz;
+import de.spricom.dessert.slicing.Root;
+import de.spricom.dessert.slicing.Slice;
+import org.junit.jupiter.api.Test;
+
+public class DessertSampleTest {
+
+    // tag::fails[]
+    @Test
+    void willFail() {
+        Classpath cp = new Classpath();
+        Clazz me = cp.asClazz(this.getClass());
+        Root root = cp.rootOf(Test.class);
+        SliceAssertions.assertThat(me).usesNot(root);
+    }
+    // end::fails[]
+
+    // tag::succeeds[]
+    @Test
+    void willSucceed() {
+        Classpath cp = new Classpath();
+        Slice myPackage = cp.packageOf(this.getClass());
+        Slice java = cp.slice("java..*");
+        Slice junit = cp.packageOf(Test.class);
+        SliceAssertions.dessert(myPackage).usesOnly(java, junit, cp.slice("..dessert.*.*"));
+    }
+    // end::succeeds[]
+}
