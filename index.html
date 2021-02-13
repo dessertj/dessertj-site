@@ -456,7 +456,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#getting-involved">Getting Involved</a></li>
 <li><a href="#frequently-asked-questsions">Frequently asked Questsions</a>
 <ul class="sectlevel2">
-<li><a href="#when-will-be-there-a-1-0-version">When will be there a 1.0 version</a></li>
+<li><a href="#when-will-be-there-a-1-0-version">When will be there a 1.0 version?</a></li>
+<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
 </ul>
 </li>
 </ul>
@@ -519,11 +520,16 @@ void willFail() {
 </div>
 </div>
 <div class="paragraph">
-<p>Each <em>dessert</em> test starts with the <code>Classpath</code>. Dessert is all about slicing down the <code>Classpath</code> and checking the dependencies between the slices. The <code>Classpath</code> is the whole cake. A <code>Clazz</code> represents a single .class file, the smalles possible <code>Slice</code>. A <code>Root</code> represents a classes directory, a .jar file or a module. All of them are slices, hence they implement the <code>Slice</code> interface. <code>SliceAssertion</code> provides a static <code>assertThat</code> method to check for unwanted dependencies between slices.</p>
+<p>Each <em>dessert</em> test starts with the <code>Classpath</code>. Dessert is all about slicing down the <code>Classpath</code>
+and checking the dependencies between the slices. The <code>Classpath</code> is the whole cake. A <code>Clazz</code>
+represents a single .class file, the smalles possible <code>Slice</code>. A <code>Root</code> represents a classes
+directory, a .jar file or a module. All of them are slices, hence they implement the <code>Slice</code>
+interface. <code>SliceAssertion</code> provides a static <code>assertThat</code> method to check for unwanted dependencies
+between slices.</p>
 </div>
 <div class="paragraph">
-<p>The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus it produces the
-following output:</p>
+<p>The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus it
+produces the following output:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -551,13 +557,14 @@ void willSucceed() {
     Classpath cp = new Classpath();
     Slice myPackage = cp.packageOf(this.getClass());
     Slice java = cp.slice("java..*");
-    Slice junit = cp.packageOf(Test.class);
-    SliceAssertions.dessert(myPackage).usesOnly(java, junit, cp.slice("..dessert.*.*"));
+    Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.*.*"));
+    SliceAssertions.dessert(myPackage).usesOnly(java, libs);
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>The <em>java..*</em> slice represents all classes in the <code>java</code> package or any nested package.
+The methods <code>plus</code> and <code>minus</code> can be used do create new slices from existing slices.
 The <code>dessert</code> method is an alias for <code>assertThat</code> to prevent name collisions with other
 libraries. It stands for <em>dependency assert that</em>. All the assertion methods of
 <code>SliceAssertions</code> accept more than one slice, like <code>usesOnly</code>. They treat the slices as an
@@ -658,7 +665,11 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 </div>
 <div class="sect2">
 <h3 id="the-slice"><a class="anchor" href="#the-slice"></a>The Slice</h3>
-
+<div class="imageblock">
+<div class="content">
+<img src="./images/slice-overview.svg" alt="slice overview" width="554" height="331">
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -681,13 +692,24 @@ expect to get an answer, because I&#8217;m doing all this in my spare time.</p>
 <h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>Frequently asked Questsions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>When will be there a 1.0 version</h3>
+<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>When will be there a 1.0 version?</h3>
 <div class="paragraph">
 <p>As along as I don&#8217;t have any feedback of someone who is using this library, there is no reason to keep the
 API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
 If you are using <em>dessert</em> and if you&#8217;re fine with the API then send an e-mail to <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>.
 As soon as there are enough e-mails I&#8217;ll release a 1.0.0 and try to keep the API backwards compatible
 from that moment on.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>Why does dessert find more dependencies than <em>jdeps</em>?</h3>
+<div class="paragraph">
+<p>Well, <em>jdeps</em> shows all runtime dependencies whereas dessert shows all compile-time
+dependencies. Hence, if you use a class for which a runtime dependency is missing
+you&#8217;ll get a <code>NoClassDefFoundError</code>. There are dependencies within generics or
+within annotations that were required during compilation but not while using the
+compiled class. If you want to split a project into modules, then all the compile-time
+dependencies are relevant. Thus, that&#8217;s what dessert operates on.</p>
 </div>
 <div class="paragraph">
 <p>The old documentation of dessert 0.3 can be found <a href="index_old.html">here</a>.</p>
@@ -707,7 +729,7 @@ from that moment on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-12 19:41:02 UTC
+Last updated 2021-02-13 19:40:51 UTC
 </div>
 </div>
 </body>
