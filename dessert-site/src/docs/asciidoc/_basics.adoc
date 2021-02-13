@@ -1,3 +1,5 @@
+:sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
+
 == User Documentation
 
 === Background
@@ -49,3 +51,8 @@ The design goals lead to these features:
 
 === The Slice
 
+
+[plantuml, slice-overview, svg]
+....
+include::{sample-dir}/target/docgen/slice-overview.puml[]
+....

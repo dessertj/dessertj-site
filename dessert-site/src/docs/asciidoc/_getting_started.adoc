@@ -23,10 +23,15 @@ A first dependency test:
 include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.java[tags=fails]
 ----
 
-Each _dessert_ test starts with the `Classpath`. Dessert is all about slicing down the `Classpath` and checking the dependencies between the slices. The `Classpath` is the whole cake. A `Clazz` represents a single .class file, the smalles possible `Slice`. A `Root` represents a classes directory, a .jar file or a module. All of them are slices, hence they implement the `Slice` interface. `SliceAssertion` provides a static `assertThat` method to check for unwanted dependencies between slices.
+Each _dessert_ test starts with the `Classpath`. Dessert is all about slicing down the `Classpath`
+and checking the dependencies between the slices. The `Classpath` is the whole cake. A `Clazz`
+represents a single .class file, the smalles possible `Slice`. A `Root` represents a classes
+directory, a .jar file or a module. All of them are slices, hence they implement the `Slice`
+interface. `SliceAssertion` provides a static `assertThat` method to check for unwanted dependencies
+between slices.
 
-The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus it produces the
-following output:
+The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus it
+produces the following output:
 
 ----
 include::{sample-dir}/target/docgen/willFail.txt[]
@@ -40,6 +45,7 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.
 ----
 
 The _java..*_ slice represents all classes in the `java` package or any nested package.
+The methods `plus` and `minus` can be used do create new slices from existing slices.
 The `dessert` method is an alias for `assertThat` to prevent name collisions with other
 libraries. It stands for _dependency assert that_. All the assertion methods of
 `SliceAssertions` accept more than one slice, like `usesOnly`. They treat the slices as an
