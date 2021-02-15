@@ -535,15 +535,6 @@ produces the following output:</p>
 <div class="content">
 <pre>java.lang.AssertionError: Illegal Dependencies:
 de.spricom.dessert.sample.DessertSampleTest
- -&gt; de.spricom.dessert.assertions.SliceAssert
- -&gt; de.spricom.dessert.assertions.SliceAssertions
- -&gt; de.spricom.dessert.slicing.Classpath
- -&gt; de.spricom.dessert.slicing.Clazz
- -&gt; de.spricom.dessert.slicing.Root
- -&gt; de.spricom.dessert.slicing.Slice
- -&gt; java.lang.Class
- -&gt; java.lang.Object
- -&gt; java.lang.String
  -&gt; org.junit.jupiter.api.Test</pre>
 </div>
 </div>
@@ -557,7 +548,7 @@ void willSucceed() {
     Classpath cp = new Classpath();
     Slice myPackage = cp.packageOf(this.getClass());
     Slice java = cp.slice("java..*");
-    Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.*.*"));
+    Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.assertions|slicing.*"));
     SliceAssertions.dessert(myPackage).usesOnly(java, libs);
 }</code></pre>
 </div>
@@ -667,7 +658,7 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 <h3 id="the-slice"><a class="anchor" href="#the-slice"></a>The Slice</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/slice-overview.svg" alt="slice overview" width="554" height="331">
+<img src="./images/slice-overview.svg" alt="slice overview" width="508" height="331">
 </div>
 </div>
 </div>
@@ -729,7 +720,7 @@ dependencies are relevant. Thus, that&#8217;s what dessert operates on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-13 19:40:51 UTC
+Last updated 2021-02-15 00:29:47 UTC
 </div>
 </div>
 </body>
