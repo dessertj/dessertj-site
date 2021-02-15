@@ -36,4 +36,9 @@ public class DessertSampleWrapperTest {
     void checkWillSucceed() {
         dessertSampleTest.willSucceed();
     }
+
+    @Test
+    void checkQueuingAssertions() {
+        dessertSampleTest.queuingAssertions();
+    }
 }

@@ -52,6 +52,12 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.18.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!-- tag::repo[] -->
@@ -85,6 +91,7 @@
                 <configuration>
                     <excludes>
                         <exclude>DessertSampleTest</exclude>
+                        <exclude>CycleTest</exclude>
                     </excludes>
                 </configuration>
             </plugin>
