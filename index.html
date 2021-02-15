@@ -837,13 +837,17 @@ To have any effect <code>renderWith</code> must be invoked before the assertions
 <h3 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>Cycle detection</h3>
 <div class="paragraph">
 <p><code>SliceAssert</code> provides the method <code>isCycleFree</code> to check whether a set of slices has any
-cyclic dependencies.</p>
+cyclic dependencies. Because each <code>Clazz</code> is a <code>Slice</code> one check the classes of slice
+for a cycle like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
 dessert(cp.packageTreeOf(CycleDump.class).getClazzes()).isCycleFree();</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The sample contains a cycle, hence it produces the following output:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -854,12 +858,20 @@ clazz de.spricom.dessert.cycle.CycleDump,
 clazz de.spricom.dessert.cycle.foo.Foo</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Class-cycles are quite common and should not be a problem as long as the cycle is within a
+package. Package-cycles on the other hand are an indicator for serious architecture problems.
+To detect these you can use:</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
 Slice slice = cp.packageTreeOf(CycleDump.class);
 dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This produces:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -870,10 +882,45 @@ slice partition de.spricom.dessert.cycle,
 slice partition de.spricom.dessert.cycle.foo</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The <code>AssertionError</code> message is produced by the <code>DefaultCycleRenderer</code>. Another <code>CycleRenderer</code>
+can be given with the <code>SliceAssert</code> method <code>renderCycleWith</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>partitionByPackage</code> is a specialized <code>Slice</code> method that partitions the classes of a Slice
+by package-name. Thus, it produces a Map for which the package-name is the key, and the value is
+a slice containing all classes that belong to the package. In this case the value is a specialized
+slice that gives access to the package-name and the parent-package.</p>
+</div>
+<div class="paragraph">
+<p>The more general <code>partitionBy</code> uses a <code>SlicePartitioner</code> that maps each class to some key.
+The result is a map of <code>PartitionSlice</code>. A <code>PartitionSlice</code> is a <code>ConcreteSlice</code> (set of classes),
+with the key assigned. There is another <code>partitionBy</code> method with a second <code>PartitionSliceFactory</code>
+parameter. This can be used to create specialized <code>PartitionSlice</code> objects like the <code>PackageSlice</code>.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="architecture-verification-experimental"><a class="anchor" href="#architecture-verification-experimental"></a>Architecture verification (experimental)</h3>
-
+<div class="paragraph">
+<p><code>SliceAssert</code> has two additional convenience methods to verify a layered architecture. Therefore,
+you have to pass a list of layers to the <code>dessert</code> method. <code>isLayeredStrict</code> check whether each
+layer depends only on classes within itself or classes within its immediate successor.
+<code>isLayeredRelaxed</code> relaxes this from an <em>immediate successor</em> to _any successor.
+The following example shows how to use this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
+List&lt;Slice&gt; layers = Arrays.asList(
+        cp.packageTreeOf(SliceAssertions.class).named("assertions"),
+        cp.packageTreeOf(Slice.class).named("slicing"),
+        cp.packageTreeOf(ClassResolver.class).named("resolve"),
+        cp.packageTreeOf(ClassFile.class).named("classfile"),
+        cp.slice("..dessert.matching|util..*").named("util")
+);
+dessert(layers).isLayeredRelaxed();</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -933,7 +980,7 @@ dependencies are relevant. Thus, that&#8217;s what dessert operates on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-15 14:47:38 UTC
+Last updated 2021-02-15 17:13:38 UTC
 </div>
 </div>
 </body>
