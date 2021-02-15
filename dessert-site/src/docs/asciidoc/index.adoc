@@ -5,6 +5,18 @@
 The name is a short form of **de**pendency a**ssert**. Hence Dessert is a library to check assertions for
 dependencies. It is intended to be used within unit-tests.
 
+[cols="h,2"]
+|===
+|Documentation:
+|https://dessert.spricom.de/index.html[dessert.spricom.de] for released versions +
+ https://hajo70.github.io/dessert-site/index.html[GitHub Pages] for the most current snapshot version +
+ https://dessert.spricom.de/apidocs/[API Doc.]
+|Source-Code (GibHub):
+|https://github.com/hajo70/dessert-core[dessert-core] library source code +
+ https://github.com/hajo70/dessert-site[dessert-site] documentation source code +
+ https://github.com/hajo70/dessert-tests[dessert-tests] test and samples
+|===
+
 include::_getting_started.adoc[]
 
 include::_user_documentation.adoc[]
@@ -12,5 +24,3 @@ include::_user_documentation.adoc[]
 include::_getting_involved.adoc[]
 
 include::_faq.adoc[]
-
-The old documentation of dessert 0.3 can be found link:index_old.html[here].

@@ -1,4 +1,16 @@
 = dessert-site
 
-Content of https://dessert.spricom.de[dessert web-site].
-https://hajo70.github.io/dessert-site/index.html[preview]
+This is the source code for the _dessert library_ documentation.
+Follow the links below to get more details.
+
+[cols="h,2"]
+|===
+|Documentation:
+|https://dessert.spricom.de/index.html[dessert.spricom.de] for released versions +
+https://hajo70.github.io/dessert-site/index.html[GitHub Pages] for the most current snapshot version +
+https://dessert.spricom.de/apidocs/[API Doc.]
+|Source-Code (GibHub):
+|https://github.com/hajo70/dessert-core[dessert-core] library source code +
+https://github.com/hajo70/dessert-site[dessert-site] documentation source code +
+https://github.com/hajo70/dessert-tests[dessert-tests] test and samples
+|===
