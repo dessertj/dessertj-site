@@ -51,8 +51,40 @@ The design goals lead to these features:
 
 === The Slice
 
+When using dessert you work most of the time with some `Slice` implementation. The following diagram
+shows all such implementations provided by dessert:
 
 [plantuml, slice-overview, svg]
 ....
 include::{sample-dir}/target/docgen/slice-overview.puml[]
 ....
+
+The most important `Slice` methods are `plus`, `minus`, and `slice` to create new slices from existing
+ones. The `AbstractRootSlice` provides some convenience methods to work with packages. `packageOf` returns
+a slice of all classes within one package (without sub-packages). `packageTreeOf' returns a slice of
+all classes within a package, or a nested sub-package. Called on a `Root` these methods return only
+classes within that root. A `Root` is a classes directory or a .jar file that belongs to the `Classpath`.
+To get a `Root` you can use the `Classpath` method `rootOf`.
+
+The `Classpath` methods `asClazz` and `sliceOf` can create slices for classes that are not on the
+`Classpath` such as classes located in the java or javax packages or dependencies of some classes.
+In such a case the `Classpath` uses the current `ClassLoader` to get the corresponding .class file.
+If this does not work either, it creates a placeholder `Clazz` that contains only the classname.
+
+The `slice` methods of `Classpath` do not necessarily return a slice that can be resolved to a concrete
+set of classes. A slice may also be defined by a name-pattern or some predicate. For such a slice one
+can use the `contains` method to check whether a `Clazz` belongs to it, thus the class fulfills
+all predicates. But calling `getClazzes` will throw a `ResolveException`. This happens if the
+`Classpath` contains none of the classes belonging to the slice. Internally _dessert_ works with such
+predicate based slices as long as `getClazzes` has not been called, for performance reasons.
+
+_Dessert_ has been optimized to resolve name-pattern very fast. Hence, it's a good practice to first
+slice be name (or `packageOf`/`packageTreeOf`) then used predicates to slice-down the slices further.
+
+`getDependencies` returns the dependencies of a slice and `uses` checks whether some other slice
+contains one of these dependencies.
+
+To add features to existing slices always extend `AbstractDelegateSlice`. The `named` method returns
+one such extension that makes a slices' `toString` method return the name passed.
+
+=== Name-Patterns
