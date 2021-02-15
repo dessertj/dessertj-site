@@ -147,25 +147,57 @@ NOTE: To have any effect `renderWith` must be invoked before the assertions (i.e
 === Cycle detection
 
 `SliceAssert` provides the method `isCycleFree` to check whether a set of slices has any
-cyclic dependencies.
+cyclic dependencies. Because each `Clazz` is a `Slice` one check the classes of slice
+for a cycle like this:
 
 [source, java, indent=0]
 ----
 include::{sample-dir}/src/test/java/de/spricom/dessert/cycle/CycleTest.java[tags=classCycle]
 ----
 
+The sample contains a cycle, hence it produces the following output:
+
 ----
 include::{sample-dir}/target/docgen/classCycle.txt[]
 ----
+
+Class-cycles are quite common and should not be a problem as long as the cycle is within a
+package. Package-cycles on the other hand are an indicator for serious architecture problems.
+To detect these you can use:
 
 [source, java, indent=0]
 ----
 include::{sample-dir}/src/test/java/de/spricom/dessert/cycle/CycleTest.java[tags=packageCycle]
 ----
 
+This produces:
+
 ----
 include::{sample-dir}/target/docgen/packageCycle.txt[]
 ----
 
+The `AssertionError` message is produced by the `DefaultCycleRenderer`. Another `CycleRenderer`
+can be given with the `SliceAssert` method `renderCycleWith`.
+
+The `partitionByPackage` is a specialized `Slice` method that partitions the classes of a Slice
+by package-name. Thus, it produces a Map for which the package-name is the key, and the value is
+a slice containing all classes that belong to the package. In this case the value is a specialized
+slice that gives access to the package-name and the parent-package.
+
+The more general `partitionBy` uses a `SlicePartitioner` that maps each class to some key.
+The result is a map of `PartitionSlice`. A `PartitionSlice` is a `ConcreteSlice` (set of classes),
+with the key assigned. There is another `partitionBy` method with a second `PartitionSliceFactory`
+parameter. This can be used to create specialized `PartitionSlice` objects like the `PackageSlice`.
 
 === Architecture verification (experimental)
+
+`SliceAssert` has two additional convenience methods to verify a layered architecture. Therefore,
+you have to pass a list of layers to the `dessert` method. `isLayeredStrict` check whether each
+layer depends only on classes within itself or classes within its immediate successor.
+`isLayeredRelaxed` relaxes this from an _immediate successor_ to _any successor.
+The following example shows how to use this:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/arch/ArchitectureTest.java[tags=arch]
+----
