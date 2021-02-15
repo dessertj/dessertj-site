@@ -452,6 +452,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#design-goals-and-features">Design Goals and Features</a></li>
 <li><a href="#the-slice">The Slice</a></li>
 <li><a href="#name-patterns">Name-Patterns</a></li>
+<li><a href="#assertions">Assertions</a></li>
+<li><a href="#cycle-detection">Cycle detection</a></li>
+<li><a href="#architecture-verification-experimental">Architecture verification (experimental)</a></li>
 </ul>
 </li>
 <li><a href="#getting-involved">Getting Involved</a></li>
@@ -550,7 +553,7 @@ void willSucceed() {
     Slice myPackage = cp.packageOf(this.getClass());
     Slice java = cp.slice("java..*");
     Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.assertions|slicing.*"));
-    SliceAssertions.dessert(myPackage).usesOnly(java, libs);
+    dessert(myPackage).usesOnly(java, libs);
 }</code></pre>
 </div>
 </div>
@@ -689,6 +692,12 @@ all predicates. But calling <code>getClazzes</code> will throw a <code>ResolveEx
 predicate based slices as long as <code>getClazzes</code> has not been called, for performance reasons.</p>
 </div>
 <div class="paragraph">
+<p>The <code>Classpath</code> method <code>duplicates</code> returns a special <code>Slice</code> of all .class files that appear
+at least twice on the <code>Classpath</code>. Other as the <code>ClassLoader</code> <em>dessert</em> does not stop at the first
+class that matches a certain name. It always considers all matches. Duplicates are a common cause
+of problems, because the implementation is chosen more ore less randomly.</p>
+</div>
+<div class="paragraph">
 <p><em>Dessert</em> has been optimized to resolve name-pattern very fast. Hence, it&#8217;s a good practice to first
 slice be name (or <code>packageOf</code>/<code>packageTreeOf</code>) then used predicates to slice-down the slices further.</p>
 </div>
@@ -703,6 +712,167 @@ one such extension that makes a slices' <code>toString</code> method return the 
 </div>
 <div class="sect2">
 <h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>Name-Patterns</h3>
+<div class="paragraph">
+<p>Name-patterns are the most important means to define slices. A name-pattern
+identifies a set of classes by their full qualified classname.</p>
+</div>
+<div class="paragraph">
+<p>The syntax has been motivated by the
+<a href="https://www.eclipse.org/aspectj/doc/released/progguide/quick-typePatterns.htmlAspectJ" class="bare">https://www.eclipse.org/aspectj/doc/released/progguide/quick-typePatterns.htmlAspectJ</a> TypeNamePattern]
+with slight modifications:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The pattern can either be a plain type name, the wildcard *, or an
+identifier with embedded * or .. wildcards or the | separator.</p>
+</li>
+<li>
+<p>An * matches any sequence of characters, but does not match the package separator ".".</p>
+</li>
+<li>
+<p>An | separates alternatives that do not contain a package separator ".".</p>
+</li>
+<li>
+<p>An .. matches any sequence of characters that starts and ends with the package separator ".".</p>
+</li>
+<li>
+<p>The identifier to match with is always the name returned by {@link Class#getName()}.
+Thus, $ is the only inner-type separator supported.</p>
+</li>
+<li>
+<p>The * does match $, too.</p>
+</li>
+<li>
+<p>A leading .. additionally matches the root package.</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Examples:</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Pattern</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample.Foo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches only sample.Foo</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample.Foo*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches all types in sample starting with "Foo" and all inner-types of Foo</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample.bar|baz.*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches all types in sample.bar and sample.baz</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sample.Foo$*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches only inner-types of Foo</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">..Foo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches all Foo in any package (incl. root package)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>.</strong>..Foo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches all Foo nested in a sub-package</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches all types in the root package</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">..*</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Matches all types</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="assertions"><a class="anchor" href="#assertions"></a>Assertions</h3>
+<div class="paragraph">
+<p>All dessert assertions start with one of the static <code>SliceAssertions</code> methods <code>assertThat</code>
+or its alias <code>dessert</code>. These methods return a <code>SliceAssert</code> object with its most important
+methods <code>usesNot</code> and <code>usesOnly</code>. Both methods return a <code>SliceAssert</code> again, so that assertions
+can be queued:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
+dessert(cp.asClazz(this.getClass()))
+        .usesNot(cp.slice("java.io|net..*"))
+        .usesNot(cp.slice("org.junit.jupiter.api.Assertions"))
+        .usesOnly(cp.slice("..junit.jupiter.api.*"),
+                cp.slice("..dessert..*"),
+                cp.slice("java.lang..*"));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When an assertion fails it throws an <code>AssertionError</code>. The message shows details about the cause
+of the failure. This message is produced by the <code>DefaultIllegalDependenciesRenderer</code>. That renderer
+can be replaced with the <code>SliceAssert</code> method <code>renderWith</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To have any effect <code>renderWith</code> must be invoked before the assertions (i.e. <code>usesNot</code>).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>Cycle detection</h3>
+<div class="paragraph">
+<p><code>SliceAssert</code> provides the method <code>isCycleFree</code> to check whether a set of slices has any
+cyclic dependencies.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
+dessert(cp.packageTreeOf(CycleDump.class).getClazzes()).isCycleFree();</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java.lang.AssertionError: Cycle:
+clazz de.spricom.dessert.cycle.foo.Foo,
+clazz de.spricom.dessert.cycle.bar.Bar,
+clazz de.spricom.dessert.cycle.CycleDump,
+clazz de.spricom.dessert.cycle.foo.Foo</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
+Slice slice = cp.packageTreeOf(CycleDump.class);
+dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java.lang.AssertionError: Cycle:
+slice partition de.spricom.dessert.cycle.foo,
+slice partition de.spricom.dessert.cycle.bar,
+slice partition de.spricom.dessert.cycle,
+slice partition de.spricom.dessert.cycle.foo</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="architecture-verification-experimental"><a class="anchor" href="#architecture-verification-experimental"></a>Architecture verification (experimental)</h3>
 
 </div>
 </div>
@@ -763,7 +933,7 @@ dependencies are relevant. Thus, that&#8217;s what dessert operates on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-15 12:16:04 UTC
+Last updated 2021-02-15 14:47:38 UTC
 </div>
 </div>
 </body>
