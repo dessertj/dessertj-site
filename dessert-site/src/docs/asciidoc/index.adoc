@@ -7,9 +7,9 @@ dependencies. It is intended to be used within unit-tests.
 
 include::_getting_started.adoc[]
 
-include::_basics.adoc[]
+include::_user_documentation.adoc[]
 
-include::_contribute.adoc[]
+include::_getting_involved.adoc[]
 
 include::_faq.adoc[]
 

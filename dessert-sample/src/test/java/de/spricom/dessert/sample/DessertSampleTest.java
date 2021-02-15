@@ -25,7 +25,7 @@ public class DessertSampleTest {
         Classpath cp = new Classpath();
         Slice myPackage = cp.packageOf(this.getClass());
         Slice java = cp.slice("java..*");
-        Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.*.*"));
+        Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.assertions|slicing.*"));
         SliceAssertions.dessert(myPackage).usesOnly(java, libs);
     }
     // end::succeeds[]

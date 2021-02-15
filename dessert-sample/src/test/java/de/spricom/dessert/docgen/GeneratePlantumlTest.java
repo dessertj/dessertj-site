@@ -28,7 +28,7 @@ public class GeneratePlantumlTest {
     void generateSliceUml() throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("@startuml\n");
-        sb.append("hide empty members\n");
+        sb.append("hide empty members\n\n");
         addSlicePackage(sb);
         sb.append("@enduml\n");
         Files.writeString(Path.of(docgen.getPath(), "slice-overview.puml"), sb);

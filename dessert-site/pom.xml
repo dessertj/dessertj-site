@@ -21,6 +21,7 @@
         <asciidoctorj.version>2.4.2</asciidoctorj.version>
         <asciidoctorj.diagram.version>2.1.0</asciidoctorj.diagram.version>
         <jruby.version>9.2.14.0</jruby.version>
+        <plantuml.version>1.2021.1</plantuml.version>
     </properties>
 
     <dependencies>
@@ -56,6 +57,11 @@
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctorj-diagram</artifactId>
                         <version>${asciidoctorj.diagram.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.plantuml</groupId>
+                        <artifactId>plantuml</artifactId>
+                        <version>${plantuml.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
