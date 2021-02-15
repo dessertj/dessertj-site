@@ -1,7 +1,5 @@
 package de.spricom.dessert.sample;
 
-import de.spricom.dessert.classfile.ClassFile;
-import de.spricom.dessert.util.ClassUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 public class DessertSampleWrapperTest {
     private static final File docgen = new File("target/docgen");
@@ -38,12 +35,5 @@ public class DessertSampleWrapperTest {
     @Test
     void checkWillSucceed() {
         dessertSampleTest.willSucceed();
-    }
-
-    @Test
-    void showUri() throws IOException {
-        System.out.println(ClassUtils.getURI(List.class));
-        var cf = new ClassFile(List.class);
-        cf.getDependentClasses().forEach(System.out::println);
     }
 }
