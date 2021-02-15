@@ -451,6 +451,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#background">Background</a></li>
 <li><a href="#design-goals-and-features">Design Goals and Features</a></li>
 <li><a href="#the-slice">The Slice</a></li>
+<li><a href="#name-patterns">Name-Patterns</a></li>
 </ul>
 </li>
 <li><a href="#getting-involved">Getting Involved</a></li>
@@ -656,11 +657,53 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 </div>
 <div class="sect2">
 <h3 id="the-slice"><a class="anchor" href="#the-slice"></a>The Slice</h3>
+<div class="paragraph">
+<p>When using dessert you work most of the time with some <code>Slice</code> implementation. The following diagram
+shows all such implementations provided by dessert:</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="./images/slice-overview.svg" alt="slice overview" width="508" height="331">
 </div>
 </div>
+<div class="paragraph">
+<p>The most important <code>Slice</code> methods are <code>plus</code>, <code>minus</code>, and <code>slice</code> to create new slices from existing
+ones. The <code>AbstractRootSlice</code> provides some convenience methods to work with packages. <code>packageOf</code> returns
+a slice of all classes within one package (without sub-packages). <code>packageTreeOf' returns a slice of
+all classes within a package, or a nested sub-package. Called on a `Root</code> these methods return only
+classes within that root. A <code>Root</code> is a classes directory or a .jar file that belongs to the <code>Classpath</code>.
+To get a <code>Root</code> you can use the <code>Classpath</code> method <code>rootOf</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>Classpath</code> methods <code>asClazz</code> and <code>sliceOf</code> can create slices for classes that are not on the
+<code>Classpath</code> such as classes located in the java or javax packages or dependencies of some classes.
+In such a case the <code>Classpath</code> uses the current <code>ClassLoader</code> to get the corresponding .class file.
+If this does not work either, it creates a placeholder <code>Clazz</code> that contains only the classname.</p>
+</div>
+<div class="paragraph">
+<p>The <code>slice</code> methods of <code>Classpath</code> do not necessarily return a slice that can be resolved to a concrete
+set of classes. A slice may also be defined by a name-pattern or some predicate. For such a slice one
+can use the <code>contains</code> method to check whether a <code>Clazz</code> belongs to it, thus the class fulfills
+all predicates. But calling <code>getClazzes</code> will throw a <code>ResolveException</code>. This happens if the
+<code>Classpath</code> contains none of the classes belonging to the slice. Internally <em>dessert</em> works with such
+predicate based slices as long as <code>getClazzes</code> has not been called, for performance reasons.</p>
+</div>
+<div class="paragraph">
+<p><em>Dessert</em> has been optimized to resolve name-pattern very fast. Hence, it&#8217;s a good practice to first
+slice be name (or <code>packageOf</code>/<code>packageTreeOf</code>) then used predicates to slice-down the slices further.</p>
+</div>
+<div class="paragraph">
+<p><code>getDependencies</code> returns the dependencies of a slice and <code>uses</code> checks whether some other slice
+contains one of these dependencies.</p>
+</div>
+<div class="paragraph">
+<p>To add features to existing slices always extend <code>AbstractDelegateSlice</code>. The <code>named</code> method returns
+one such extension that makes a slices' <code>toString</code> method return the name passed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>Name-Patterns</h3>
+
 </div>
 </div>
 </div>
@@ -720,7 +763,7 @@ dependencies are relevant. Thus, that&#8217;s what dessert operates on.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-15 00:29:47 UTC
+Last updated 2021-02-15 12:16:04 UTC
 </div>
 </div>
 </body>
