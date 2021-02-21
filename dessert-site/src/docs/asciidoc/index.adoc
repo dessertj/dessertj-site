@@ -6,6 +6,7 @@ The name is a short form of **de**pendency a**ssert**. Hence Dessert is a librar
 dependencies. It is intended to be used within unit-tests.
 
 [cols="h,2"]
+.Resources available for dessert
 |===
 |Documentation:
 |https://dessert.spricom.de/index.html[dessert.spricom.de] for released versions +
