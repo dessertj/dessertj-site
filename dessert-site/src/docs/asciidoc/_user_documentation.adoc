@@ -134,7 +134,7 @@ The following code fragment demonstrates this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DuplicatesTest.java[tags=duplicates]
+include::{sample-dir}/src/test/java/de/spricom/dessert/duplicates/DuplicatesTest.java[tags=duplicates]
 ----
 
 The sample uses JUnit 5 which has a _module-info.class_ in each of its jars, thus `duplicates` is
