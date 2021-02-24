@@ -78,11 +78,6 @@ all predicates. But calling `getClazzes` will throw a `ResolveException`. This h
 `Classpath` contains none of the classes belonging to the slice. Internally _dessert_ works with such
 predicate based slices as long as `getClazzes` has not been called, for performance reasons.
 
-The `Classpath` method `duplicates` returns a special `Slice` of all .class files that appear
-at least twice on the `Classpath`. Other as the `ClassLoader` _dessert_ does not stop at the first
-class that matches a certain name. It always considers all matches. Duplicates are a common cause
-of problems, because the implementation is chosen more ore less randomly.
-
 _Dessert_ has been optimized to resolve name-pattern very fast. Hence, it's a good practice to first
 slice be name (or `packageOf`/`packageTreeOf`) then used predicates to slice-down the slices further.
 
@@ -126,6 +121,28 @@ with slight modifications:
 |*|Matches all types in the root package
 |..*|Matches all types
 |===
+
+
+=== Duplicates
+
+The `Classpath` has a method `duplicates` that returns a special `Slice` of all .class files that appear
+at least twice on the `Classpath`. Other as the `ClassLoader` _dessert_ does not stop at the first
+class that matches a certain name. It always considers all matches. Duplicates are a common cause
+of problems, because the implementation is chosen more ore less randomly.
+
+The following code fragment demonstrates this:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DuplicatesTest.java[tags=duplicates]
+----
+
+The sample uses JUnit 5 which has a _module-info.class_ in each of its jars, thus `duplicates` is
+not empty. The `Classpath` method `asClazz` returns a single `Clazz` object which represents one
+if these module-info classes. A `Clazz` object always represents one single .class file.
+`getAlternatives()` returns all classes with the name on the `Classpath`. After subtracting the
+module-info classes there are no more duplicates left. An alternative way to get a slice of
+all module-info classes is `slice("module-info")`, because it filters by name.
 
 === Assertions
 

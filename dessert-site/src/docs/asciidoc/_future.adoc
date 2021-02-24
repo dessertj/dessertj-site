@@ -1,0 +1,8 @@
+== Plans for dessert-core 0.5.x
+
+* Utilize information within module-info classes
+* Support multi-release jars
+* API to define modules for dessert-tests
+* Ready-to-use module definitions for the JDK that resemble the Java9+ modules,
+  usable for older java versions
+* Architecture visualization API
