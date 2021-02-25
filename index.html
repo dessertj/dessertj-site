@@ -516,7 +516,7 @@ dependencies. It is intended to be used within unit-tests.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If you wan&#8217;t to try the most current snapshot version specify the repository:</p>
+<p>You have to specify the repository to use snapshot releases:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -542,7 +542,7 @@ void willFail() {
     Classpath cp = new Classpath();
     Clazz me = cp.asClazz(this.getClass());
     Root root = cp.rootOf(Test.class);
-    SliceAssertions.assertThat(me).usesNot(root);
+    SliceAssertions.dessert(me).usesNot(root);
 }</code></pre>
 </div>
 </div>
@@ -1079,7 +1079,7 @@ cannot be detected in the .class file anymore.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-24 21:28:02 UTC
+Last updated 2021-02-25 22:00:27 UTC
 </div>
 </div>
 </body>
