@@ -9,7 +9,7 @@ Add the dependency to your project:
 include::{sample-dir}/pom.xml[tags=dep]
 ----
 
-If you wan't to try the most current snapshot version specify the repository:
+You have to specify the repository to use snapshot releases:
 
 [source, xml, indent=0]
 ----

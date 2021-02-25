@@ -11,13 +11,14 @@ import static de.spricom.dessert.assertions.SliceAssertions.dessert;
 
 public class DessertSampleTest {
 
+
     // tag::fails[]
     @Test
     void willFail() {
         Classpath cp = new Classpath();
         Clazz me = cp.asClazz(this.getClass());
         Root root = cp.rootOf(Test.class);
-        SliceAssertions.assertThat(me).usesNot(root);
+        SliceAssertions.dessert(me).usesNot(root);
     }
     // end::fails[]
 
