@@ -844,7 +844,10 @@ Slice slice = duplicates.minus(cp.asClazz("module-info").getAlternatives());
 Assertions.assertThat(slice.getClazzes()).isEmpty();
 
 Slice slice2 = duplicates.minus(cp.slice("module-info"));
-Assertions.assertThat(slice2.getClazzes()).isEmpty();</code></pre>
+Assertions.assertThat(slice2.getClazzes()).isEmpty();
+
+Slice slice3 = duplicates.minus("module-info");
+Assertions.assertThat(slice3.getClazzes()).isEmpty();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1079,7 +1082,7 @@ cannot be detected in the .class file anymore.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-25 22:00:27 UTC
+Last updated 2021-02-27 22:42:53 UTC
 </div>
 </div>
 </body>
