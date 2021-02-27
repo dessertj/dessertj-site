@@ -21,6 +21,9 @@ public class DuplicatesTest {
 
         Slice slice2 = duplicates.minus(cp.slice("module-info"));
         Assertions.assertThat(slice2.getClazzes()).isEmpty();
+
+        Slice slice3 = duplicates.minus("module-info");
+        Assertions.assertThat(slice3.getClazzes()).isEmpty();
         // end::duplicates[]
     }
 
