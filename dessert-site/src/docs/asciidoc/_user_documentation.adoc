@@ -92,7 +92,6 @@ one such extension that makes a slices' `toString` method return the name passed
 Name-patterns are the most important means to define slices. A name-pattern
 identifies a set of classes by their full qualified classname.
 
-
 The syntax has been motivated by the
 https://www.eclipse.org/aspectj/doc/released/progguide/quick-typePatterns.htmlAspectJ TypeNamePattern]
 with slight modifications:
@@ -122,6 +121,23 @@ with slight modifications:
 |..*|Matches all types
 |===
 
+=== Predicates
+
+Predicates are another way to define slices. Typically, they are used to selecting classes
+from an existing `Slice` that meets certain properties. `Predicate` is a functional interface.
+`Predicates` provides `and`, `or` and `not` to combine predicates. `ClazzPredicates` contains
+some pre-defined predicates for classes.
+
+The following code fragment demonstrates their usage:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/predicates/PredicatesSampleTest.java[tags=predicates]
+----
+
+`slicingInterfaces` contains all public interfaces, enums or annotations of the `slicing` package within the
+`dessert-core` library. The assertion checks that the `assertions` packages uses only these types by asserting
+that it uses nothing from the complement. That check will fail, because `assertions` uses i.e. `Clazz`.
 
 === Duplicates
 
@@ -142,7 +158,8 @@ not empty. The `Classpath` method `asClazz` returns a single `Clazz` object whic
 if these module-info classes. A `Clazz` object always represents one single .class file.
 `getAlternatives()` returns all classes with the name on the `Classpath`. After subtracting the
 module-info classes there are no more duplicates left. An alternative way to get a slice of
-all module-info classes is `slice("module-info")`, because it filters by name.
+all module-info classes is `slice("module-info")` or simple by using the short-cut
+`minus("module-info")`, because it filters by name.
 
 === Assertions
 
@@ -204,7 +221,8 @@ slice that gives access to the package-name and the parent-package.
 
 The more general `partitionBy` uses a `SlicePartitioner` that maps each class to some key.
 The result is a map of `PartitionSlice`. A `PartitionSlice` is a `ConcreteSlice` (set of classes),
-with the key assigned. There is another `partitionBy` method with a second `PartitionSliceFactory`
+with the key assigned. See `SlicePartitioners` for examples of pre-defined slice partitioners.
+There is another `partitionBy` method with a second `PartitionSliceFactory`
 parameter. This can be used to create specialized `PartitionSlice` objects like the `PackageSlice`.
 
 === Architecture verification (experimental)

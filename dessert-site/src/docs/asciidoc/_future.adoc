@@ -6,3 +6,4 @@
 * Ready-to-use module definitions for the JDK that resemble the Java9+ modules,
   usable for older java versions
 * Architecture visualization API
+* Improved support for investigating existing projects
