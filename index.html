@@ -452,6 +452,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#design-goals-and-features">Design Goals and Features</a></li>
 <li><a href="#the-slice">The Slice</a></li>
 <li><a href="#name-patterns">Name-Patterns</a></li>
+<li><a href="#predicates">Predicates</a></li>
 <li><a href="#duplicates">Duplicates</a></li>
 <li><a href="#assertions">Assertions</a></li>
 <li><a href="#cycle-detection">Cycle detection</a></li>
@@ -823,6 +824,41 @@ Thus, $ is the only inner-type separator supported.</p>
 </table>
 </div>
 <div class="sect2">
+<h3 id="predicates"><a class="anchor" href="#predicates"></a>Predicates</h3>
+<div class="paragraph">
+<p>Predicates are another way to define slices. Typically, they are used to selecting classes
+from an existing <code>Slice</code> that meets certain properties. <code>Predicate</code> is a functional interface.
+<code>Predicates</code> provides <code>and</code>, <code>or</code> and <code>not</code> to combine predicates. <code>ClazzPredicates</code> contains
+some pre-defined predicates for classes.</p>
+</div>
+<div class="paragraph">
+<p>The following code fragment demonstrates their usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
+Root dessert = cp.rootOf(Slice.class);
+Slice assertions = dessert.packageOf(SliceAssertions.class);
+Slice slicing = dessert.packageOf(Slice.class);
+Slice slicingInterfaces = slicing.slice(
+        Predicates.and(ClazzPredicates.PUBLIC,
+                Predicates.or(
+                        ClazzPredicates.INTERFACE,
+                        ClazzPredicates.ANNOTATION,
+                        ClazzPredicates.ENUM
+                )
+        )
+);
+SliceAssertions.dessert(assertions).usesNot(slicing.minus(slicingInterfaces));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>slicingInterfaces</code> contains all public interfaces, enums or annotations of the <code>slicing</code> package within the
+<code>dessert-core</code> library. The assertion checks that the <code>assertions</code> packages uses only these types by asserting
+that it uses nothing from the complement. That check will fail, because <code>assertions</code> uses i.e. <code>Clazz</code>.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="duplicates"><a class="anchor" href="#duplicates"></a>Duplicates</h3>
 <div class="paragraph">
 <p>The <code>Classpath</code> has a method <code>duplicates</code> that returns a special <code>Slice</code> of all .class files that appear
@@ -856,7 +892,8 @@ not empty. The <code>Classpath</code> method <code>asClazz</code> returns a sing
 if these module-info classes. A <code>Clazz</code> object always represents one single .class file.
 <code>getAlternatives()</code> returns all classes with the name on the <code>Classpath</code>. After subtracting the
 module-info classes there are no more duplicates left. An alternative way to get a slice of
-all module-info classes is <code>slice("module-info")</code>, because it filters by name.</p>
+all module-info classes is <code>slice("module-info")</code> or simple by using the short-cut
+<code>minus("module-info")</code>, because it filters by name.</p>
 </div>
 </div>
 <div class="sect2">
@@ -958,7 +995,8 @@ slice that gives access to the package-name and the parent-package.</p>
 <div class="paragraph">
 <p>The more general <code>partitionBy</code> uses a <code>SlicePartitioner</code> that maps each class to some key.
 The result is a map of <code>PartitionSlice</code>. A <code>PartitionSlice</code> is a <code>ConcreteSlice</code> (set of classes),
-with the key assigned. There is another <code>partitionBy</code> method with a second <code>PartitionSliceFactory</code>
+with the key assigned. See <code>SlicePartitioners</code> for examples of pre-defined slice partitioners.
+There is another <code>partitionBy</code> method with a second <code>PartitionSliceFactory</code>
 parameter. This can be used to create specialized <code>PartitionSlice</code> objects like the <code>PackageSlice</code>.</p>
 </div>
 </div>
@@ -1007,6 +1045,9 @@ usable for older java versions</p>
 </li>
 <li>
 <p>Architecture visualization API</p>
+</li>
+<li>
+<p>Improved support for investigating existing projects</p>
 </li>
 </ul>
 </div>
@@ -1082,7 +1123,7 @@ cannot be detected in the .class file anymore.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-27 22:42:53 UTC
+Last updated 2021-02-28 17:38:03 UTC
 </div>
 </div>
 </body>
