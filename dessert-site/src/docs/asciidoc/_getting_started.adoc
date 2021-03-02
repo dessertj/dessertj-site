@@ -2,7 +2,23 @@
 
 == Getting Started
 
-Add the dependency to your project:
+=== Maven Dependency
+
+Add the _dessert-core_ dependency to your project:
+
+[source, xml, indent=0]
+----
+        <dependency>
+            <groupId>de.spricom.dessert</groupId>
+            <artifactId>dessert-core</artifactId>
+            <version>0.4.0</version>
+            <scope>test</scope>
+        </dependency>
+----
+
+=== Snapshot Dependency (optional alternative)
+
+If you rather want o try out the most current snapshot:
 
 [source, xml, indent=0]
 ----
@@ -16,7 +32,9 @@ You have to specify the repository to use snapshot releases:
 include::{sample-dir}/pom.xml[tags=repo]
 ----
 
-A first dependency test:
+=== First Test
+
+Implement your first dependency test:
 
 [source, java, indent=0]
 ----
@@ -30,7 +48,7 @@ directory, a .jar file or a module. All of them are slices, hence they implement
 interface. `SliceAssertion` provides a static `assertThat` method to check for unwanted dependencies
 between slices.
 
-The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus it
+The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus, it
 produces the following output:
 
 ----

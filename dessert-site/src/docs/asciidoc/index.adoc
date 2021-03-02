@@ -1,21 +1,37 @@
 :toc:
 
-= The Dessert Library
+= Dessert Dependency Assertion Library for Java
 
-The name is a short form of **de**pendency a**ssert**. Hence Dessert is a library to check assertions for
-dependencies. It is intended to be used within unit-tests.
+A library for unit-tests to check the dependencies between classes.
+The name comes from **de**pendency a**ssert**.
 
-[cols="h,2"]
-.Resources available for dessert
+[cols="1,2"]
+.Resources on GitHub
 |===
-|Documentation:
-|https://dessert.spricom.de/index.html[dessert.spricom.de] for released versions +
- https://hajo70.github.io/dessert-site/index.html[GitHub Pages] for the most current snapshot version +
- https://dessert.spricom.de/apidocs/[API Doc.]
-|Source-Code (GibHub):
-|https://github.com/hajo70/dessert-core[dessert-core] library source code +
- https://github.com/hajo70/dessert-site[dessert-site] documentation source code +
- https://github.com/hajo70/dessert-tests[dessert-tests] test and samples
+|Repository|Description
+
+|https://github.com/hajo70/dessert-core[dessert-core]
+|Library source code
+
+|https://github.com/hajo70/dessert-site[dessert-site]
+|Documentation source code
+
+|https://github.com/hajo70/dessert-tests[dessert-tests]
+|Tests and samples
+|===
+
+.Documentation
+[cols="h,1,1"]
+|===
+|Release|Reference Doc.|API Doc.
+
+|https://github.com/hajo70/dessert-core[0.5.0-SNAPSHOT]
+|https://hajo70.github.io/dessert-site/index.html[reference]
+|https://hajo70.github.io/dessert-core/index.html[javadoc]
+
+|https://github.com/hajo70/dessert-core/tree/0.4.x[0.4.0]
+|https://dessert.spricom.de/index.html[reference]
+|https://dessert.spricom.de/apidocs/index.html[javadoc]
 |===
 
 include::_getting_started.adoc[]
