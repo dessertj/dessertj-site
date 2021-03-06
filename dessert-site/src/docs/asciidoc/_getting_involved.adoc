@@ -1,7 +1,7 @@
 == Getting Involved
 
 If you're missing some feature or find a bug then please
-https://github.com/hajo70/dessert-site/issues[open an issue] on GibHub.
+https://github.com/hajo70/dessert-core/issues/new[open an issue] on GibHub.
 
 If you have questions the best way to get in contact is
 https://github.com/hajo70/dessert-core/discussions[Discussions].
