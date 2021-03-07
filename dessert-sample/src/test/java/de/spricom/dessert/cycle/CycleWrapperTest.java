@@ -29,6 +29,7 @@ public class CycleWrapperTest {
             String message = er.toString();
             Files.writeString(Path.of(docgen.getPath(), "classCycle.txt"), message);
 
+            // URI is different on each target system
             assertThat(message)
                     .containsOnlyOnce("java.lang.AssertionError: Cycle:")
                     .containsOnlyOnce("/de/spricom/dessert/cycle/bar/Bar.class")
