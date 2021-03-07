@@ -20,7 +20,7 @@ Imagine the `Classpath` is a big cake you have to slice down. Thus the most impo
 of _dessert_ is the `Slice`. The smallest `Slice` is a `Clazz` and the biggest `Slice` is
 the `Classpath`.
 
-The name comes from **de**pendency a**ssert**.
+The name *dessert* comes from **de**pendency a**ssert**.
 
 === Design Goals and Features
 

@@ -2,10 +2,20 @@
 
 == Getting Started
 
+- dessert-version: {site-version}
+
+ifeval::[ "{site-version}" == "0.5.0-SNAPSHOT" ]
+is snapshot
+endif::[]
+ifeval::[ "{site-version}" != "0.5.0-SNAPSHOT" ]
+is release
+endif::[]
+
 === Maven Dependency
 
 Add the _dessert-core_ dependency to your project:
 
+ifeval::[ "{site-version}" == "{snapshot-version}" ]
 [source, xml, indent=0]
 ----
         <dependency>
@@ -15,15 +25,35 @@ Add the _dessert-core_ dependency to your project:
             <scope>test</scope>
         </dependency>
 ----
-
-=== Snapshot Dependency (optional alternative)
-
-If you rather want o try out the most current snapshot:
-
+endif::[]
+ifeval::[ "{site-version}" != "{snapshot-version}" ]
 [source, xml, indent=0]
 ----
 include::{sample-dir}/pom.xml[tags=dep]
 ----
+endif::[]
+
+=== Snapshot Dependency (optional alternative)
+
+If you rather want o try out the most current snapshot, then use:
+
+ifeval::[ "{site-version}" == "{snapshot-version}" ]
+[source, xml, indent=0]
+----
+include::{sample-dir}/pom.xml[tags=dep]
+----
+endif::[]
+ifeval::[ "{site-version}" != "{snapshot-version}" ]
+[source, xml, indent=0]
+----
+        <dependency>
+            <groupId>de.spricom.dessert</groupId>
+            <artifactId>dessert-core</artifactId>
+            <version>0.5.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+----
+endif::[]
 
 You have to specify the repository to use snapshot releases:
 

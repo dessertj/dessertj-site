@@ -1,0 +1,34 @@
+== Release Notes
+
+=== dessert-core-0.4.1 (upcoming)
+
+Some minor changes:
+
+- Duplicate .class files in JAR files won't cause an AssertionError.
+- A `Clazz` created by `Classpath.asClazz(java.lang.Class<?>)` immediately contains all
+  alternatives on the `Classpath`.
+- `ClassPackage` internally uses `TreeMap` instead of `List` to lookup classes. This
+  improves the performance if a package has many classes.
+- Many Javadoc additions.
+
+=== dessert-core-0.4.0
+
+Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
+have been changed. The project has been renamed to dessert-core and everything that does not belong
+to the core functionality (i.e. DuplicateFinder) has been deleted.
+
+The most prominent changes are:
+
+- New maven coordinates: de.spricom.dessert:dessert-core
+- Removal of DuplicateFinder and corresponding traversal API
+- Support for any Classfile-Format up to Java 15
+- Multi-Release JARs don't cause an error (but version specific classes are ignored)
+- API much simpler and more intuitive: SliceEntry renamed to Clazz,
+  SliceContext renamed to Classpath and both implement Slice
+- The Grouping-API has been replaced by simple maps and methods for partitioning
+- Performant pattern-matching for class-names
+- Many bugfixes, simplifications and preformance-improvements
+
+=== Older Releases
+
+See https://github.com/hajo70/dessert-core/releases[GitHub releases].

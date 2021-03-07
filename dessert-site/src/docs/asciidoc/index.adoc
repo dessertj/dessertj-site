@@ -43,6 +43,8 @@ include::_getting_involved.adoc[]
 
 include::_faq.adoc[]
 
+include::_release_notes.adoc[]
+
 == Copyright and License
 
 Code and documentation copyright 2017–2021 https://github.com/hajo70[Hans Jörg Heßmann].
