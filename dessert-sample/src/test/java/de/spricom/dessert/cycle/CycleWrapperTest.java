@@ -29,12 +29,13 @@ public class CycleWrapperTest {
             String message = er.toString();
             Files.writeString(Path.of(docgen.getPath(), "classCycle.txt"), message);
 
-            assertThat(message.trim().split(",?\n"))
-                    .hasSize(5)
-                    .contains("java.lang.AssertionError: Cycle:",
-                            "clazz de.spricom.dessert.cycle.foo.Foo",
-                            "clazz de.spricom.dessert.cycle.bar.Bar",
-                            "clazz de.spricom.dessert.cycle.CycleDump");
+            assertThat(message)
+                    .containsOnlyOnce("java.lang.AssertionError: Cycle:")
+                    .containsOnlyOnce("/de/spricom/dessert/cycle/bar/Bar.class")
+                    .containsOnlyOnce("/de/spricom/dessert/cycle/CycleDump.class")
+                    .contains("/de/spricom/dessert/cycle/foo/Foo.class");
+
+            assertThat(message.trim().split(",?\n")).hasSize(5);
         }
     }
 
