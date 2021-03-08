@@ -1,6 +1,6 @@
 == Release Notes
 
-=== dessert-core-0.4.1 (upcoming)
+=== dessert-core-0.4.1
 
 Some minor changes:
 

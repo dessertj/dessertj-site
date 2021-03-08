@@ -2,15 +2,6 @@
 
 == Getting Started
 
-- dessert-version: {site-version}
-
-ifeval::[ "{site-version}" == "0.5.0-SNAPSHOT" ]
-is snapshot
-endif::[]
-ifeval::[ "{site-version}" != "0.5.0-SNAPSHOT" ]
-is release
-endif::[]
-
 === Maven Dependency
 
 Add the _dessert-core_ dependency to your project:
@@ -21,7 +12,7 @@ ifeval::[ "{site-version}" == "{snapshot-version}" ]
         <dependency>
             <groupId>de.spricom.dessert</groupId>
             <artifactId>dessert-core</artifactId>
-            <version>0.4.0</version>
+            <version>0.4.1</version>
             <scope>test</scope>
         </dependency>
 ----

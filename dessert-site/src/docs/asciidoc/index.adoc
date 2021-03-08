@@ -28,7 +28,7 @@ A library for unit-tests to check the dependencies between classes.
 |https://hajo70.github.io/dessert-site/index.html[reference]
 |https://hajo70.github.io/dessert-core/index.html[javadoc]
 
-|https://github.com/hajo70/dessert-core/tree/0.4.x[0.4.0]
+|https://github.com/hajo70/dessert-core/tree/0.4.x[0.4.1]
 |https://dessert.spricom.de/index.html[reference]
 |https://dessert.spricom.de/apidocs/index.html[javadoc]
 |===
