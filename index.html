@@ -1033,10 +1033,10 @@ dessert(cp.packageTreeOf(CycleDump.class).getClazzes()).isCycleFree();</code></p
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle:
-file:/home/runner/work/dessert-site/dessert-site/dessert-sample/target/test-classes/de/spricom/dessert/cycle/foo/Foo.class,
-file:/home/runner/work/dessert-site/dessert-site/dessert-sample/target/test-classes/de/spricom/dessert/cycle/bar/Bar.class,
-file:/home/runner/work/dessert-site/dessert-site/dessert-sample/target/test-classes/de/spricom/dessert/cycle/CycleDump.class,
-file:/home/runner/work/dessert-site/dessert-site/dessert-sample/target/test-classes/de/spricom/dessert/cycle/foo/Foo.class</pre>
+clazz de.spricom.dessert.cycle.foo.Foo,
+clazz de.spricom.dessert.cycle.bar.Bar,
+clazz de.spricom.dessert.cycle.CycleDump,
+clazz de.spricom.dessert.cycle.foo.Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1057,10 +1057,10 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle:
-slice partition de.spricom.dessert.cycle.foo,
 slice partition de.spricom.dessert.cycle.bar,
 slice partition de.spricom.dessert.cycle,
-slice partition de.spricom.dessert.cycle.foo</pre>
+slice partition de.spricom.dessert.cycle.foo,
+slice partition de.spricom.dessert.cycle.bar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1288,7 +1288,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-07 10:07:00 UTC
+Last updated 2021-03-08 18:37:14 UTC
 </div>
 </div>
 </body>
