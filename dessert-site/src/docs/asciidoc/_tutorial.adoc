@@ -12,7 +12,7 @@ in the <<getting_started>> started section.
 For the solutions to this tutorial see
 https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java[DessertTutorialTest.java].
 Some more advanced examples can be found in the
-https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/main/java/de/spricom/dessert/tutorial[tutorial] package of the
+https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/test/java/de/spricom/dessert/tutorial[tutorial] package of the
 https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps[dessert-tests-jdeps] project.
 
 === Detect usage of internal APIs
