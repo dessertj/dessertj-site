@@ -1,5 +1,6 @@
 :sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
 
+[[getting_started]]
 == Getting Started
 
 === Maven Dependency

@@ -1,0 +1,46 @@
+== Tutorial
+
+This tutorial not only guides you step by step to the _dessert_ features
+but also it's a guideline for applying _dessert_.
+Following these steps any you'll get the most benefit for your project.
+To perform this tutorial, you need any Java project (any other JVM language,
+like Kotlin, Scala, Groovy, etc. will do, too).
+Before you start the tutorial make sure the _dessert-core_ dependency has
+been added to your project, and you are able to run dessert tests as described
+in the <<getting_started>> started section.
+
+For the solutions to this tutorial see
+https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java[DessertTutorialTest.java].
+Some more advanced examples can be found in the
+https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/main/java/de/spricom/dessert/tutorial[tutorial] package of the
+https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps[dessert-tests-jdeps] project.
+
+=== Detect usage of internal APIs
+
+Internal APIs are subject to change without notice. Using internal APIs
+may cause trouble when you update a dependency. The signature of the internal
+API may have changed, it may have disappeared entirely, or it may behave
+differently in some corner cases. Thus, your code should not rely on any
+internal API. To ensure this, write a test that detects the usage of
+JDK's internal API (packages `com.sun..*` or `sun..*`) or any other internal
+API from some external library (any `..internal..*` package).
+
+=== Detect duplicates
+
+Each JAR has its own directory structure, thus a class with the same fully qualified name
+may appear in more than one JAR. The `ClassLoader` always uses the first matching class
+on the classpath, but the order of the JARs on the classpath may vary on different systems.
+If there are different implementations for one of the duplicates that is actually used,
+some systems may fail. Such errors are hard to track down. Thus, write a test
+that makes sure, there are no duplicates on the classpath. See the <<Duplicates>>
+section on how to do this.
+If you have duplicates write
+some code that helps you to track down the problem (i.e list the classes and jars involved).
+
+NOTE: Many JARs contain a `module-info` class in their root package. Make sure to ignore
+this class when checking for duplicates.
+
+Often you cannot prevent all duplicates, but at least you should have test that informs
+you if there are additional duplicates.
+
+

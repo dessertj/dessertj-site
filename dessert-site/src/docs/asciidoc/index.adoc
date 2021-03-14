@@ -1,4 +1,5 @@
 :toc:
+:sectnums:
 
 = Dessert Dependency Assertion Library for Java
 
@@ -34,6 +35,8 @@ A library for unit-tests to check the dependencies between classes.
 |===
 
 include::_getting_started.adoc[]
+
+include::_tutorial.adoc[]
 
 include::_user_documentation.adoc[]
 
