@@ -445,42 +445,48 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#getting-started">Getting Started</a>
+<li><a href="#getting_started">1. Getting Started</a>
 <ul class="sectlevel2">
-<li><a href="#maven-dependency">Maven Dependency</a></li>
-<li><a href="#snapshot-dependency-optional-alternative">Snapshot Dependency (optional alternative)</a></li>
-<li><a href="#first-test">First Test</a></li>
+<li><a href="#maven-dependency">1.1. Maven Dependency</a></li>
+<li><a href="#snapshot-dependency-optional-alternative">1.2. Snapshot Dependency (optional alternative)</a></li>
+<li><a href="#first-test">1.3. First Test</a></li>
 </ul>
 </li>
-<li><a href="#user-documentation">User Documentation</a>
+<li><a href="#tutorial">2. Tutorial</a>
 <ul class="sectlevel2">
-<li><a href="#background">Background</a></li>
-<li><a href="#design-goals-and-features">Design Goals and Features</a></li>
-<li><a href="#the-slice">The Slice</a></li>
-<li><a href="#name-patterns">Name-Patterns</a></li>
-<li><a href="#predicates">Predicates</a></li>
-<li><a href="#duplicates">Duplicates</a></li>
-<li><a href="#assertions">Assertions</a></li>
-<li><a href="#cycle-detection">Cycle detection</a></li>
-<li><a href="#architecture-verification-experimental">Architecture verification (experimental)</a></li>
+<li><a href="#detect-usage-of-internal-apis">2.1. Detect usage of internal APIs</a></li>
+<li><a href="#detect-duplicates">2.2. Detect duplicates</a></li>
 </ul>
 </li>
-<li><a href="#plans-for-dessert-core-0-5-x">Plans for dessert-core 0.5.x</a></li>
-<li><a href="#getting-involved">Getting Involved</a></li>
-<li><a href="#frequently-asked-questsions">Frequently asked Questsions</a>
+<li><a href="#user-documentation">3. User Documentation</a>
 <ul class="sectlevel2">
-<li><a href="#when-will-be-there-a-1-0-version">When will be there a 1.0 version?</a></li>
-<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
+<li><a href="#background">3.1. Background</a></li>
+<li><a href="#design-goals-and-features">3.2. Design Goals and Features</a></li>
+<li><a href="#the-slice">3.3. The Slice</a></li>
+<li><a href="#name-patterns">3.4. Name-Patterns</a></li>
+<li><a href="#predicates">3.5. Predicates</a></li>
+<li><a href="#duplicates">3.6. Duplicates</a></li>
+<li><a href="#assertions">3.7. Assertions</a></li>
+<li><a href="#cycle-detection">3.8. Cycle detection</a></li>
+<li><a href="#architecture-verification-experimental">3.9. Architecture verification (experimental)</a></li>
 </ul>
 </li>
-<li><a href="#release-notes">Release Notes</a>
+<li><a href="#plans-for-dessert-core-0-5-x">4. Plans for dessert-core 0.5.x</a></li>
+<li><a href="#getting-involved">5. Getting Involved</a></li>
+<li><a href="#frequently-asked-questsions">6. Frequently asked Questsions</a>
 <ul class="sectlevel2">
-<li><a href="#dessert-core-0-4-1">dessert-core-0.4.1</a></li>
-<li><a href="#dessert-core-0-4-0">dessert-core-0.4.0</a></li>
-<li><a href="#older-releases">Older Releases</a></li>
+<li><a href="#when-will-be-there-a-1-0-version">6.1. When will be there a 1.0 version?</a></li>
+<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">6.2. Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
 </ul>
 </li>
-<li><a href="#copyright-and-license">Copyright and License</a></li>
+<li><a href="#release-notes">7. Release Notes</a>
+<ul class="sectlevel2">
+<li><a href="#dessert-core-0-4-1">7.1. dessert-core-0.4.1</a></li>
+<li><a href="#dessert-core-0-4-0">7.2. dessert-core-0.4.0</a></li>
+<li><a href="#older-releases">7.3. Older Releases</a></li>
+</ul>
+</li>
+<li><a href="#copyright-and-license">8. Copyright and License</a></li>
 </ul>
 </div>
 </div>
@@ -547,10 +553,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-started"><a class="anchor" href="#getting-started"></a>Getting Started</h2>
+<h2 id="getting_started"><a class="anchor" href="#getting_started"></a>1. Getting Started</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="maven-dependency"><a class="anchor" href="#maven-dependency"></a>Maven Dependency</h3>
+<h3 id="maven-dependency"><a class="anchor" href="#maven-dependency"></a>1.1. Maven Dependency</h3>
 <div class="paragraph">
 <p>Add the <em>dessert-core</em> dependency to your project:</p>
 </div>
@@ -566,7 +572,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="snapshot-dependency-optional-alternative"><a class="anchor" href="#snapshot-dependency-optional-alternative"></a>Snapshot Dependency (optional alternative)</h3>
+<h3 id="snapshot-dependency-optional-alternative"><a class="anchor" href="#snapshot-dependency-optional-alternative"></a>1.2. Snapshot Dependency (optional alternative)</h3>
 <div class="paragraph">
 <p>If you rather want o try out the most current snapshot, then use:</p>
 </div>
@@ -599,7 +605,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="first-test"><a class="anchor" href="#first-test"></a>First Test</h3>
+<h3 id="first-test"><a class="anchor" href="#first-test"></a>1.3. First Test</h3>
 <div class="paragraph">
 <p>Implement your first dependency test:</p>
 </div>
@@ -660,10 +666,75 @@ union of all the slices passed.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="user-documentation"><a class="anchor" href="#user-documentation"></a>User Documentation</h2>
+<h2 id="tutorial"><a class="anchor" href="#tutorial"></a>2. Tutorial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial not only guides you step by step to the <em>dessert</em> features
+but also it&#8217;s a guideline for applying <em>dessert</em>.
+Following these steps any you&#8217;ll get the most benefit for your project.
+To perform this tutorial, you need any Java project (any other JVM language,
+like Kotlin, Scala, Groovy, etc. will do, too).
+Before you start the tutorial make sure the <em>dessert-core</em> dependency has
+been added to your project, and you are able to run dessert tests as described
+in the <a href="#getting_started">Getting Started</a> started section.</p>
+</div>
+<div class="paragraph">
+<p>For the solutions to this tutorial see
+<a href="https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java">DessertTutorialTest.java</a>.
+Some more advanced examples can be found in the
+<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/main/java/de/spricom/dessert/tutorial">tutorial</a> package of the
+<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps">dessert-tests-jdeps</a> project.</p>
+</div>
+<div class="sect2">
+<h3 id="detect-usage-of-internal-apis"><a class="anchor" href="#detect-usage-of-internal-apis"></a>2.1. Detect usage of internal APIs</h3>
+<div class="paragraph">
+<p>Internal APIs are subject to change without notice. Using internal APIs
+may cause trouble when you update a dependency. The signature of the internal
+API may have changed, it may have disappeared entirely, or it may behave
+differently in some corner cases. Thus, your code should not rely on any
+internal API. To ensure this, write a test that detects the usage of
+JDK&#8217;s internal API (packages <code>com.sun..<strong></code> or <code>sun..</strong></code>) or any other internal
+API from some external library (any <code>..internal..*</code> package).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="detect-duplicates"><a class="anchor" href="#detect-duplicates"></a>2.2. Detect duplicates</h3>
+<div class="paragraph">
+<p>Each JAR has its own directory structure, thus a class with the same fully qualified name
+may appear in more than one JAR. The <code>ClassLoader</code> always uses the first matching class
+on the classpath, but the order of the JARs on the classpath may vary on different systems.
+If there are different implementations for one of the duplicates that is actually used,
+some systems may fail. Such errors are hard to track down. Thus, write a test
+that makes sure, there are no duplicates on the classpath. See the <a href="#duplicates">Duplicates</a>
+section on how to do this.
+If you have duplicates write
+some code that helps you to track down the problem (i.e list the classes and jars involved).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Many JARs contain a <code>module-info</code> class in their root package. Make sure to ignore
+this class when checking for duplicates.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Often you cannot prevent all duplicates, but at least you should have test that informs
+you if there are additional duplicates.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="user-documentation"><a class="anchor" href="#user-documentation"></a>3. User Documentation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="background"><a class="anchor" href="#background"></a>Background</h3>
+<h3 id="background"><a class="anchor" href="#background"></a>3.1. Background</h3>
 <div class="paragraph">
 <p>The goal of dependency checking is finding unwanted dependencies.
 Dessert does this be analyzing .class files.
@@ -698,7 +769,7 @@ the <code>Classpath</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>Design Goals and Features</h3>
+<h3 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>3.2. Design Goals and Features</h3>
 <div class="paragraph">
 <p>If you&#8217;re considering to use <em>dessert</em> you probably have problems with dependencies.
 Hence the most important design goal was to not introduce any additional dependency
@@ -763,7 +834,7 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="the-slice"><a class="anchor" href="#the-slice"></a>The Slice</h3>
+<h3 id="the-slice"><a class="anchor" href="#the-slice"></a>3.3. The Slice</h3>
 <div class="paragraph">
 <p>When using dessert you work most of the time with some <code>Slice</code> implementation. The following diagram
 shows all such implementations provided by dessert:</p>
@@ -809,7 +880,7 @@ one such extension that makes a slices' <code>toString</code> method return the 
 </div>
 </div>
 <div class="sect2">
-<h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>Name-Patterns</h3>
+<h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>3.4. Name-Patterns</h3>
 <div class="paragraph">
 <p>Name-patterns are the most important means to define slices. A name-pattern
 identifies a set of classes by their full qualified classname.</p>
@@ -895,7 +966,7 @@ Thus, $ is the only inner-type separator supported.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="predicates"><a class="anchor" href="#predicates"></a>Predicates</h3>
+<h3 id="predicates"><a class="anchor" href="#predicates"></a>3.5. Predicates</h3>
 <div class="paragraph">
 <p>Predicates are another way to define slices. Typically, they are used to selecting classes
 from an existing <code>Slice</code> that meets certain properties. <code>Predicate</code> is a functional interface.
@@ -930,7 +1001,7 @@ that it uses nothing from the complement. That check will fail, because <code>as
 </div>
 </div>
 <div class="sect2">
-<h3 id="duplicates"><a class="anchor" href="#duplicates"></a>Duplicates</h3>
+<h3 id="duplicates"><a class="anchor" href="#duplicates"></a>3.6. Duplicates</h3>
 <div class="paragraph">
 <p>The <code>Classpath</code> has a method <code>duplicates</code> that returns a special <code>Slice</code> of all .class files that appear
 at least twice on the <code>Classpath</code>. Other as the <code>ClassLoader</code> <em>dessert</em> does not stop at the first
@@ -968,7 +1039,7 @@ all module-info classes is <code>slice("module-info")</code> or simple by using 
 </div>
 </div>
 <div class="sect2">
-<h3 id="assertions"><a class="anchor" href="#assertions"></a>Assertions</h3>
+<h3 id="assertions"><a class="anchor" href="#assertions"></a>3.7. Assertions</h3>
 <div class="paragraph">
 <p>All dessert assertions start with one of the static <code>SliceAssertions</code> methods <code>assertThat</code>
 or its alias <code>dessert</code>. These methods return a <code>SliceAssert</code> object with its most important
@@ -1005,7 +1076,7 @@ To have any effect <code>renderWith</code> must be invoked before the assertions
 </div>
 </div>
 <div class="sect2">
-<h3 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>Cycle detection</h3>
+<h3 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>3.8. Cycle detection</h3>
 <div class="paragraph">
 <p><code>SliceAssert</code> provides the method <code>isCycleFree</code> to check whether a set of slices has any
 cyclic dependencies. Because each <code>Clazz</code> is a <code>Slice</code> one check the classes of slice
@@ -1072,7 +1143,7 @@ parameter. This can be used to create specialized <code>PartitionSlice</code> ob
 </div>
 </div>
 <div class="sect2">
-<h3 id="architecture-verification-experimental"><a class="anchor" href="#architecture-verification-experimental"></a>Architecture verification (experimental)</h3>
+<h3 id="architecture-verification-experimental"><a class="anchor" href="#architecture-verification-experimental"></a>3.9. Architecture verification (experimental)</h3>
 <div class="paragraph">
 <p><code>SliceAssert</code> has two additional convenience methods to verify a layered architecture. Therefore,
 you have to pass a list of layers to the <code>dessert</code> method. <code>isLayeredStrict</code> check whether each
@@ -1097,7 +1168,7 @@ dessert(layers).isLayeredRelaxed();</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="plans-for-dessert-core-0-5-x"><a class="anchor" href="#plans-for-dessert-core-0-5-x"></a>Plans for dessert-core 0.5.x</h2>
+<h2 id="plans-for-dessert-core-0-5-x"><a class="anchor" href="#plans-for-dessert-core-0-5-x"></a>4. Plans for dessert-core 0.5.x</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -1125,7 +1196,7 @@ usable for older java versions</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>Getting Involved</h2>
+<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>5. Getting Involved</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re missing some feature or find a bug then please
@@ -1142,10 +1213,10 @@ but don&#8217;t expect to get an answer, because I&#8217;m doing all this in my 
 </div>
 </div>
 <div class="sect1">
-<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>Frequently asked Questsions</h2>
+<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>6. Frequently asked Questsions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>When will be there a 1.0 version?</h3>
+<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>6.1. When will be there a 1.0 version?</h3>
 <div class="paragraph">
 <p>As along as I don&#8217;t have any feedback of someone who is using this library, there is no reason to keep the
 API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
@@ -1155,7 +1226,7 @@ from that moment on.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>Why does dessert find more dependencies than <em>jdeps</em>?</h3>
+<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>6.2. Why does dessert find more dependencies than <em>jdeps</em>?</h3>
 <div class="paragraph">
 <p>Well, <em>jdeps</em> shows all runtime dependencies whereas dessert shows all compile-time
 dependencies. Hence, if you use a class for which a runtime dependency is missing
@@ -1183,10 +1254,10 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="release-notes"><a class="anchor" href="#release-notes"></a>Release Notes</h2>
+<h2 id="release-notes"><a class="anchor" href="#release-notes"></a>7. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>dessert-core-0.4.1</h3>
+<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>7.1. dessert-core-0.4.1</h3>
 <div class="paragraph">
 <p>Some minor changes:</p>
 </div>
@@ -1210,7 +1281,7 @@ improves the performance if a package has many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>dessert-core-0.4.0</h3>
+<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>7.2. dessert-core-0.4.0</h3>
 <div class="paragraph">
 <p>Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
 have been changed. The project has been renamed to dessert-core and everything that does not belong
@@ -1250,7 +1321,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>Older Releases</h3>
+<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>7.3. Older Releases</h3>
 <div class="paragraph">
 <p>See <a href="https://github.com/hajo70/dessert-core/releases">GitHub releases</a>.</p>
 </div>
@@ -1258,7 +1329,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>Copyright and License</h2>
+<h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>8. Copyright and License</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Code and documentation copyright 2017–2021 <a href="https://github.com/hajo70">Hans Jörg Heßmann</a>.
@@ -1278,7 +1349,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-08 19:57:32 UTC
+Last updated 2021-03-14 09:47:30 UTC
 </div>
 </div>
 </body>
