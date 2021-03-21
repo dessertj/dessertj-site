@@ -228,7 +228,7 @@ with the key assigned. See `SlicePartitioners` for examples of pre-defined slice
 There is another `partitionBy` method with a second `PartitionSliceFactory`
 parameter. This can be used to create specialized `PartitionSlice` objects like the `PackageSlice`.
 
-=== Architecture verification (experimental)
+=== Architecture verification
 
 `SliceAssert` has two additional convenience methods to verify a layered architecture. Therefore,
 you have to pass a list of layers to the `dessert` method. `isLayeredStrict` check whether each
