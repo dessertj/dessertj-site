@@ -456,6 +456,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#detect-usage-of-internal-apis">2.1. Detect usage of internal APIs</a></li>
 <li><a href="#detect-duplicates">2.2. Detect duplicates</a></li>
+<li><a href="#detect-cycles">2.3. Detect cycles</a></li>
+<li><a href="#investigate-your-project">2.4. Investigate your project</a></li>
+<li><a href="#simulate-refactorings">2.5. Simulate refactorings</a></li>
+<li><a href="#check-your-layers">2.6. Check your layers</a></li>
+<li><a href="#modularize-your-project">2.7. Modularize your project</a></li>
 </ul>
 </li>
 <li><a href="#user-documentation">3. User Documentation</a>
@@ -468,7 +473,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#duplicates">3.6. Duplicates</a></li>
 <li><a href="#assertions">3.7. Assertions</a></li>
 <li><a href="#cycle-detection">3.8. Cycle detection</a></li>
-<li><a href="#architecture-verification-experimental">3.9. Architecture verification (experimental)</a></li>
+<li><a href="#architecture-verification">3.9. Architecture verification</a></li>
 </ul>
 </li>
 <li><a href="#plans-for-dessert-core-0-5-x">4. Plans for dessert-core 0.5.x</a></li>
@@ -706,8 +711,7 @@ on the classpath, but the order of the JARs on the classpath may vary on differe
 If there are different implementations for one of the duplicates that is actually used,
 some systems may fail. Such errors are hard to track down. Thus, write a test
 that makes sure, there are no duplicates on the classpath. See the <a href="#duplicates">Duplicates</a>
-section on how to do this.
-If you have duplicates write
+section on how to do this. If you have duplicates write
 some code that helps you to track down the problem (i.e list the classes and jars involved).</p>
 </div>
 <div class="admonitionblock note">
@@ -726,6 +730,93 @@ this class when checking for duplicates.
 <div class="paragraph">
 <p>Often you cannot prevent all duplicates, but at least you should have test that informs
 you if there are additional duplicates.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="detect-cycles"><a class="anchor" href="#detect-cycles"></a>2.3. Detect cycles</h3>
+<div class="paragraph">
+<p>The problem with a cycle is, it does not have a beginning nor does it have an end. Thus, if you
+pick out any class involved in a dependency cycle you cannot use it without all other classes involved
+in that cycle. This is not a problem for small cycles of closely related classes, but it&#8217;s a
+nightmare if you have to change a software with big intertwined cycles.</p>
+</div>
+<div class="paragraph">
+<p>Dessert can detected cycles between any set of slices (remember: a <code>Clazz</code> is a <code>Slice</code>, too).
+To start with, make sure, your software does not have any package-cycles.
+See the <a href="#cycle-detection">Cycle detection</a> section on how to do this.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="investigate-your-project"><a class="anchor" href="#investigate-your-project"></a>2.4. Investigate your project</h3>
+<div class="paragraph">
+<p>If you have any cycles in your software, you might want to find out, which classes cause that
+cycle. Or you may have other questions on your software, for which the search facilities of
+your IDE are not sufficient. The <code>slice</code> method in combination with <a href="#predicates">Predicates</a> lets you
+filter your classes by almost any condition.</p>
+</div>
+<div class="paragraph">
+<p>If you have a package cycle, write some code that tells you exactly which classes with two
+packages involved in the cycle cause that cycle. Alternatively find out, which classes
+of your project use <em>java.io</em>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="simulate-refactorings"><a class="anchor" href="#simulate-refactorings"></a>2.5. Simulate refactorings</h3>
+<div class="paragraph">
+<p>Often a package cycle can simply be resolved by moving a class from on package to another,
+but actually move a class may require many changes and introduce new cycles. Thus, it would
+be very useful if one could find out the effects of moving a classes without actually
+doing it. With <em>dessert</em> you can use the <code>Slice</code> methods <code>minus</code> and <code>plus</code> to simulate
+the removal of a <code>Clazz</code> from one slice and the addition to another.</p>
+</div>
+<div class="paragraph">
+<p>Simulate the introduction of a new cycle by creating new slices from existing package slices.
+You need at least one class cycle to do this. After you have created your simulated cycle,
+make sure <em>dessert</em> detects it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="check-your-layers"><a class="anchor" href="#check-your-layers"></a>2.6. Check your layers</h3>
+<div class="paragraph">
+<p>Each nontrivial software product is built a from layers. In a classical software product you have
+persistence, business logic a presentation layers. Modern designs are base on the
+<a href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">hexagonal architecture</a>, also
+called <em>ports and adapters architecture</em>. But these are still layered architectures with the
+business logic at the bottom, now.</p>
+</div>
+<div class="paragraph">
+<p>The architecture may be strict where one layer can only access the layer below. This is typically
+the case in network protokoll implementations similar to the
+<a href="https://en.wikipedia.org/wiki/OSI_model">OSI model</a>. In most applications the architecture
+is relaxed, hence one layer can access all layers below.</p>
+</div>
+<div class="paragraph">
+<p>A common property of the classes within one layer are there external dependencies. Thus, classes
+in the presentation layer should not have dependencies persistence libraries like hibernate
+and classes in the presistence layer should not have dependencies to presentation libraries like
+JavaFX or Vaadin.</p>
+</div>
+<div class="paragraph">
+<p>Now it&#8217;s time to define the layers of your project. Define a slice for each layer. You may want
+to use the <code>Slice</code> method <code>named</code> to assign it a name. Then use <a href="#architecture-verification">Architecture verification</a>
+to ensure your code complies with your architecture. Additionally, make sure none of your layers
+has any external dependencies it should not.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="modularize-your-project"><a class="anchor" href="#modularize-your-project"></a>2.7. Modularize your project</h3>
+<div class="paragraph">
+<p>Layers are the first course subdivision of your project. Typically, your software is made up
+form smaller parts by cutting down the layers to vertical slices. Each vertical slice
+is tied to one domain and has certain dependencies to other parts of the of software or
+to external libraries. It&#8217;s good practice to explicitly name the dependencies of each
+such part.</p>
+</div>
+<div class="paragraph">
+<p>Start from the layers defined in the previous exercise and use the <code>slice</code> method to
+cut them down into vertical slices. The make sure each such slice uses only the dependencies
+it is allowed to, by using the <code>usesOnly</code> assertion. You might want to group your
+external dependencies into corresponding slices, to do this.</p>
 </div>
 </div>
 </div>
@@ -1143,7 +1234,7 @@ parameter. This can be used to create specialized <code>PartitionSlice</code> ob
 </div>
 </div>
 <div class="sect2">
-<h3 id="architecture-verification-experimental"><a class="anchor" href="#architecture-verification-experimental"></a>3.9. Architecture verification (experimental)</h3>
+<h3 id="architecture-verification"><a class="anchor" href="#architecture-verification"></a>3.9. Architecture verification</h3>
 <div class="paragraph">
 <p><code>SliceAssert</code> has two additional convenience methods to verify a layered architecture. Therefore,
 you have to pass a list of layers to the <code>dessert</code> method. <code>isLayeredStrict</code> check whether each
@@ -1349,7 +1440,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-14 10:54:14 UTC
+Last updated 2021-03-21 09:45:30 UTC
 </div>
 </div>
 </body>
