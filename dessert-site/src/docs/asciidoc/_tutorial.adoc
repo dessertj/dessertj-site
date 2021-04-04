@@ -1,19 +1,24 @@
 == Tutorial
 
 This tutorial not only guides you step by step to the _dessert_ features
-but also it's a guideline for applying _dessert_.
-Following these steps any you'll get the most benefit for your project.
-To perform this tutorial, you need any Java project (any other JVM language,
+but it also is a guideline for applying _dessert_.
+Follow these steps, and you'll get the most benefit for your project.
+To get the most out of this tutorial, you should apply it to some Java project
+you are currently working on (any other JVM language,
 like Kotlin, Scala, Groovy, etc. will do, too).
 Before you start the tutorial make sure the _dessert-core_ dependency has
 been added to your project, and you are able to run dessert tests as described
 in the <<getting_started>> started section.
 
-For the solutions to this tutorial see
-https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java[DessertTutorialTest.java].
-Some more advanced examples can be found in the
-https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/test/java/de/spricom/dessert/tutorial[tutorial] package of the
+https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java[DessertTutorialTest.java]
+provides some simple solutions for this tutorial. If the solutions are not applicable for your particular problem,
+then have a look at the
+https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/test/java/de/spricom/dessert/tutorial[tutorial]
+package of the
 https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps[dessert-tests-jdeps] project.
+You can find there some more advanced examples and solutions for typical problems.
+If you still have problems, then post your question on
+https://github.com/hajo70/dessert-core/discussions[discussions].
 
 === Detect usage of internal APIs
 
@@ -39,7 +44,7 @@ some code that helps you to track down the problem (i.e list the classes and jar
 NOTE: Many JARs contain a `module-info` class in their root package. Make sure to ignore
 this class when checking for duplicates.
 
-Often you cannot prevent all duplicates, but at least you should have test that informs
+Often you cannot prevent all duplicates, but at least you should have a test that informs
 you if there are additional duplicates.
 
 === Detect cycles
@@ -60,21 +65,21 @@ cycle. Or you may have other questions on your software, for which the search fa
 your IDE are not sufficient. The `slice` method in combination with <<Predicates>> lets you
 filter your classes by almost any condition.
 
-If you have a package cycle, write some code that tells you exactly which classes with two
+If you have a package cycle, write some code that tells you exactly which classes from two
 packages involved in the cycle cause that cycle. Alternatively find out, which classes
 of your project use _java.io_.
 
 === Simulate refactorings
 
 Often a package cycle can simply be resolved by moving a class from on package to another,
-but actually move a class may require many changes and introduce new cycles. Thus, it would
+but actually moving a class may require many changes and introduce new cycles. Thus, it would
 be very useful if one could find out the effects of moving a classes without actually
 doing it. With _dessert_ you can use the `Slice` methods `minus` and `plus` to simulate
 the removal of a `Clazz` from one slice and the addition to another.
 
-Simulate the introduction of a new cycle by creating new slices from existing package slices.
-You need at least one class cycle to do this. After you have created your simulated cycle,
-make sure _dessert_ detects it.
+Simulate the introduction of a new package-cycle by creating new slices from existing package
+slices with one or more classes moved from one package to another.
+After you have created your simulated cycle, make sure _dessert_ detects it.
 
 === Check your layers
 
@@ -90,7 +95,7 @@ https://en.wikipedia.org/wiki/OSI_model[OSI model]. In most applications the arc
 is relaxed, hence one layer can access all layers below.
 
 A common property of the classes within one layer are there external dependencies. Thus, classes
-in the presentation layer should not have dependencies persistence libraries like hibernate
+in the presentation layer should not have dependencies to persistence libraries like hibernate
 and classes in the presistence layer should not have dependencies to presentation libraries like
 JavaFX or Vaadin.
 
@@ -101,13 +106,27 @@ has any external dependencies it should not.
 
 === Modularize your project
 
-Layers are the first course subdivision of your project. Typically, your software is made up
+Layers are the first coarse subdivision of your project. Typically, your software is made up
 form smaller parts by cutting down the layers to vertical slices. Each vertical slice
-is tied to one domain and has certain dependencies to other parts of the of software or
+is tied to one domain and has certain dependencies to other parts of the software or
 to external libraries. It's good practice to explicitly name the dependencies of each
 such part.
 
 Start from the layers defined in the previous exercise and use the `slice` method to
-cut them down into vertical slices. The make sure each such slice uses only the dependencies
+cut them down into vertical slices. Then make sure, each such slice uses only the dependencies
 it is allowed to, by using the `usesOnly` assertion. You might want to group your
 external dependencies into corresponding slices, to do this.
+
+The slices defined in this step are the building blocks of your project. We might call some
+modules, but that term is already occupied in the java world, thus I'll stay with building
+block. Often you don't want to expose anything from one building block to others. You can
+accomplish this by defining one or more interface slices for each build block and make sure
+the depending building blocks only use the corresponding interface slice.
+
+=== Define your custom classpath
+
+By default, the `Classpath` is based on the path defined by the _java.class.path_ system property.
+This fits most cases, but there might be circumstances where this is not suitable.
+See <<Customize class resolving>> on how you can define your own custom classpath.
+Then define a custom Classpath that contains all elements of the _java.class.path_ system property
+in reverse order. Check if your tests produce the same results.

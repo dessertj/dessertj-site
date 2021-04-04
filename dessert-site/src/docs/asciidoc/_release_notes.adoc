@@ -1,5 +1,11 @@
 == Release Notes
 
+=== dessert-core-0.4.2
+
+Bugfix-release:
+
+- The cycle detection algorithm ignores dependencies within the same slice, now.
+
 === dessert-core-0.4.1
 
 Some minor changes:

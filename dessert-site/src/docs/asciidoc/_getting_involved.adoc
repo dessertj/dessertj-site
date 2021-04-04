@@ -4,7 +4,7 @@ If you're missing some feature or find a bug then please
 https://github.com/hajo70/dessert-core/issues/new[open an issue] on GibHub.
 
 If you have questions the best way to get in contact is
-https://github.com/hajo70/dessert-core/discussions[Discussions].
+https://github.com/hajo70/dessert-core/discussions[discussions].
 
 If you just want to send (positive) feedback, then send an e-mail to dessert@spricom.de,
 but don't expect to get an answer, because I'm doing all this in my spare time.
