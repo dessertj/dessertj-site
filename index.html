@@ -461,6 +461,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#simulate-refactorings">2.5. Simulate refactorings</a></li>
 <li><a href="#check-your-layers">2.6. Check your layers</a></li>
 <li><a href="#modularize-your-project">2.7. Modularize your project</a></li>
+<li><a href="#define-your-custom-classpath">2.8. Define your custom classpath</a></li>
 </ul>
 </li>
 <li><a href="#user-documentation">3. User Documentation</a>
@@ -474,6 +475,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#assertions">3.7. Assertions</a></li>
 <li><a href="#cycle-detection">3.8. Cycle detection</a></li>
 <li><a href="#architecture-verification">3.9. Architecture verification</a></li>
+<li><a href="#customize-class-resolving">3.10. Customize class resolving</a></li>
 </ul>
 </li>
 <li><a href="#plans-for-dessert-core-0-5-x">4. Plans for dessert-core 0.5.x</a></li>
@@ -486,9 +488,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#release-notes">7. Release Notes</a>
 <ul class="sectlevel2">
-<li><a href="#dessert-core-0-4-1">7.1. dessert-core-0.4.1</a></li>
-<li><a href="#dessert-core-0-4-0">7.2. dessert-core-0.4.0</a></li>
-<li><a href="#older-releases">7.3. Older Releases</a></li>
+<li><a href="#dessert-core-0-4-2">7.1. dessert-core-0.4.2</a></li>
+<li><a href="#dessert-core-0-4-1">7.2. dessert-core-0.4.1</a></li>
+<li><a href="#dessert-core-0-4-0">7.3. dessert-core-0.4.0</a></li>
+<li><a href="#older-releases">7.4. Older Releases</a></li>
 </ul>
 </li>
 <li><a href="#copyright-and-license">8. Copyright and License</a></li>
@@ -675,20 +678,25 @@ union of all the slices passed.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This tutorial not only guides you step by step to the <em>dessert</em> features
-but also it&#8217;s a guideline for applying <em>dessert</em>.
-Following these steps any you&#8217;ll get the most benefit for your project.
-To perform this tutorial, you need any Java project (any other JVM language,
+but it also is a guideline for applying <em>dessert</em>.
+Follow these steps, and you&#8217;ll get the most benefit for your project.
+To get the most out of this tutorial, you should apply it to some Java project
+you are currently working on (any other JVM language,
 like Kotlin, Scala, Groovy, etc. will do, too).
 Before you start the tutorial make sure the <em>dessert-core</em> dependency has
 been added to your project, and you are able to run dessert tests as described
 in the <a href="#getting_started">Getting Started</a> started section.</p>
 </div>
 <div class="paragraph">
-<p>For the solutions to this tutorial see
-<a href="https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java">DessertTutorialTest.java</a>.
-Some more advanced examples can be found in the
-<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/test/java/de/spricom/dessert/tutorial">tutorial</a> package of the
-<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps">dessert-tests-jdeps</a> project.</p>
+<p><a href="https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java">DessertTutorialTest.java</a>
+provides some simple solutions for this tutorial. If the solutions are not applicable for your particular problem,
+then have a look at the
+<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/test/java/de/spricom/dessert/tutorial">tutorial</a>
+package of the
+<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps">dessert-tests-jdeps</a> project.
+You can find there some more advanced examples and solutions for typical problems.
+If you still have problems, then post your question on
+<a href="https://github.com/hajo70/dessert-core/discussions">discussions</a>.</p>
 </div>
 <div class="sect2">
 <h3 id="detect-usage-of-internal-apis"><a class="anchor" href="#detect-usage-of-internal-apis"></a>2.1. Detect usage of internal APIs</h3>
@@ -728,7 +736,7 @@ this class when checking for duplicates.
 </table>
 </div>
 <div class="paragraph">
-<p>Often you cannot prevent all duplicates, but at least you should have test that informs
+<p>Often you cannot prevent all duplicates, but at least you should have a test that informs
 you if there are additional duplicates.</p>
 </div>
 </div>
@@ -755,7 +763,7 @@ your IDE are not sufficient. The <code>slice</code> method in combination with <
 filter your classes by almost any condition.</p>
 </div>
 <div class="paragraph">
-<p>If you have a package cycle, write some code that tells you exactly which classes with two
+<p>If you have a package cycle, write some code that tells you exactly which classes from two
 packages involved in the cycle cause that cycle. Alternatively find out, which classes
 of your project use <em>java.io</em>.</p>
 </div>
@@ -764,15 +772,15 @@ of your project use <em>java.io</em>.</p>
 <h3 id="simulate-refactorings"><a class="anchor" href="#simulate-refactorings"></a>2.5. Simulate refactorings</h3>
 <div class="paragraph">
 <p>Often a package cycle can simply be resolved by moving a class from on package to another,
-but actually move a class may require many changes and introduce new cycles. Thus, it would
+but actually moving a class may require many changes and introduce new cycles. Thus, it would
 be very useful if one could find out the effects of moving a classes without actually
 doing it. With <em>dessert</em> you can use the <code>Slice</code> methods <code>minus</code> and <code>plus</code> to simulate
 the removal of a <code>Clazz</code> from one slice and the addition to another.</p>
 </div>
 <div class="paragraph">
-<p>Simulate the introduction of a new cycle by creating new slices from existing package slices.
-You need at least one class cycle to do this. After you have created your simulated cycle,
-make sure <em>dessert</em> detects it.</p>
+<p>Simulate the introduction of a new package-cycle by creating new slices from existing package
+slices with one or more classes moved from one package to another.
+After you have created your simulated cycle, make sure <em>dessert</em> detects it.</p>
 </div>
 </div>
 <div class="sect2">
@@ -792,7 +800,7 @@ is relaxed, hence one layer can access all layers below.</p>
 </div>
 <div class="paragraph">
 <p>A common property of the classes within one layer are there external dependencies. Thus, classes
-in the presentation layer should not have dependencies persistence libraries like hibernate
+in the presentation layer should not have dependencies to persistence libraries like hibernate
 and classes in the presistence layer should not have dependencies to presentation libraries like
 JavaFX or Vaadin.</p>
 </div>
@@ -806,17 +814,34 @@ has any external dependencies it should not.</p>
 <div class="sect2">
 <h3 id="modularize-your-project"><a class="anchor" href="#modularize-your-project"></a>2.7. Modularize your project</h3>
 <div class="paragraph">
-<p>Layers are the first course subdivision of your project. Typically, your software is made up
+<p>Layers are the first coarse subdivision of your project. Typically, your software is made up
 form smaller parts by cutting down the layers to vertical slices. Each vertical slice
-is tied to one domain and has certain dependencies to other parts of the of software or
+is tied to one domain and has certain dependencies to other parts of the software or
 to external libraries. It&#8217;s good practice to explicitly name the dependencies of each
 such part.</p>
 </div>
 <div class="paragraph">
 <p>Start from the layers defined in the previous exercise and use the <code>slice</code> method to
-cut them down into vertical slices. The make sure each such slice uses only the dependencies
+cut them down into vertical slices. Then make sure, each such slice uses only the dependencies
 it is allowed to, by using the <code>usesOnly</code> assertion. You might want to group your
 external dependencies into corresponding slices, to do this.</p>
+</div>
+<div class="paragraph">
+<p>The slices defined in this step are the building blocks of your project. We might call some
+modules, but that term is already occupied in the java world, thus I&#8217;ll stay with building
+block. Often you don&#8217;t want to expose anything from one building block to others. You can
+accomplish this by defining one or more interface slices for each build block and make sure
+the depending building blocks only use the corresponding interface slice.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="define-your-custom-classpath"><a class="anchor" href="#define-your-custom-classpath"></a>2.8. Define your custom classpath</h3>
+<div class="paragraph">
+<p>By default, the <code>Classpath</code> is based on the path defined by the <em>java.class.path</em> system property.
+This fits most cases, but there might be circumstances where this is not suitable.
+See <a href="#customize-class-resolving">Customize class resolving</a> on how you can define your own custom classpath.
+Then define a custom Classpath that contains all elements of the <em>java.class.path</em> system property
+in reverse order. Check if your tests produce the same results.</p>
 </div>
 </div>
 </div>
@@ -1209,10 +1234,10 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle:
-slice partition de.spricom.dessert.cycle.bar,
 slice partition de.spricom.dessert.cycle,
 slice partition de.spricom.dessert.cycle.foo,
-slice partition de.spricom.dessert.cycle.bar</pre>
+slice partition de.spricom.dessert.cycle.bar,
+slice partition de.spricom.dessert.cycle</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1256,6 +1281,18 @@ dessert(layers).isLayeredRelaxed();</code></pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="customize-class-resolving"><a class="anchor" href="#customize-class-resolving"></a>3.10. Customize class resolving</h3>
+<div class="paragraph">
+<p>The <code>Classpath</code> needs a <code>ClassResolver</code> to find the classes it operates on. By default, the
+Classpath uses a resolver that operates on the path defined by the <em>java.class.path</em>
+system property. You can define your own ClassResolver and add the classes directories and
+jar files you want. You can even define your own <code>ClassRoot</code> with some custom strategy to
+find classes. Then pass that ClassResolver to the Classpath constructor. This will <em>freeze</em>
+the ClassResolver. Thus, after a ClassResolver is used by a Classpath it, it must not
+be changed.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1295,7 +1332,7 @@ usable for older java versions</p>
 </div>
 <div class="paragraph">
 <p>If you have questions the best way to get in contact is
-<a href="https://github.com/hajo70/dessert-core/discussions">Discussions</a>.</p>
+<a href="https://github.com/hajo70/dessert-core/discussions">discussions</a>.</p>
 </div>
 <div class="paragraph">
 <p>If you just want to send (positive) feedback, then send an e-mail to <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>,
@@ -1348,7 +1385,20 @@ cannot be detected in the .class file anymore.
 <h2 id="release-notes"><a class="anchor" href="#release-notes"></a>7. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>7.1. dessert-core-0.4.1</h3>
+<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>7.1. dessert-core-0.4.2</h3>
+<div class="paragraph">
+<p>Bugfix-release:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The cycle detection algorithm ignores dependencies within the same slice, now.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>7.2. dessert-core-0.4.1</h3>
 <div class="paragraph">
 <p>Some minor changes:</p>
 </div>
@@ -1372,7 +1422,7 @@ improves the performance if a package has many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>7.2. dessert-core-0.4.0</h3>
+<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>7.3. dessert-core-0.4.0</h3>
 <div class="paragraph">
 <p>Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
 have been changed. The project has been renamed to dessert-core and everything that does not belong
@@ -1412,7 +1462,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>7.3. Older Releases</h3>
+<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>7.4. Older Releases</h3>
 <div class="paragraph">
 <p>See <a href="https://github.com/hajo70/dessert-core/releases">GitHub releases</a>.</p>
 </div>
@@ -1440,7 +1490,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-21 09:45:30 UTC
+Last updated 2021-04-04 21:20:06 UTC
 </div>
 </div>
 </body>
