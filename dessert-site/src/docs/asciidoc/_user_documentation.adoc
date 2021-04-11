@@ -31,9 +31,9 @@ that might cause you a headache.
 * No other dependencies but pure java
 * Support a wide range of java versions an execution environments
 * Easy and seamless integration with other testing or assertion frameworks
-* Simple and intuitive API (motivated by [AssertJ](https://joel-costigliola.github.io/assertj/))
+* Simple and intuitive API (motivated by https://joel-costigliola.github.io/assertj/[AssertJ])
 * Assertions should be robust against refactorings (no strings for class- or package names required)
-* Compatibility to the https://docs.oracle.com/en/java/javase/15/docs/specs/man/jdeps.html[_jdeps_] utility.
+* Compatibility to the https://docs.oracle.com/en/java/javase/15/docs/specs/man/jdeps.html[jdeps] utility.
 * Focus on dependency assertions and nothing else
 * Support for projects of any scale
 * Speed
