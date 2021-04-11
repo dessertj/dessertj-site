@@ -3,6 +3,7 @@ package de.spricom.dessert.tutorial;
 import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.Clazz;
 import de.spricom.dessert.slicing.Slice;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -55,5 +56,36 @@ public class DessertTutorialTest {
         }
 
         assertThat(duplicates.getClazzes().size()).as(sw.toString()).isEqualTo(0);
+    }
+
+    @Disabled("This test will fail, because there are cycles")
+    @Test
+    @DisplayName("Detect cycles")
+    void detectCycles() {
+        Slice junit = cp.slice("org.junit..*");
+        dessert(junit.partitionByPackage()).isCycleFree();
+    }
+
+    @Test
+    @DisplayName("Investigate your project")
+    void showUsageOfReflection() {
+        Slice commons = cp.slice("org.junit.platform.commons.*")
+                .named("org.junit.platform.commons");
+        Slice commonsUtil = cp.slice("org.junit.platform.commons.util.*")
+                .named("org.junit.platform.commons.util");
+
+        System.out.printf("%nDependencies from %s to %s:%n", commons, commonsUtil);
+        showDependencyDetails(commons, commonsUtil);
+
+        System.out.printf("%nDependencies from %s to %s:%n", commonsUtil, commons);
+        showDependencyDetails(commonsUtil, commons);
+    }
+
+    private void showDependencyDetails(Slice from, Slice to) {
+        from.slice(c -> c.uses(to)).getClazzes().stream().sorted().forEach(c ->
+                System.out.printf("  %s uses %s%n", c.getSimpleName(),
+                        c.getDependencies().slice(to).getClazzes().stream()
+                                .map(Clazz::getSimpleName)
+                                .collect(Collectors.joining(", "))));
     }
 }
