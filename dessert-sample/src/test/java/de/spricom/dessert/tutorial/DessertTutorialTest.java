@@ -1,11 +1,11 @@
 package de.spricom.dessert.tutorial;
 
-import de.spricom.dessert.slicing.Classpath;
-import de.spricom.dessert.slicing.Clazz;
-import de.spricom.dessert.slicing.Slice;
+import de.spricom.dessert.slicing.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.annotation.Testable;
+import org.junit.platform.commons.util.PreconditionViolationException;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -62,8 +62,8 @@ public class DessertTutorialTest {
     @Test
     @DisplayName("Detect cycles")
     void detectCycles() {
-        Slice junit = cp.slice("org.junit..*");
-        dessert(junit.partitionByPackage()).isCycleFree();
+        Root junitPlatformCommons = cp.rootOf(Testable.class);
+        dessert(junitPlatformCommons.partitionByPackage()).isCycleFree();
     }
 
     @Test
@@ -87,5 +87,25 @@ public class DessertTutorialTest {
                         c.getDependencies().slice(to).getClazzes().stream()
                                 .map(Clazz::getSimpleName)
                                 .collect(Collectors.joining(", "))));
+    }
+
+    @Test
+    @DisplayName("Simulate refactorings")
+    void simulateRefactoring() {
+        Root junitPlatformCommons = cp.rootOf(Testable.class);
+        SortedMap<String, PackageSlice> originalPackages = junitPlatformCommons.partitionByPackage();
+        Map<String, Slice> refactoredPackages = new HashMap<>(originalPackages);
+
+        // Resolve package-cycle by moving one class from one package to another.
+        // (In fact that refactoring has already been done. That deprecated exception,
+        // remains there only for compatibility reasons.)
+        Clazz violatingClazz = cp.asClazz(PreconditionViolationException.class);
+        String basePackage = "org.junit.platform.commons";
+        String utilPackage = basePackage + ".util";
+        refactoredPackages.put(utilPackage, refactoredPackages.get(utilPackage).minus(violatingClazz));
+        // The addition below doesn't have much effect. Deleting the deprecated class is sufficient in this case.
+        refactoredPackages.put(basePackage, refactoredPackages.get(basePackage).plus(violatingClazz));
+
+        dessert(refactoredPackages).isCycleFree();
     }
 }
