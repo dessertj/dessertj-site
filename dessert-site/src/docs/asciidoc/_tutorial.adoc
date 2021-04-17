@@ -83,20 +83,20 @@ After you have created your simulated cycle, make sure _dessert_ detects it.
 
 === Check your layers
 
-Each nontrivial software product is built a from layers. In a classical software product you have
+Each nontrivial software product is composed of layers. In a classical software product you have
 persistence, business logic a presentation layers. Modern designs are base on the
 https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)[hexagonal architecture], also
 called _ports and adapters architecture_. But these are still layered architectures with the
 business logic at the bottom, now.
 
 The architecture may be strict where one layer can only access the layer below. This is typically
-the case in network protokoll implementations similar to the
+the case in network protocol implementations similar to the
 https://en.wikipedia.org/wiki/OSI_model[OSI model]. In most applications the architecture
 is relaxed, hence one layer can access all layers below.
 
 A common property of the classes within one layer are there external dependencies. Thus, classes
 in the presentation layer should not have dependencies to persistence libraries like hibernate
-and classes in the presistence layer should not have dependencies to presentation libraries like
+and classes in the persistence layer should not have dependencies to presentation libraries like
 JavaFX or Vaadin.
 
 Now it's time to define the layers of your project. Define a slice for each layer. You may want
