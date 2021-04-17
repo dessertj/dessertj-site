@@ -786,7 +786,7 @@ After you have created your simulated cycle, make sure <em>dessert</em> detects 
 <div class="sect2">
 <h3 id="check-your-layers"><a class="anchor" href="#check-your-layers"></a>2.6. Check your layers</h3>
 <div class="paragraph">
-<p>Each nontrivial software product is built a from layers. In a classical software product you have
+<p>Each nontrivial software product is composed of layers. In a classical software product you have
 persistence, business logic a presentation layers. Modern designs are base on the
 <a href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">hexagonal architecture</a>, also
 called <em>ports and adapters architecture</em>. But these are still layered architectures with the
@@ -794,14 +794,14 @@ business logic at the bottom, now.</p>
 </div>
 <div class="paragraph">
 <p>The architecture may be strict where one layer can only access the layer below. This is typically
-the case in network protokoll implementations similar to the
+the case in network protocol implementations similar to the
 <a href="https://en.wikipedia.org/wiki/OSI_model">OSI model</a>. In most applications the architecture
 is relaxed, hence one layer can access all layers below.</p>
 </div>
 <div class="paragraph">
 <p>A common property of the classes within one layer are there external dependencies. Thus, classes
 in the presentation layer should not have dependencies to persistence libraries like hibernate
-and classes in the presistence layer should not have dependencies to presentation libraries like
+and classes in the persistence layer should not have dependencies to presentation libraries like
 JavaFX or Vaadin.</p>
 </div>
 <div class="paragraph">
@@ -1490,7 +1490,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-04-17 21:26:47 UTC
+Last updated 2021-04-17 21:36:21 UTC
 </div>
 </div>
 </body>
