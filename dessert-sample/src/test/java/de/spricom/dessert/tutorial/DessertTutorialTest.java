@@ -108,4 +108,57 @@ public class DessertTutorialTest {
 
         dessert(refactoredPackages).isCycleFree();
     }
+
+    @Test
+    @DisplayName("Check your layers")
+    void checkDessertLayers() {
+        Root dessert = cp.rootOf(Slice.class);
+
+        // layers
+        Slice utilities = dessert.slice("de.spricom.dessert.util|matching..*");
+        Slice resolving = dessert.slice("de.spricom.dessert.classfile|resolve..*");
+        Slice slicing = dessert.slice("de.spricom.dessert.slicing|partitioning..*");
+        Slice assertions = dessert.slice("de.spricom.dessert.assertions..*");
+
+        dessert(assertions, slicing, resolving, utilities).isLayeredRelaxed();
+
+        // dependencies
+        dessert(assertions, slicing, resolving).usesNot(cp.slice("java.lang.reflect..*"));
+    }
+
+    @Test
+    @DisplayName("Modularize your project")
+    void checkDessertModules() {
+        Root dessert = cp.rootOf(Slice.class);
+
+        // modules
+        Slice utils = dessert.slice("de.spricom.dessert.util..*");
+        Slice matching = dessert.slice("de.spricom.dessert.matching..*");
+        Slice classfile = dessert.slice("de.spricom.dessert.classfile..*");
+        Slice resolving = dessert.slice("de.spricom.dessert.resolve..*");
+        Slice slicing = dessert.slice("de.spricom.dessert.slicing..*");
+        Slice partitioning = dessert.slice("de.spricom.dessert.partitioning..*");
+        Slice assertions = dessert.slice("de.spricom.dessert.assertions..*");
+
+        // interface slices
+        Slice matchingInterface = matching.slice("..NamePattern|ShortNameMatcher");
+        Slice classfileInterface = classfile.slice("..ClassFile");
+
+        // external dependencies
+        Slice base = cp.slice("java.lang|util.*");
+        Slice io = cp.slice("java.io|net.*");
+        Slice reflect = cp.slice("java.lang.reflect.*");
+        Slice regex = cp.slice("java.util.regex.*");
+        Slice logging = cp.slice("java.util.logging.*");
+        Slice zip = cp.slice("java.util.jar|zip.*");
+
+        // module dependencies
+        dessert(utils).usesOnly(base, io, reflect);
+        dessert(matching).usesOnly(base, regex, utils);
+        dessert(classfile).usesOnly(base, io, regex);
+        dessert(resolving).usesOnly(base, io, regex, logging, zip, utils, matchingInterface, classfileInterface);
+        dessert(slicing).usesOnly(base, io, logging, utils, matchingInterface, classfileInterface, resolving);
+        dessert(partitioning).usesOnly(base, io, utils, classfileInterface, slicing);
+        dessert(assertions).usesOnly(base, io, utils, slicing);
+    }
 }
