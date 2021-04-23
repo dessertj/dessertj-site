@@ -1,13 +1,17 @@
 package de.spricom.dessert.tutorial;
 
+import de.spricom.dessert.resolve.ClassResolver;
 import de.spricom.dessert.slicing.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.engine.JupiterTestEngine;
 import org.junit.platform.commons.annotation.Testable;
 import org.junit.platform.commons.util.PreconditionViolationException;
+import org.junit.platform.engine.TestEngine;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
@@ -161,4 +165,23 @@ public class DessertTutorialTest {
         dessert(partitioning).usesOnly(base, io, utils, classfileInterface, slicing);
         dessert(assertions).usesOnly(base, io, utils, slicing);
     }
+
+    @Test
+    @DisplayName("Define your custom classpath")
+    void customClasspath() throws IOException {
+        File jupiterApiJar = cp.asClazz(Test.class).getRootFile();
+        File jupiterEngine = cp.asClazz(JupiterTestEngine.class).getRootFile();
+        File junitPlatformEngine = cp.asClazz(TestEngine.class).getRootFile();
+
+        ClassResolver resolver = new ClassResolver();
+        resolver.add(junitPlatformEngine);
+        resolver.add(jupiterEngine);
+        resolver.add(jupiterApiJar);
+        Classpath customClasspath = new Classpath(resolver);
+
+        Slice jupiter = customClasspath.slice("org.junit.jupiter..*");
+
+        assertThat(jupiter.getClazzes()).hasSameSizeAs(cp.slice("org.junit.jupiter..*").getClazzes());
+    }
+
 }
