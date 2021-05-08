@@ -102,11 +102,6 @@ public class GeneratePlantumlTest {
                 sb.append(" <|.. ");
                 sb.append(clazz.getSimpleName());
                 sb.append("\n");
-            } else {
-                sb.append(ifc.getSimpleName());
-                sb.append(" ()-- ");
-                sb.append(clazz.getSimpleName());
-                sb.append("\n");
             }
         }
     }
