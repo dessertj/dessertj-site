@@ -150,7 +150,7 @@ public class DessertTutorialTest {
 
         // external dependencies
         Slice base = cp.slice("java.lang|util.*");
-        Slice io = cp.slice("java.io|net.*");
+        Slice io = cp.slice("java.io|net.*").plus(cp.slice("java.util.jar.*"));
         Slice reflect = cp.slice("java.lang.reflect.*");
         Slice regex = cp.slice("java.util.regex.*");
         Slice logging = cp.slice("java.util.logging.*");
