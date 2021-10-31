@@ -2,8 +2,8 @@
 
 * Utilize information within module-info classes
 * Support multi-release jars
-* API to define modules for dessert-tests
+* Detect permits of sealed classes as dependencies
 * Ready-to-use module definitions for the JDK that resemble the Java9+ modules,
   usable for older java versions
-* Architecture visualization API
-* Improved support for investigating existing projects
+* Predicates for filtering by Annotations (for retention types class and runtime)
+* Provide more information of a cycle's cause
