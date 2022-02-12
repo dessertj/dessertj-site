@@ -122,12 +122,13 @@ public class DessertTutorialTest {
         Slice utilities = dessert.slice("de.spricom.dessert.util|matching..*");
         Slice resolving = dessert.slice("de.spricom.dessert.classfile|resolve..*");
         Slice slicing = dessert.slice("de.spricom.dessert.slicing|partitioning..*");
+        Slice modules = dessert.slice("de.spricom.dessert.modules..*");
         Slice assertions = dessert.slice("de.spricom.dessert.assertions..*");
 
-        dessert(assertions, slicing, resolving, utilities).isLayeredRelaxed();
+        dessert(assertions, modules, slicing, resolving, utilities).isLayeredRelaxed();
 
         // dependencies
-        dessert(assertions, slicing, resolving).usesNot(cp.slice("java.lang.reflect..*"));
+        dessert(assertions, modules, slicing).usesNot(cp.slice("java.lang.reflect..*"));
     }
 
     @Test
@@ -160,7 +161,7 @@ public class DessertTutorialTest {
         dessert(utils).usesOnly(base, io, reflect);
         dessert(matching).usesOnly(base, regex, utils);
         dessert(classfile).usesOnly(base, io, regex);
-        dessert(resolving).usesOnly(base, io, regex, logging, zip, utils, matchingInterface, classfileInterface);
+        dessert(resolving).usesOnly(base, io, regex, logging, zip, reflect, utils, matchingInterface, classfileInterface);
         dessert(slicing).usesOnly(base, io, logging, utils, matchingInterface, classfileInterface, resolving);
         dessert(partitioning).usesOnly(base, io, utils, classfileInterface, slicing);
         dessert(assertions).usesOnly(base, io, utils, slicing);
