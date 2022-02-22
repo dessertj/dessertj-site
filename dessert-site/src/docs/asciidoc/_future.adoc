@@ -3,7 +3,7 @@
 * Utilize information within module-info classes
 * Support multi-release jars
 * Detect permits of sealed classes as dependencies
-* Ready-to-use module definitions for the JDK that resemble the Java9+ modules,
+* Ready-to-use module definitions for the JDK that resemble the Java17 modules,
   usable for older java versions
 * Predicates for filtering by Annotations (for retention types class and runtime)
-* Provide more information of a cycle's cause
+* More verbose cycle detection error
