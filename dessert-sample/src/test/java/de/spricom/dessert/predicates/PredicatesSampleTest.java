@@ -36,6 +36,10 @@ public class PredicatesSampleTest {
     @Test
     void checkFailure() {
         Assertions.assertThatCode(this::willFail).hasMessage("Illegal Dependencies:\n" +
+                "de.spricom.dessert.assertions.DefaultCycleRenderer\n" +
+                " -> de.spricom.dessert.slicing.Clazz\n" +
+                " -> de.spricom.dessert.slicing.ConcreteSlice\n" +
+                " -> de.spricom.dessert.slicing.PackageSlice\n" +
                 "de.spricom.dessert.assertions.DefaultIllegalDependenciesRenderer\n" +
                 " -> de.spricom.dessert.slicing.Clazz\n" +
                 "de.spricom.dessert.assertions.IllegalDependencies\n" +
