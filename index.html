@@ -1209,11 +1209,10 @@ dessert(cp.packageTreeOf(CycleDump.class).getClazzes()).isCycleFree();</code></p
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>java.lang.AssertionError: Cycle:
-clazz de.spricom.dessert.cycle.foo.Foo,
-clazz de.spricom.dessert.cycle.bar.Bar,
-clazz de.spricom.dessert.cycle.CycleDump,
-clazz de.spricom.dessert.cycle.foo.Foo</pre>
+<pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.cycle.foo.Foo -&gt; de.spricom.dessert.cycle.bar.Bar
+de.spricom.dessert.cycle.bar.Bar -&gt; de.spricom.dessert.cycle.CycleDump
+de.spricom.dessert.cycle.CycleDump -&gt; de.spricom.dessert.cycle.foo.Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1233,11 +1232,13 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>java.lang.AssertionError: Cycle:
-slice partition de.spricom.dessert.cycle.bar,
-slice partition de.spricom.dessert.cycle,
-slice partition de.spricom.dessert.cycle.foo,
-slice partition de.spricom.dessert.cycle.bar</pre>
+<pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.cycle.foo -&gt; de.spricom.dessert.cycle.bar:
+	Foo -&gt; Bar
+de.spricom.dessert.cycle.bar -&gt; de.spricom.dessert.cycle:
+	Bar -&gt; CycleDump
+de.spricom.dessert.cycle -&gt; de.spricom.dessert.cycle.foo:
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1310,14 +1311,14 @@ be changed.</p>
 <p>Detect permits of sealed classes as dependencies</p>
 </li>
 <li>
-<p>Ready-to-use module definitions for the JDK that resemble the Java9+ modules,
+<p>Ready-to-use module definitions for the JDK that resemble the Java17 modules,
 usable for older java versions</p>
 </li>
 <li>
 <p>Predicates for filtering by Annotations (for retention types class and runtime)</p>
 </li>
 <li>
-<p>Provide more information of a cycle&#8217;s cause</p>
+<p>More verbose cycle detection error</p>
 </li>
 </ul>
 </div>
@@ -1490,7 +1491,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-02-12 22:22:52 UTC
+Last updated 2022-02-22 22:20:17 UTC
 </div>
 </div>
 </body>
