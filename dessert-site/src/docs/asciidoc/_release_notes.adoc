@@ -1,5 +1,14 @@
 == Release Notes
 
+=== dessert-core-0.4.3
+
+Preparation for 0.5.0:
+
+- https://github.com/hajo70/dessert-core/issues/4[Issue #4]: Adds entries from Class-Path header of Manifest files
+- Improved `DefaultCycleRenderer` lists classes involved in cycle
+- `SliceAssert` alias method `doesNotUse` for `usesNot` added
+- `Classpath` method `sliceOf(String...)` deprecated (to be removed in 0.5.0)
+
 === dessert-core-0.4.2
 
 Bugfix-release:
