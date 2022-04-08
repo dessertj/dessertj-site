@@ -1234,12 +1234,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.cycle -&gt; de.spricom.dessert.cycle.foo:
+	CycleDump -&gt; Foo
 de.spricom.dessert.cycle.foo -&gt; de.spricom.dessert.cycle.bar:
 	Foo -&gt; Bar
 de.spricom.dessert.cycle.bar -&gt; de.spricom.dessert.cycle:
-	Bar -&gt; CycleDump
-de.spricom.dessert.cycle -&gt; de.spricom.dessert.cycle.foo:
-	CycleDump -&gt; Foo</pre>
+	Bar -&gt; CycleDump</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1514,7 +1514,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-04 06:17:03 UTC
+Last updated 2022-04-08 07:23:29 UTC
 </div>
 </div>
 </body>
