@@ -163,7 +163,7 @@ public class DessertTutorialTest {
         dessert(classfile).usesOnly(base, io, regex);
         dessert(resolving).usesOnly(base, io, regex, logging, zip, reflect, utils, matchingInterface, classfileInterface);
         dessert(slicing).usesOnly(base, io, logging, utils, matchingInterface, classfileInterface, resolving);
-        dessert(partitioning).usesOnly(base, io, utils, classfileInterface, slicing);
+        dessert(partitioning).usesOnly(base, io, utils, classfile, slicing);
         dessert(assertions).usesOnly(base, io, utils, slicing);
     }
 
