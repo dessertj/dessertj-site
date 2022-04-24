@@ -1,9 +1,3 @@
 == Plans for dessert-core 0.5.x
 
-* Utilize information within module-info classes
-* Support multi-release jars
-* Detect permits of sealed classes as dependencies
-* Ready-to-use module definitions for the JDK that resemble the Java17 modules,
-  usable for older java versions
-* Predicates for filtering by Annotations (for retention types class and runtime)
-* More verbose cycle detection error
+* Performance improvements

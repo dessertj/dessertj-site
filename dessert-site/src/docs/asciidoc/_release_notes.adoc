@@ -1,5 +1,19 @@
 == Release Notes
 
+=== dessert-core-0.5.0
+
+This feature release primarily adds support for the JPMS, even for JDK 8 and older:
+
+- Utilize information within module-info classes, to make sure only exported classes are used.
+- Ready-to-use module definitions for the JDK that resemble the Java17 modules,
+  to be used for older java versions
+- Supports .class files up to Java 18 (inkl. sealed classes and records)
+- Support multi-release jars
+- Predicates for filtering by Annotations (for retention types class and runtime)
+- API for nested classes
+- Some utilities for combinations and dependency-closure
+- Deprecated `Classpath` method `sliceOf(String...)` has been removed
+
 === dessert-core-0.4.3
 
 Preparation for 0.5.0:
