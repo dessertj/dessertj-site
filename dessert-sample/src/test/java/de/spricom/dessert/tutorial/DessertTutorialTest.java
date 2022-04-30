@@ -1,5 +1,6 @@
 package de.spricom.dessert.tutorial;
 
+import de.spricom.dessert.partitioning.ClazzPredicates;
 import de.spricom.dessert.resolve.ClassResolver;
 import de.spricom.dessert.slicing.*;
 import org.junit.jupiter.api.Disabled;
@@ -125,6 +126,10 @@ public class DessertTutorialTest {
         Slice modules = dessert.slice("de.spricom.dessert.modules..*");
         Slice assertions = dessert.slice("de.spricom.dessert.assertions..*");
 
+        // simulate refactoring for deprecated class
+        resolving = resolving.plus(slicing.slice(ClazzPredicates.DEPRECATED));
+        slicing = slicing.minus(slicing.slice(ClazzPredicates.DEPRECATED));
+
         dessert(assertions, modules, slicing, resolving, utilities).isLayeredRelaxed();
 
         // dependencies
@@ -148,6 +153,7 @@ public class DessertTutorialTest {
         // interface slices
         Slice matchingInterface = matching.slice("..NamePattern|ShortNameMatcher");
         Slice classfileInterface = classfile.slice("..ClassFile");
+        Slice deprecatedSlicing = dessert.slice("de.spricom.dessert.slicing..*").slice(ClazzPredicates.DEPRECATED);
 
         // external dependencies
         Slice base = cp.slice("java.lang|util.*");
@@ -161,7 +167,8 @@ public class DessertTutorialTest {
         dessert(utils).usesOnly(base, io, reflect);
         dessert(matching).usesOnly(base, regex, utils);
         dessert(classfile).usesOnly(base, io, regex);
-        dessert(resolving).usesOnly(base, io, regex, logging, zip, reflect, utils, matchingInterface, classfileInterface);
+        dessert(resolving).usesOnly(base, io, regex, logging, zip, reflect, utils,
+                matchingInterface, classfileInterface, deprecatedSlicing);
         dessert(slicing).usesOnly(base, io, logging, utils, matchingInterface, classfileInterface, resolving);
         dessert(partitioning).usesOnly(base, io, utils, classfile, slicing);
         dessert(assertions).usesOnly(base, io, utils, slicing);
