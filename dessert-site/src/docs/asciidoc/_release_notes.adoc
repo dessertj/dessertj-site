@@ -1,5 +1,14 @@
 == Release Notes
 
+=== dessert-core-0.5.1
+
+Bugfixes and minor enhancements:
+
+- JPMS detection fixed for Java 8
+- Adds ClazzPredicates.DEPRECATED
+- Static constructor methods os ClassResolver throw ResolveException instead of an IOException
+- Javadocs added and typos fixed
+
 === dessert-core-0.5.0
 
 This feature release primarily adds support for the JPMS, even for JDK 8 and older:

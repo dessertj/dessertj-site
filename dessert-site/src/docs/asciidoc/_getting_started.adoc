@@ -13,7 +13,7 @@ ifeval::[ "{site-version}" == "{snapshot-version}" ]
         <dependency>
             <groupId>de.spricom.dessert</groupId>
             <artifactId>dessert-core</artifactId>
-            <version>0.5.0</version>
+            <version>0.5.1</version>
             <scope>test</scope>
         </dependency>
 ----
@@ -41,7 +41,7 @@ ifeval::[ "{site-version}" != "{snapshot-version}" ]
         <dependency>
             <groupId>de.spricom.dessert</groupId>
             <artifactId>dessert-core</artifactId>
-            <version>0.5.1-SNAPSHOT</version>
+            <version>0.5.2-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 ----

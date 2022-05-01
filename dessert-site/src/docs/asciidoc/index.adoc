@@ -25,11 +25,11 @@ A library for unit-tests to check the dependencies between classes.
 |===
 |Release|Reference Doc.|API Doc.
 
-|https://github.com/hajo70/dessert-core[0.5.1-SNAPSHOT]
+|https://github.com/hajo70/dessert-core[0.5.2-SNAPSHOT]
 |https://hajo70.github.io/dessert-site/index.html[reference]
 |https://hajo70.github.io/dessert-core/index.html[javadoc]
 
-|https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.0[0.5.0]
+|https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.1[0.5.1]
 |https://dessert.spricom.de/index.html[reference]
 |https://dessert.spricom.de/apidocs/index.html[javadoc]
 |===
