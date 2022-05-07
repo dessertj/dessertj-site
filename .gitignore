@@ -14,3 +14,7 @@
 /out/
 /.idea/
 *.iml
+
+# ignore adhoc files
+**/adhoc/
+**/Adhoc*

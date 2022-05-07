@@ -1,61 +1,27 @@
 :sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
 
-== User Documentation
+== Concepts and Terminology
 
-=== Background
+=== Slices
 
-The goal of dependency checking is finding unwanted dependencies.
-Dessert does this be analyzing .class files.
-The java compiler generates a .class file for each
-class, interface, annotation, (anonymous) inner-class or -interface or enum class.
+When using dessert you work most of the time with some `Slice` implementation.
+Mostly this is one of:
 
-NOTE: A java source file can define more than one class.
+Slice::
+Dessert is all about slices. A slice is an arbitrary set of .class files.
+Clazz::
+The `Clazz` is the smallest possible slice. It represents a single .class file.
+Classpath::
+The `Classpath` is the starting point of every _dessert_ test and the biggest
+possible slice.
+*Warning: Never try to combine slices from different Classpath instances!*
+Root::
+A `Root` is a special slice that represents a .jar file or a classes directory.
+ModuleSlice::
+A `ModuleSlice` represents the public interface of a module.
+For a JPMS module these are all unqualified exports.
 
-In _dessert_  a .class file is represented by `Clazz`.
-The `Clazz` is the smallest unit of granularity dessert can work with. The biggest
-unit is the `Classpath`. The `Classpath` contains all classes within your application.
-
-To specify dependency assertions you have to tear the `Classpath` down into smaller pieces.
-Imagine the `Classpath` is a big cake you have to slice down. Thus the most import concept
-of _dessert_ is the `Slice`. The smallest `Slice` is a `Clazz` and the biggest `Slice` is
-the `Classpath`.
-
-The name *dessert* comes from **de**pendency a**ssert**.
-
-=== Design Goals and Features
-
-If you're considering to use _dessert_ you probably have problems with dependencies.
-Hence the most important design goal was to not introduce any additional dependency
-that might cause you a headache.
-
-* No other dependencies but pure java
-* Support a wide range of java versions an execution environments
-* Easy and seamless integration with other testing or assertion frameworks
-* Simple and intuitive API (motivated by https://joel-costigliola.github.io/assertj/[AssertJ])
-* Assertions should be robust against refactorings (no strings for class- or package names required)
-* Compatibility to the https://docs.oracle.com/en/java/javase/17/docs/specs/man/jdeps.html[jdeps] utility.
-* Focus on dependency assertions and nothing else
-* Support for projects of any scale
-* Speed
-
-The design goals lead to these features:
-
-* Supports any JDK from Java 6 to Java 15
-* Has only dependencies to classes within the `java.base` module
-* Annalyzes more than 10000 classes per second on a typical developer machine
-  footnote:[See the https://github.com/hajo70/dessert-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java[dessert-tests] project for a corresponding performanc test.]
-* Detects any dependency _jdeps_ detects.
-  footnote:[This has been verified for more that 40000 classes. See https://github.com/hajo70/dessert-tests[dessert-tests] for details. Please
-  https://github.com/hajo70/dessert-core/issues/new[open an issue]
-  if you encounter any class for which this is not true.] (This is not true the other way round,
-  see the FAQ why this is so.)
-* Performs the dependency analysis as late as possible to prevent any unnecessary analysis.
-  Thus its safe to use on big projects with lots of dependencies.
-
-=== The Slice
-
-When using dessert you work most of the time with some `Slice` implementation. The following diagram
-shows all such implementations provided by dessert:
+The following diagram gives an overview of the implementations provided by dessert:
 
 [plantuml, slice-overview, svg]
 ....
@@ -142,28 +108,6 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/predicates/PredicatesSamp
 `dessert-core` library. The assertion checks that the `assertions` packages uses only these types by asserting
 that it uses nothing from the complement. That check will fail, because `assertions` uses i.e. `Clazz`.
 
-=== Duplicates
-
-The `Classpath` has a method `duplicates` that returns a special `Slice` of all .class files that appear
-at least twice on the `Classpath`. Other as the `ClassLoader` _dessert_ does not stop at the first
-class that matches a certain name. It always considers all matches. Duplicates are a common cause
-of problems, because the implementation is chosen more ore less randomly.
-
-The following code fragment demonstrates this:
-
-[source, java, indent=0]
-----
-include::{sample-dir}/src/test/java/de/spricom/dessert/duplicates/DuplicatesTest.java[tags=duplicates]
-----
-
-The sample uses JUnit 5 which has a _module-info.class_ in each of its jars, thus `duplicates` is
-not empty. The `Classpath` method `asClazz` returns a single `Clazz` object which represents one
-if these module-info classes. A `Clazz` object always represents one single .class file.
-`getAlternatives()` returns all classes with the name on the `Classpath`. After subtracting the
-module-info classes there are no more duplicates left. An alternative way to get a slice of
-all module-info classes is `slice("module-info")` or simple by using the short-cut
-`minus("module-info")`, because it filters by name.
-
 === Assertions
 
 All dessert assertions start with one of the static `SliceAssertions` methods `assertThat`
@@ -241,7 +185,7 @@ The following example shows how to use this:
 include::{sample-dir}/src/test/java/de/spricom/dessert/arch/ArchitectureTest.java[tags=arch]
 ----
 
-=== Customize class resolving
+=== Class resolving
 
 The `Classpath` needs a `ClassResolver` to find the classes it operates on. By default, the
 Classpath uses a resolver that operates on the path defined by the _java.class.path_
@@ -250,3 +194,25 @@ jar files you want. You can even define your own `ClassRoot` with some custom st
 find classes. Then pass that ClassResolver to the Classpath constructor. This will _freeze_
 the ClassResolver. Thus, after a ClassResolver is used by a Classpath it, it must not
 be changed.
+
+=== Duplicates
+
+The `Classpath` has a method `duplicates` that returns a special `Slice` of all .class files that appear
+at least twice on the `Classpath`. Other as the `ClassLoader` _dessert_ does not stop at the first
+class that matches a certain name. It always considers all matches. Duplicates are a common cause
+of problems, because the implementation is chosen more ore less randomly.
+
+The following code fragment demonstrates this:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/duplicates/DuplicatesTest.java[tags=duplicates]
+----
+
+The sample uses JUnit 5 which has a _module-info.class_ in each of its jars, thus `duplicates` is
+not empty. The `Classpath` method `asClazz` returns a single `Clazz` object which represents one
+if these module-info classes. A `Clazz` object always represents one single .class file.
+`getAlternatives()` returns all classes with the name on the `Classpath`. After subtracting the
+module-info classes there are no more duplicates left. An alternative way to get a slice of
+all module-info classes is `slice("module-info")` or simple by using the short-cut
+`minus("module-info")`, because it filters by name.

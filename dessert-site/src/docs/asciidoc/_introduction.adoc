@@ -1,0 +1,44 @@
+:sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
+
+== Introduction
+
+The name *dessert* comes from **de**pendency a**ssert**.
+Hence, *dessert* is library for unit-tests to check the dependencies between classes.
+
+The goal of dependency checking is finding unwanted dependencies.
+Dessert does this be analyzing .class files.
+The java compiler generates a .class file for each
+class, interface, annotation, record or enum and their inner variants.
+
+NOTE: A java source file can define more than one class.
+
+In _dessert_  a .class file is represented by `Clazz`.
+The `Clazz` is the smallest unit of granularity _dessert_ can work with. The biggest
+unit is the `Classpath`. The `Classpath` contains all classes available for an application,
+these are the classes of the application code, all classes of its dependencies and
+all JDK classes.
+
+A _dessert_ based test checks dependency assertions. Each dependency assertion requires
+three parts:
+
+. The application code the assertion is about.
+. The dependencies the assertion is about.
+. The requirement that has to be fulfilled.
+
+Both the application code and the dependencies are a slice of classes taken from the class-path.
+Therefore, the `Classpath` has different methods to get a `Slice` from it.
+Just imagine the `Classpath` to be big cake you have to slice down.
+Thus the most import concept of _dessert_ is the `Slice`.
+
+The requirement is expressed with a fluent API starting with the static
+`SliceAssertions` method `assertThatSlice`. The application code to
+check is the parameter of this method. Then comes the requirement, which
+is one of the methods `doesNotUse` or `usesOnly`. The parameter(s) of
+these methods are the dependencies the assertion is about.
+
+Hence, a complete _dessert_ test looks like this:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/introduction/SlicingSampleTest.java[]
+----

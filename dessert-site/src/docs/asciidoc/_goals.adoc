@@ -1,0 +1,29 @@
+== Design Goals and Features
+
+If you're considering to use _dessert_ you probably have problems with dependencies.
+Hence the most important design goal was to not introduce any additional dependency
+that might cause you a headache.
+
+* No other dependencies but pure java
+* Support a wide range of java versions an execution environments
+* Easy and seamless integration with other testing or assertion frameworks
+* Simple and intuitive API (motivated by https://joel-costigliola.github.io/assertj/[AssertJ])
+* Assertions should be robust against refactorings (no strings for class- or package names required)
+* Compatibility to the https://docs.oracle.com/en/java/javase/17/docs/specs/man/jdeps.html[jdeps] utility.
+* Focus on dependency assertions and nothing else
+* Support for projects of any scale
+* Speed
+
+The design goals lead to these features:
+
+* Supports any JDK from Java 6 to Java 15
+* Has only dependencies to classes within the `java.base` module
+* Annalyzes more than 10000 classes per second on a typical developer machine
+footnote:[See the https://github.com/hajo70/dessert-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java[dessert-tests] project for a corresponding performanc test.]
+* Detects any dependency _jdeps_ detects.
+footnote:[This has been verified for more that 40000 classes. See https://github.com/hajo70/dessert-tests[dessert-tests] for details. Please
+  https://github.com/hajo70/dessert-core/issues/new[open an issue]
+  if you encounter any class for which this is not true.] (This is not true the other way round,
+see the FAQ why this is so.)
+* Performs the dependency analysis as late as possible to prevent any unnecessary analysis.
+Thus its safe to use on big projects with lots of dependencies.

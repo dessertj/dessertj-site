@@ -36,13 +36,19 @@ A library for unit-tests to check the dependencies between classes.
 
 include::_getting_started.adoc[]
 
-include::_user_documentation.adoc[]
+include::_introduction.adoc[]
 
-include::_tutorial.adoc[]
+include::_concepts.adoc[]
+
+include::_guide.adoc[]
+
+include::_goals.adoc[]
 
 include::_getting_involved.adoc[]
 
 include::_faq.adoc[]
+
+include::_future.adoc[]
 
 include::_release_notes.adoc[]
 
