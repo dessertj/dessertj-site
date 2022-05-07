@@ -127,6 +127,6 @@ the depending building blocks only use the corresponding interface slice.
 
 By default, the `Classpath` is based on the path defined by the _java.class.path_ system property.
 This fits most cases, but there might be circumstances where this is not suitable.
-See <<Customize class resolving>> on how you can define your own custom classpath.
+See <<Class resolving>> on how you can define your own custom classpath.
 Then define a custom Classpath that contains all elements of the _java.class.path_ system property
 in reverse order. Check if your tests produce the same results.
