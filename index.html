@@ -585,7 +585,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="snapshot-dependency-optional-alternative"><a class="anchor" href="#snapshot-dependency-optional-alternative"></a>1.2. Snapshot Dependency (optional alternative)</h3>
 <div class="paragraph">
-<p>If you rather want o try out the most current snapshot, then use:</p>
+<p>To try out the most current snapshot use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -598,7 +598,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>You have to specify the repository to use snapshot releases:</p>
+<p>Snapshot releases require the <em>OSSRH Snapshot Repository</em>&gt;:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -626,18 +626,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 void willFail() {
     Classpath cp = new Classpath();
     Clazz me = cp.asClazz(this.getClass());
-    Root root = cp.rootOf(Test.class);
-    SliceAssertions.dessert(me).usesNot(root);
+    Root junit = cp.rootOf(Test.class);
+    SliceAssertions.assertThatSlice(me).doesNotUse(junit);
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Each <em>dessert</em> test starts with the <code>Classpath</code>. Dessert is all about slicing down the <code>Classpath</code>
-and checking the dependencies between the slices. The <code>Classpath</code> is the whole cake. A <code>Clazz</code>
-represents a single .class file, the smalles possible <code>Slice</code>. A <code>Root</code> represents a classes
-directory, a .jar file or a module. All of them are slices, hence they implement the <code>Slice</code>
-interface. <code>SliceAssertion</code> provides a static <code>assertThat</code> method to check for unwanted dependencies
-between slices.</p>
+<p>Each <em>dessert</em> test starts with the <code>Classpath</code>. <code>Classpath</code>, <code>Clazz</code> and <code>Root</code> all implement
+the <code>Slice</code> interface. Imagine the <code>Classpath</code> to be a cake that has to be sliced down to
+suitable pieces. The <code>Clazz</code> is the smallest possible piece, it represents a single .class file.
+A <code>Root</code> is a classes directory, a .jar file or a JDK module. <code>SliceAssertion</code> provides a
+static <code>assertThatSlice</code> method to check for unwanted dependencies between slices.</p>
 </div>
 <div class="paragraph">
 <p>The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus, it
@@ -646,7 +645,7 @@ produces the following output:</p>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Illegal Dependencies:
-de.spricom.dessert.sample.DessertSampleTest
+de.spricom.dessert.start.DessertSampleTest
  -&gt; org.junit.jupiter.api.Test</pre>
 </div>
 </div>
@@ -661,17 +660,15 @@ void willSucceed() {
     Slice myPackage = cp.packageOf(this.getClass());
     Slice java = cp.slice("java..*");
     Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.assertions|slicing.*"));
-    dessert(myPackage).usesOnly(java, libs);
+    assertThatSlice(myPackage).usesOnly(java, libs);
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>The <em>java..*</em> slice represents all classes in the <code>java</code> package or any nested package.
 The methods <code>plus</code> and <code>minus</code> can be used do create new slices from existing slices.
-The <code>dessert</code> method is an alias for <code>assertThat</code> to prevent name collisions with other
-libraries. It stands for <em>dependency assert that</em>. All the assertion methods of
-<code>SliceAssertions</code> accept more than one slice, like <code>usesOnly</code>. They treat the slices as an
-union of all the slices passed.</p>
+The most important methods for slice assertions are <code>doesNotUse</code> and <code>usesOnly</code>.
+Both accept more than one slice.</p>
 </div>
 </div>
 </div>
@@ -681,7 +678,8 @@ union of all the slices passed.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The name <strong>dessert</strong> comes from <strong>de</strong>pendency a<strong>ssert</strong>.
-Hence, <strong>dessert</strong> is library for unit-tests to check the dependencies between classes.</p>
+Hence, <strong>dessert</strong> is library for unit-tests to check the dependencies between classes.
+It can be used to clean up the architecture of a software and to ensure it remains clean.</p>
 </div>
 <div class="paragraph">
 <p>The goal of dependency checking is finding unwanted dependencies.
@@ -743,7 +741,7 @@ these methods are the dependencies the assertion is about.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package de.spricom.dessert.introduction;
+<pre class="highlight"><code class="language-java" data-lang="java">package de.spricom.dessert.intro;
 
 import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.Root;
@@ -982,7 +980,7 @@ can be queued:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
-dessert(cp.asClazz(this.getClass()))
+assertThatSlice(cp.asClazz(this.getClass()))
         .usesNot(cp.slice("java.io|net..*"))
         .usesNot(cp.slice("org.junit.jupiter.api.Assertions"))
         .usesOnly(cp.slice("..junit.jupiter.api.*"),
@@ -1050,12 +1048,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
-de.spricom.dessert.cycle.bar -&gt; de.spricom.dessert.cycle:
-	Bar -&gt; CycleDump
 de.spricom.dessert.cycle -&gt; de.spricom.dessert.cycle.foo:
 	CycleDump -&gt; Foo
 de.spricom.dessert.cycle.foo -&gt; de.spricom.dessert.cycle.bar:
-	Foo -&gt; Bar</pre>
+	Foo -&gt; Bar
+de.spricom.dessert.cycle.bar -&gt; de.spricom.dessert.cycle:
+	Bar -&gt; CycleDump</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1369,7 +1367,7 @@ that might cause you a headache.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Supports any JDK from Java 6 to Java 15</p>
+<p>Supports any JDK from Java 6 to Java 18</p>
 </li>
 <li>
 <p>Has only dependencies to classes within the <code>java.base</code> module</p>
@@ -1674,7 +1672,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-07 07:39:07 UTC
+Last updated 2022-05-08 18:38:34 UTC
 </div>
 </div>
 </body>
