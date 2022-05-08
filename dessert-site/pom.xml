@@ -90,8 +90,9 @@
                                 <sectanchors>true</sectanchors>
                                 <idprefix/>
                                 <idseparator>-</idseparator>
-                                <snapshot-version>${snapshot-version}</snapshot-version>
-                                <site-version>${project.version}</site-version>
+                                <snapshot-version>${project.version}</snapshot-version>
+                                <java-version>${dessert-java.version}</java-version>
+                                <release-version>${dessert-release.version}</release-version>
                             </attributes>
                         </configuration>
                     </execution>

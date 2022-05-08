@@ -117,7 +117,7 @@ can be queued:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.java[tags=queuing]
+include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=queuing]
 ----
 
 When an assertion fails it throws an `AssertionError`. The message shows details about the cause

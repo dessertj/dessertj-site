@@ -1,4 +1,4 @@
-package de.spricom.dessert.sample;
+package de.spricom.dessert.start;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ public class DessertSampleWrapperTest {
             String message = er.toString();
             Files.writeString(Path.of(docgen.getPath(), "willFail.txt"), message);
             Assertions.assertEquals("java.lang.AssertionError: Illegal Dependencies:\n" +
-                    "de.spricom.dessert.sample.DessertSampleTest\n" +
+                    "de.spricom.dessert.start.DessertSampleTest\n" +
                     " -> org.junit.jupiter.api.Test", message.trim());
         }
     }

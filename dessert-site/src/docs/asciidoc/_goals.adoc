@@ -16,7 +16,7 @@ that might cause you a headache.
 
 The design goals lead to these features:
 
-* Supports any JDK from Java 6 to Java 15
+* Supports any JDK from Java 6 to Java {java-version}
 * Has only dependencies to classes within the `java.base` module
 * Annalyzes more than 10000 classes per second on a typical developer machine
 footnote:[See the https://github.com/hajo70/dessert-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java[dessert-tests] project for a corresponding performanc test.]

@@ -7,47 +7,26 @@
 
 Add the _dessert-core_ dependency to your project:
 
-ifeval::[ "{site-version}" == "{snapshot-version}" ]
-[source, xml, indent=0]
+[source, xml, indent=0, subs=attributes+]
 ----
         <dependency>
             <groupId>de.spricom.dessert</groupId>
             <artifactId>dessert-core</artifactId>
-            <version>0.5.1</version>
+            <version>{release-version}</version>
             <scope>test</scope>
         </dependency>
 ----
-endif::[]
-ifeval::[ "{site-version}" != "{snapshot-version}" ]
-[source, xml, indent=0]
-----
-include::{sample-dir}/pom.xml[tags=dep]
-----
-endif::[]
 
 === Snapshot Dependency (optional alternative)
 
-If you rather want o try out the most current snapshot, then use:
+To try out the most current snapshot use:
 
-ifeval::[ "{site-version}" == "{snapshot-version}" ]
 [source, xml, indent=0]
 ----
 include::{sample-dir}/pom.xml[tags=dep]
 ----
-endif::[]
-ifeval::[ "{site-version}" != "{snapshot-version}" ]
-[source, xml, indent=0]
-----
-        <dependency>
-            <groupId>de.spricom.dessert</groupId>
-            <artifactId>dessert-core</artifactId>
-            <version>0.5.2-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-----
-endif::[]
 
-You have to specify the repository to use snapshot releases:
+Snapshot releases require the _OSSRH Snapshot Repository_>:
 
 [source, xml, indent=0]
 ----
@@ -60,15 +39,14 @@ Implement your first dependency test:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.java[tags=fails]
+include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=fails]
 ----
 
-Each _dessert_ test starts with the `Classpath`. Dessert is all about slicing down the `Classpath`
-and checking the dependencies between the slices. The `Classpath` is the whole cake. A `Clazz`
-represents a single .class file, the smalles possible `Slice`. A `Root` represents a classes
-directory, a .jar file or a module. All of them are slices, hence they implement the `Slice`
-interface. `SliceAssertion` provides a static `assertThat` method to check for unwanted dependencies
-between slices.
+Each _dessert_ test starts with the `Classpath`. `Classpath`, `Clazz` and `Root` all implement
+the `Slice` interface. Imagine the `Classpath` to be a cake that has to be sliced down to
+suitable pieces. The `Clazz` is the smallest possible piece, it represents a single .class file.
+A `Root` is a classes directory, a .jar file or a JDK module. `SliceAssertion` provides a
+static `assertThatSlice` method to check for unwanted dependencies between slices.
 
 The test above will fail, because it has a dependency to the junit-jupiter-api.jar. Thus, it
 produces the following output:
@@ -81,12 +59,10 @@ The following test shows some other methods to get slices from the `Classpath`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/sample/DessertSampleTest.java[tags=succeeds]
+include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=succeeds]
 ----
 
 The _java..*_ slice represents all classes in the `java` package or any nested package.
 The methods `plus` and `minus` can be used do create new slices from existing slices.
-The `dessert` method is an alias for `assertThat` to prevent name collisions with other
-libraries. It stands for _dependency assert that_. All the assertion methods of
-`SliceAssertions` accept more than one slice, like `usesOnly`. They treat the slices as an
-union of all the slices passed.
+The most important methods for slice assertions are `doesNotUse` and `usesOnly`.
+Both accept more than one slice.

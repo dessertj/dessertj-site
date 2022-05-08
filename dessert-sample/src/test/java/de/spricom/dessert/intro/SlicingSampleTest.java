@@ -1,4 +1,4 @@
-package de.spricom.dessert.introduction;
+package de.spricom.dessert.intro;
 
 import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.Root;

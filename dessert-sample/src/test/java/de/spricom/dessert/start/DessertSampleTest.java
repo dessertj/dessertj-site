@@ -1,4 +1,4 @@
-package de.spricom.dessert.sample;
+package de.spricom.dessert.start;
 
 import de.spricom.dessert.assertions.SliceAssertions;
 import de.spricom.dessert.slicing.Classpath;
@@ -7,7 +7,7 @@ import de.spricom.dessert.slicing.Root;
 import de.spricom.dessert.slicing.Slice;
 import org.junit.jupiter.api.Test;
 
-import static de.spricom.dessert.assertions.SliceAssertions.dessert;
+import static de.spricom.dessert.assertions.SliceAssertions.assertThatSlice;
 
 public class DessertSampleTest {
 
@@ -17,8 +17,8 @@ public class DessertSampleTest {
     void willFail() {
         Classpath cp = new Classpath();
         Clazz me = cp.asClazz(this.getClass());
-        Root root = cp.rootOf(Test.class);
-        SliceAssertions.dessert(me).usesNot(root);
+        Root junit = cp.rootOf(Test.class);
+        SliceAssertions.assertThatSlice(me).doesNotUse(junit);
     }
     // end::fails[]
 
@@ -29,7 +29,7 @@ public class DessertSampleTest {
         Slice myPackage = cp.packageOf(this.getClass());
         Slice java = cp.slice("java..*");
         Slice libs = cp.packageOf(Test.class).plus(cp.slice("..dessert.assertions|slicing.*"));
-        dessert(myPackage).usesOnly(java, libs);
+        assertThatSlice(myPackage).usesOnly(java, libs);
     }
     // end::succeeds[]
 
@@ -37,7 +37,7 @@ public class DessertSampleTest {
     void queuingAssertions() {
         // tag::queuing[]
         Classpath cp = new Classpath();
-        dessert(cp.asClazz(this.getClass()))
+        assertThatSlice(cp.asClazz(this.getClass()))
                 .usesNot(cp.slice("java.io|net..*"))
                 .usesNot(cp.slice("org.junit.jupiter.api.Assertions"))
                 .usesOnly(cp.slice("..junit.jupiter.api.*"),

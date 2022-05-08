@@ -4,6 +4,7 @@
 
 The name *dessert* comes from **de**pendency a**ssert**.
 Hence, *dessert* is library for unit-tests to check the dependencies between classes.
+It can be used to clean up the architecture of a software and to ensure it remains clean.
 
 The goal of dependency checking is finding unwanted dependencies.
 Dessert does this be analyzing .class files.
@@ -40,5 +41,5 @@ Hence, a complete _dessert_ test looks like this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/introduction/SlicingSampleTest.java[]
+include::{sample-dir}/src/test/java/de/spricom/dessert/intro/SlicingSampleTest.java[]
 ----
