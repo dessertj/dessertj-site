@@ -56,6 +56,34 @@ contains one of these dependencies.
 To add features to existing slices always extend `AbstractDelegateSlice`. The `named` method returns
 one such extension that makes a slices' `toString` method return the name passed.
 
+=== Modules
+
+Dessert's JPMS support can be used through the `ModuleRegistry`.
+It's `getModule` method returns the corresponding module by name.
+`JavaModules` and `JdkModules` provides pre-defined constants
+for the corresponding JDK 17 modules:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/modules/ModulesTest.java[tags=declaration]
+----
+
+The following sample is not very useful, but it shows how to use the module API:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/modules/ModulesTest.java[tags=junit]
+----
+
+A `ModuleSlice` itself contains only the classes exported to anyone.
+The `getImplementation` method of a `ModuleSlice` returns all classes of a module, no matter whether
+they are exported. The `JpmsModule` method `getExportsTo` returns the classes that are exported
+to some certain module.
+
+The module API is fully supported for JDK 8 and earlier. Therefore, dessert comes `FixedModule`
+definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
+provide modules.
+
 === Name-Patterns
 
 Name-patterns are the most important means to define slices. A name-pattern
@@ -101,7 +129,7 @@ The following code fragment demonstrates their usage:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/predicates/PredicatesSampleTest.java[tags=predicates]
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/predicates/PredicatesSampleTest.java[tags=predicates]
 ----
 
 `slicingInterfaces` contains all public interfaces, enums or annotations of the `slicing` package within the
@@ -134,7 +162,7 @@ for a cycle like this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/cycle/CycleTest.java[tags=classCycle]
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/cycle/CycleTest.java[tags=classCycle]
 ----
 
 The sample contains a cycle, hence it produces the following output:
@@ -149,7 +177,7 @@ To detect these you can use:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/cycle/CycleTest.java[tags=packageCycle]
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/cycle/CycleTest.java[tags=packageCycle]
 ----
 
 This produces:
@@ -182,7 +210,7 @@ The following example shows how to use this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/arch/ArchitectureTest.java[tags=arch]
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/arch/ArchitectureTest.java[tags=arch]
 ----
 
 === Class resolving
@@ -206,7 +234,7 @@ The following code fragment demonstrates this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/duplicates/DuplicatesTest.java[tags=duplicates]
+include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/duplicates/DuplicatesTest.java[tags=duplicates]
 ----
 
 The sample uses JUnit 5 which has a _module-info.class_ in each of its jars, thus `duplicates` is

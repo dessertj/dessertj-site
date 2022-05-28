@@ -1,4 +1,4 @@
-package de.spricom.dessert.duplicates;
+package de.spricom.dessert.concepts.duplicates;
 
 import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.ConcreteSlice;

@@ -1,6 +1,6 @@
-package de.spricom.dessert.cycle.bar;
+package de.spricom.dessert.concepts.cycle.bar;
 
-import de.spricom.dessert.cycle.CycleDump;
+import de.spricom.dessert.concepts.cycle.CycleDump;
 
 public class Bar {
 

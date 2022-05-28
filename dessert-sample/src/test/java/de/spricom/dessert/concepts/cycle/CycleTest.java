@@ -1,4 +1,4 @@
-package de.spricom.dessert.cycle;
+package de.spricom.dessert.concepts.cycle;
 
 import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.Slice;

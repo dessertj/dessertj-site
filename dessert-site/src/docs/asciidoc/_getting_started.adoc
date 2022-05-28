@@ -66,3 +66,18 @@ The _java..*_ slice represents all classes in the `java` package or any nested p
 The methods `plus` and `minus` can be used do create new slices from existing slices.
 The most important methods for slice assertions are `doesNotUse` and `usesOnly`.
 Both accept more than one slice.
+
+=== First Modules Test
+
+With dessert projects can profit form the Java Platform Module System (JPMS), even
+if they don't use modules. Therefore, dessert provides an easy and intuitive module API:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/intro/ModulesSampleTest.java[]
+----
+
+Through the `ModuleRegistry` modules can be accessed by name. `JavaModules` provides
+constants for all _java_ modules as of JDK 17. Both are available even for JDK 8 and
+earlier. The `usesOnly` assertion makes sure only exported packages
+are used from the modules listed.

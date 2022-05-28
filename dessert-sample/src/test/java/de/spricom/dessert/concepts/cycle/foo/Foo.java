@@ -1,6 +1,6 @@
-package de.spricom.dessert.cycle.foo;
+package de.spricom.dessert.concepts.cycle.foo;
 
-import de.spricom.dessert.cycle.bar.Bar;
+import de.spricom.dessert.concepts.cycle.bar.Bar;
 
 public class Foo {
 

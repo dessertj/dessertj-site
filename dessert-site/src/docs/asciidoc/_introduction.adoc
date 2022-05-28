@@ -33,7 +33,7 @@ Thus the most import concept of _dessert_ is the `Slice`.
 
 The requirement is expressed with a fluent API starting with the static
 `SliceAssertions` method `assertThatSlice`. The application code to
-check is the parameter of this method. Then comes the requirement, which
+check is the parameter of this method. Next comes the requirement, which
 is one of the methods `doesNotUse` or `usesOnly`. The parameter(s) of
 these methods are the dependencies the assertion is about.
 

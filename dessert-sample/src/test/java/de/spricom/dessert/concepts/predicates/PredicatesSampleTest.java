@@ -1,4 +1,4 @@
-package de.spricom.dessert.predicates;
+package de.spricom.dessert.concepts.predicates;
 
 import de.spricom.dessert.assertions.SliceAssertions;
 import de.spricom.dessert.partitioning.ClazzPredicates;
@@ -35,18 +35,20 @@ public class PredicatesSampleTest {
 
     @Test
     void checkFailure() {
-        Assertions.assertThatCode(this::willFail).hasMessage("Illegal Dependencies:\n" +
-                "de.spricom.dessert.assertions.DefaultCycleRenderer\n" +
-                " -> de.spricom.dessert.slicing.Clazz\n" +
-                " -> de.spricom.dessert.slicing.ConcreteSlice\n" +
-                " -> de.spricom.dessert.slicing.PackageSlice\n" +
-                "de.spricom.dessert.assertions.DefaultIllegalDependenciesRenderer\n" +
-                " -> de.spricom.dessert.slicing.Clazz\n" +
-                "de.spricom.dessert.assertions.IllegalDependencies\n" +
-                " -> de.spricom.dessert.slicing.Clazz\n" +
-                "de.spricom.dessert.assertions.SliceAssert\n" +
-                " -> de.spricom.dessert.slicing.Clazz\n" +
-                " -> de.spricom.dessert.slicing.ConcreteSlice\n" +
-                " -> de.spricom.dessert.slicing.Slices\n");
+        Assertions.assertThatCode(this::willFail).hasMessage("""
+                Illegal Dependencies:
+                de.spricom.dessert.assertions.DefaultCycleRenderer
+                 -> de.spricom.dessert.slicing.Clazz
+                 -> de.spricom.dessert.slicing.ConcreteSlice
+                 -> de.spricom.dessert.slicing.PackageSlice
+                de.spricom.dessert.assertions.DefaultIllegalDependenciesRenderer
+                 -> de.spricom.dessert.slicing.Clazz
+                de.spricom.dessert.assertions.IllegalDependencies
+                 -> de.spricom.dessert.slicing.Clazz
+                de.spricom.dessert.assertions.SliceAssert
+                 -> de.spricom.dessert.slicing.Clazz
+                 -> de.spricom.dessert.slicing.ConcreteSlice
+                 -> de.spricom.dessert.slicing.Slices
+                """);
     }
 }

@@ -1,5 +1,6 @@
 package de.spricom.dessert.docgen;
 
+import de.spricom.dessert.modules.ModuleRegistry;
 import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.Clazz;
 import de.spricom.dessert.slicing.Slice;
@@ -13,7 +14,6 @@ import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GeneratePlantumlTest {
 
@@ -29,19 +29,20 @@ public class GeneratePlantumlTest {
         StringBuilder sb = new StringBuilder();
         sb.append("@startuml\n");
         sb.append("hide empty members\n\n");
-        addSlicePackage(sb);
+        addSlices(sb);
         sb.append("@enduml\n");
         Files.writeString(Path.of(docgen.getPath(), "slice-overview.puml"), sb);
     }
 
-    private void addSlicePackage(StringBuilder sb) {
+    private void addSlices(StringBuilder sb) {
         Classpath cp = new Classpath();
-        Slice slice = cp.packageOf(Slice.class);
+        Slice slice = cp.packageOf(Slice.class)
+                .plus(cp.packageTreeOf(ModuleRegistry.class));
         List<? extends Class<?>> sliceClasses = slice.getClazzes().stream()
                 .filter(this::filter)
                 .map(Clazz::getClassImpl)
                 .sorted(this::compare)
-                .collect(Collectors.toList());
+                .toList();
         sliceClasses.forEach(c -> addClassDefinition(sb, c));
         sb.append("\n");
         sliceClasses.forEach(c -> addClassDependencies(sb, c));
@@ -49,7 +50,7 @@ public class GeneratePlantumlTest {
 
     private boolean filter(Clazz clazz) {
         return clazz.getClassFile().isPublic()
-                && !clazz.getClassFile().getThisClass().contains("$")
+                && !clazz.getClassFile().isInnerClass()
                 && Slice.class.isAssignableFrom(clazz.getClassImpl());
     }
 

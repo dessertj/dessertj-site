@@ -1,4 +1,4 @@
-package de.spricom.dessert.cycle;
+package de.spricom.dessert.concepts.cycle;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CycleWrapperTest {
     private static final File docgen = new File("target/docgen");
 
-    private CycleTest cycleTest = new CycleTest();
+    private final CycleTest cycleTest = new CycleTest();
 
     @BeforeEach
     void init() {
@@ -31,9 +31,9 @@ public class CycleWrapperTest {
             assertThat(message.trim().split("\n"))
                     .hasSize(4)
                     .contains("java.lang.AssertionError: Cycle detected:",
-                            "de.spricom.dessert.cycle.foo.Foo -> de.spricom.dessert.cycle.bar.Bar",
-                            "de.spricom.dessert.cycle.bar.Bar -> de.spricom.dessert.cycle.CycleDump",
-                            "de.spricom.dessert.cycle.CycleDump -> de.spricom.dessert.cycle.foo.Foo");
+                            "de.spricom.dessert.concepts.cycle.foo.Foo -> de.spricom.dessert.concepts.cycle.bar.Bar",
+                            "de.spricom.dessert.concepts.cycle.bar.Bar -> de.spricom.dessert.concepts.cycle.CycleDump",
+                            "de.spricom.dessert.concepts.cycle.CycleDump -> de.spricom.dessert.concepts.cycle.foo.Foo");
         }
     }
 
@@ -48,11 +48,11 @@ public class CycleWrapperTest {
             assertThat(message.trim().split("\n"))
                     .hasSize(7)
                     .contains("java.lang.AssertionError: Cycle detected:",
-                            "de.spricom.dessert.cycle.bar -> de.spricom.dessert.cycle:",
+                            "de.spricom.dessert.concepts.cycle.bar -> de.spricom.dessert.concepts.cycle:",
                             "	Bar -> CycleDump",
-                            "de.spricom.dessert.cycle -> de.spricom.dessert.cycle.foo:",
+                            "de.spricom.dessert.concepts.cycle -> de.spricom.dessert.concepts.cycle.foo:",
                             "	CycleDump -> Foo",
-                            "de.spricom.dessert.cycle.foo -> de.spricom.dessert.cycle.bar:",
+                            "de.spricom.dessert.concepts.cycle.foo -> de.spricom.dessert.concepts.cycle.bar:",
                             "	Foo -> Bar");
         }
     }

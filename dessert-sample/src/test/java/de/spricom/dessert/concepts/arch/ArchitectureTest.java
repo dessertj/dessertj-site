@@ -1,4 +1,4 @@
-package de.spricom.dessert.arch;
+package de.spricom.dessert.concepts.arch;
 
 import de.spricom.dessert.assertions.SliceAssertions;
 import de.spricom.dessert.classfile.ClassFile;
