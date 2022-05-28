@@ -450,19 +450,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#maven-dependency">1.1. Maven Dependency</a></li>
 <li><a href="#snapshot-dependency-optional-alternative">1.2. Snapshot Dependency (optional alternative)</a></li>
 <li><a href="#first-test">1.3. First Test</a></li>
+<li><a href="#first-modules-test">1.4. First Modules Test</a></li>
 </ul>
 </li>
 <li><a href="#introduction">2. Introduction</a></li>
 <li><a href="#concepts-and-terminology">3. Concepts and Terminology</a>
 <ul class="sectlevel2">
 <li><a href="#slices">3.1. Slices</a></li>
-<li><a href="#name-patterns">3.2. Name-Patterns</a></li>
-<li><a href="#predicates">3.3. Predicates</a></li>
-<li><a href="#assertions">3.4. Assertions</a></li>
-<li><a href="#cycle-detection">3.5. Cycle detection</a></li>
-<li><a href="#architecture-verification">3.6. Architecture verification</a></li>
-<li><a href="#class-resolving">3.7. Class resolving</a></li>
-<li><a href="#duplicates">3.8. Duplicates</a></li>
+<li><a href="#modules">3.2. Modules</a></li>
+<li><a href="#name-patterns">3.3. Name-Patterns</a></li>
+<li><a href="#predicates">3.4. Predicates</a></li>
+<li><a href="#assertions">3.5. Assertions</a></li>
+<li><a href="#cycle-detection">3.6. Cycle detection</a></li>
+<li><a href="#architecture-verification">3.7. Architecture verification</a></li>
+<li><a href="#class-resolving">3.8. Class resolving</a></li>
+<li><a href="#duplicates">3.9. Duplicates</a></li>
 </ul>
 </li>
 <li><a href="#tutorial">4. Tutorial</a>
@@ -671,6 +673,54 @@ The most important methods for slice assertions are <code>doesNotUse</code> and 
 Both accept more than one slice.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="first-modules-test"><a class="anchor" href="#first-modules-test"></a>1.4. First Modules Test</h3>
+<div class="paragraph">
+<p>With dessert projects can profit form the Java Platform Module System (JPMS), even
+if they don&#8217;t use modules. Therefore, dessert provides an easy and intuitive module API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package de.spricom.dessert.intro;
+
+import de.spricom.dessert.assertions.SliceAssertions;
+import de.spricom.dessert.modules.ModuleRegistry;
+import de.spricom.dessert.modules.core.ModuleSlice;
+import de.spricom.dessert.modules.fixed.JavaModules;
+import de.spricom.dessert.slicing.Classpath;
+import de.spricom.dessert.slicing.Slice;
+import org.junit.jupiter.api.Test;
+
+import static de.spricom.dessert.assertions.SliceAssertions.assertThatSlice;
+
+class ModulesSampleTest {
+    private final Classpath cp = new Classpath();
+    private final ModuleRegistry mr = new ModuleRegistry(cp);
+    private final JavaModules java = new JavaModules(mr);
+    private final ModuleSlice junit = mr.getModule("org.junit.jupiter.api");
+    private final Slice dessert = cp.rootOf(SliceAssertions.class);
+
+    @Test
+    void testDessertDependencies() {
+        assertThatSlice(dessert)
+                .usesOnly(java.base, java.logging);
+    }
+
+    @Test
+    void testMyDependencies() {
+        assertThatSlice(cp.sliceOf(this.getClass()))
+                .usesOnly(java.base, junit, dessert);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Through the <code>ModuleRegistry</code> modules can be accessed by name. <code>JavaModules</code> provides
+constants for all <em>java</em> modules as of JDK 17. Both are available even for JDK 8 and
+earlier. The <code>usesOnly</code> assertion makes sure only exported packages
+are used from the modules listed.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -732,7 +782,7 @@ Thus the most import concept of <em>dessert</em> is the <code>Slice</code>.</p>
 <div class="paragraph">
 <p>The requirement is expressed with a fluent API starting with the static
 <code>SliceAssertions</code> method <code>assertThatSlice</code>. The application code to
-check is the parameter of this method. Then comes the requirement, which
+check is the parameter of this method. Next comes the requirement, which
 is one of the methods <code>doesNotUse</code> or <code>usesOnly</code>. The parameter(s) of
 these methods are the dependencies the assertion is about.</p>
 </div>
@@ -810,7 +860,7 @@ For a JPMS module these are all unqualified exports.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/slice-overview.svg" alt="slice overview" width="529" height="331">
+<img src="./images/slice-overview.svg" alt="slice overview" width="750" height="331">
 </div>
 </div>
 <div class="paragraph">
@@ -849,7 +899,52 @@ one such extension that makes a slices' <code>toString</code> method return the 
 </div>
 </div>
 <div class="sect2">
-<h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>3.2. Name-Patterns</h3>
+<h3 id="modules"><a class="anchor" href="#modules"></a>3.2. Modules</h3>
+<div class="paragraph">
+<p>Dessert&#8217;s JPMS support can be used through the <code>ModuleRegistry</code>.
+It&#8217;s <code>getModule</code> method returns the corresponding module by name.
+<code>JavaModules</code> and <code>JdkModules</code> provides pre-defined constants
+for the corresponding JDK 17 modules:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private final Classpath cp = new Classpath();
+private final ModuleRegistry mr = new ModuleRegistry(cp);
+private final JavaModules java = new JavaModules(mr);
+private final JdkModules jdk = new JdkModules(mr);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following sample is not very useful, but it shows how to use the module API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">ModuleSlice junit = mr.getModule("org.junit.jupiter.api");
+assertThatSlice(junit.getImplementation()
+        .minus(cp.slice("org.junit.jupiter.api.AssertionsKt*")))
+        .usesOnly(
+                java.base,
+                ((JpmsModule)mr.getModule("org.junit.platform.commons"))
+                        .getExportsTo("org.junit.jupiter.api"),
+                mr.getModule("org.opentest4j"),
+                mr.getModule("org.apiguardian.api")
+        );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A <code>ModuleSlice</code> itself contains only the classes exported to anyone.
+The <code>getImplementation</code> method of a <code>ModuleSlice</code> returns all classes of a module, no matter whether
+they are exported. The <code>JpmsModule</code> method <code>getExportsTo</code> returns the classes that are exported
+to some certain module.</p>
+</div>
+<div class="paragraph">
+<p>The module API is fully supported for JDK 8 and earlier. Therefore, dessert comes <code>FixedModule</code>
+definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
+provide modules.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>3.3. Name-Patterns</h3>
 <div class="paragraph">
 <p>Name-patterns are the most important means to define slices. A name-pattern
 identifies a set of classes by their full qualified classname.</p>
@@ -935,7 +1030,7 @@ Thus, $ is the only inner-type separator supported.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="predicates"><a class="anchor" href="#predicates"></a>3.3. Predicates</h3>
+<h3 id="predicates"><a class="anchor" href="#predicates"></a>3.4. Predicates</h3>
 <div class="paragraph">
 <p>Predicates are another way to define slices. Typically, they are used to selecting classes
 from an existing <code>Slice</code> that meets certain properties. <code>Predicate</code> is a functional interface.
@@ -970,7 +1065,7 @@ that it uses nothing from the complement. That check will fail, because <code>as
 </div>
 </div>
 <div class="sect2">
-<h3 id="assertions"><a class="anchor" href="#assertions"></a>3.4. Assertions</h3>
+<h3 id="assertions"><a class="anchor" href="#assertions"></a>3.5. Assertions</h3>
 <div class="paragraph">
 <p>All dessert assertions start with one of the static <code>SliceAssertions</code> methods <code>assertThat</code>
 or its alias <code>dessert</code>. These methods return a <code>SliceAssert</code> object with its most important
@@ -1007,7 +1102,7 @@ To have any effect <code>renderWith</code> must be invoked before the assertions
 </div>
 </div>
 <div class="sect2">
-<h3 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>3.5. Cycle detection</h3>
+<h3 id="cycle-detection"><a class="anchor" href="#cycle-detection"></a>3.6. Cycle detection</h3>
 <div class="paragraph">
 <p><code>SliceAssert</code> provides the method <code>isCycleFree</code> to check whether a set of slices has any
 cyclic dependencies. Because each <code>Clazz</code> is a <code>Slice</code> one check the classes of slice
@@ -1025,9 +1120,9 @@ dessert(cp.packageTreeOf(CycleDump.class).getClazzes()).isCycleFree();</code></p
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
-de.spricom.dessert.cycle.foo.Foo -&gt; de.spricom.dessert.cycle.bar.Bar
-de.spricom.dessert.cycle.bar.Bar -&gt; de.spricom.dessert.cycle.CycleDump
-de.spricom.dessert.cycle.CycleDump -&gt; de.spricom.dessert.cycle.foo.Foo</pre>
+de.spricom.dessert.concepts.cycle.bar.Bar -&gt; de.spricom.dessert.concepts.cycle.CycleDump
+de.spricom.dessert.concepts.cycle.CycleDump -&gt; de.spricom.dessert.concepts.cycle.foo.Foo
+de.spricom.dessert.concepts.cycle.foo.Foo -&gt; de.spricom.dessert.concepts.cycle.bar.Bar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1048,11 +1143,11 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
-de.spricom.dessert.cycle -&gt; de.spricom.dessert.cycle.foo:
+de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
 	CycleDump -&gt; Foo
-de.spricom.dessert.cycle.foo -&gt; de.spricom.dessert.cycle.bar:
+de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
 	Foo -&gt; Bar
-de.spricom.dessert.cycle.bar -&gt; de.spricom.dessert.cycle:
+de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
 	Bar -&gt; CycleDump</pre>
 </div>
 </div>
@@ -1075,7 +1170,7 @@ parameter. This can be used to create specialized <code>PartitionSlice</code> ob
 </div>
 </div>
 <div class="sect2">
-<h3 id="architecture-verification"><a class="anchor" href="#architecture-verification"></a>3.6. Architecture verification</h3>
+<h3 id="architecture-verification"><a class="anchor" href="#architecture-verification"></a>3.7. Architecture verification</h3>
 <div class="paragraph">
 <p><code>SliceAssert</code> has two additional convenience methods to verify a layered architecture. Therefore,
 you have to pass a list of layers to the <code>dessert</code> method. <code>isLayeredStrict</code> check whether each
@@ -1098,7 +1193,7 @@ dessert(layers).isLayeredRelaxed();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="class-resolving"><a class="anchor" href="#class-resolving"></a>3.7. Class resolving</h3>
+<h3 id="class-resolving"><a class="anchor" href="#class-resolving"></a>3.8. Class resolving</h3>
 <div class="paragraph">
 <p>The <code>Classpath</code> needs a <code>ClassResolver</code> to find the classes it operates on. By default, the
 Classpath uses a resolver that operates on the path defined by the <em>java.class.path</em>
@@ -1110,7 +1205,7 @@ be changed.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="duplicates"><a class="anchor" href="#duplicates"></a>3.8. Duplicates</h3>
+<h3 id="duplicates"><a class="anchor" href="#duplicates"></a>3.9. Duplicates</h3>
 <div class="paragraph">
 <p>The <code>Classpath</code> has a method <code>duplicates</code> that returns a special <code>Slice</code> of all .class files that appear
 at least twice on the <code>Classpath</code>. Other as the <code>ClassLoader</code> <em>dessert</em> does not stop at the first
@@ -1672,7 +1767,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-08 18:38:34 UTC
+Last updated 2022-05-28 21:09:18 UTC
 </div>
 </div>
 </body>
