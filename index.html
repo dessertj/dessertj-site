@@ -732,6 +732,21 @@ Hence, <strong>dessert</strong> is library for unit-tests to check the dependenc
 It can be used to clean up the architecture of a software and to ensure it remains clean.</p>
 </div>
 <div class="paragraph">
+<p>When you describe architecture requirements as unit-tests each
+violation will turn on a red traffic-light on your CI-pipeline.
+Thus, they will be fixed immediately, and they will get much more
+attention within your team. Over time this improves the quality of
+your architecture.</p>
+</div>
+<div class="paragraph">
+<p>An architecture describes a complex system by breaking it apart
+into smaller pieces and specifying the relations to or
+interactions with the other pieces of the system.
+In an implementation of the system the relations
+or interactions show up as dependencies. Hence, checking
+architecture requirements can be reduced to dependency checking.</p>
+</div>
+<div class="paragraph">
 <p>The goal of dependency checking is finding unwanted dependencies.
 Dessert does this be analyzing .class files.
 The java compiler generates a .class file for each
@@ -942,6 +957,10 @@ to some certain module.</p>
 definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
 provide modules.</p>
 </div>
+<div class="paragraph">
+<p><em>AssertionsKt</em> has been excluded, because it adds dependencies to the Kotlin runtime system,
+which are not available for Java.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="name-patterns"><a class="anchor" href="#name-patterns"></a>3.3. Name-Patterns</h3>
@@ -1143,12 +1162,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
-de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo
 de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
 	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
-	Bar -&gt; CycleDump</pre>
+	Bar -&gt; CycleDump
+de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1767,7 +1786,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-28 21:09:18 UTC
+Last updated 2022-06-01 20:25:11 UTC
 </div>
 </div>
 </body>
