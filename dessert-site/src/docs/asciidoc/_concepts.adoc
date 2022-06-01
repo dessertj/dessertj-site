@@ -84,6 +84,9 @@ The module API is fully supported for JDK 8 and earlier. Therefore, dessert come
 definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
 provide modules.
 
+_AssertionsKt_ has been excluded, because it adds dependencies to the Kotlin runtime system,
+which are not available for Java.
+
 === Name-Patterns
 
 Name-patterns are the most important means to define slices. A name-pattern
