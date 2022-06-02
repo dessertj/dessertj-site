@@ -467,9 +467,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#duplicates">3.9. Duplicates</a></li>
 </ul>
 </li>
-<li><a href="#tutorial">4. Tutorial</a>
+<li><a href="#practical-guide">4. Practical Guide</a>
 <ul class="sectlevel2">
-<li><a href="#detect-usage-of-internal-apis">4.1. Detect usage of internal APIs</a></li>
+<li><a href="#detecting-unwanted-dependencies">4.1. Detecting unwanted dependencies</a></li>
 <li><a href="#detect-duplicates">4.2. Detect duplicates</a></li>
 <li><a href="#detect-cycles">4.3. Detect cycles</a></li>
 <li><a href="#investigate-your-project">4.4. Investigate your project</a></li>
@@ -1162,12 +1162,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
-de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
 	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo</pre>
+	CycleDump -&gt; Foo
+de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
+	Foo -&gt; Bar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1264,40 +1264,109 @@ all module-info classes is <code>slice("module-info")</code> or simple by using 
 </div>
 </div>
 <div class="sect1">
-<h2 id="tutorial"><a class="anchor" href="#tutorial"></a>4. Tutorial</h2>
+<h2 id="practical-guide"><a class="anchor" href="#practical-guide"></a>4. Practical Guide</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>This tutorial not only guides you step by step to the <em>dessert</em> features
-but it also is a guideline for applying <em>dessert</em>.
-Follow these steps, and you&#8217;ll get the most benefit for your project.
-The best is to apply it to some Java project
-you are currently working on (any other JVM language,
-like Kotlin, Scala, Groovy, etc. will do, too).
-Before you start the tutorial make sure the <em>dessert-core</em> dependency has
-been added to your project, and you are able to run dessert tests as described
-in the <a href="#getting_started">Getting Started</a> started section.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/hajo70/dessert-site/blob/main/dessert-sample/src/test/java/de/spricom/dessert/tutorial/DessertTutorialTest.java">DessertTutorialTest.java</a>
-provides some simple solutions for this tutorial. If the solutions are not applicable for your particular problem,
-then have a look at the
-<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps/src/test/java/de/spricom/dessert/tutorial">tutorial</a>
-package of the
-<a href="https://github.com/hajo70/dessert-tests/tree/master/dessert-tests-jdeps">dessert-tests-jdeps</a> project.
-You can find there some more advanced examples and solutions for typical problems.
-If you still have problems, then post your question on
-<a href="https://github.com/hajo70/dessert-core/discussions">discussions</a>.</p>
-</div>
 <div class="sect2">
-<h3 id="detect-usage-of-internal-apis"><a class="anchor" href="#detect-usage-of-internal-apis"></a>4.1. Detect usage of internal APIs</h3>
+<h3 id="detecting-unwanted-dependencies"><a class="anchor" href="#detecting-unwanted-dependencies"></a>4.1. Detecting unwanted dependencies</h3>
 <div class="paragraph">
+<p>Developers tend to use everything, simply because it&#8217;s there, and it looks it might be useful to accomplish
+some task. Thus, anything which happens to be available on the class-path can be used for any purpose
+in any place. If the software is working and the customers are happy, so what is the problem?
+Well, some reasons for more restrictions might be:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
 <p>Internal APIs are subject to change without notice. Using internal APIs
-may cause trouble when you update a dependency. The signature of the internal
-API may have changed, it may have disappeared entirely, or it may behave
-differently in some corner cases. Thus, your code should not rely on any
-internal API. To ensure this, write a test that detects the usage of
-JDK&#8217;s internal API (packages <code>com.sun..<strong></code> or <code>sun..</strong></code>) or any other internal
-API from some external library (any <code>..internal..*</code> package).</p>
+may cause trouble when a dependency is updated.</p>
+</li>
+<li>
+<p>If you know that some library or API will be replaced by something else, or you
+want to get rid of some dependency then you surely don&#8217;t want that new code
+uses that library.</p>
+</li>
+<li>
+<p>If you have a big monolith and want to break it down into smaller modules,
+then you must reduce the dependencies that hinder you and prevent developers
+to introduce additional obstacles.</p>
+</li>
+<li>
+<p>You might want to enforce a clean architecture where certain packages or
+classes following some naming convention have certain responsibilities.
+For example your JPA persistence layer should not use JDBC directly
+or your DTOs should not access the file system.</p>
+</li>
+<li>
+<p>You want to make sure, some critical code does not use anything that
+may cause security vulnerabilities.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Detecting unwanted dependencies using <em>dessert</em> is as simple as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">assertThatSlice(something).doesNotUse(unwanted1, unwanted2);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Every developer should be able to read and understand this.
+Because it&#8217;s within a unit-test it is checked during each CI build,
+and it can&#8217;t be ignored.</p>
+</div>
+<div class="paragraph">
+<p>The <em>something</em> and the <em>unwanted</em> each are a <code>Slice</code>. In <em>dessert</em> almost
+everything is a <code>Slice</code> and you have many ways to tell what&#8217;s in a
+certain slice.</p>
+</div>
+<div class="paragraph">
+<p>The starting-point for each <code>Slice</code> is the <code>Classpath</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">private final static Classpath cp = new Classpath();</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>Classpath</code> is a <code>Slice</code>, too.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <em>something</em> is a part of your handwritten code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">// The .jar file or the classes directory containing ClazzResolver.class
+Root something1 = cp.rootOf(ClazzResolver.class);
+
+// A single class
+Clazz something2 = cp.asClazz(ClazzResolver.class);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <em>unwanted</em> might be something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">// All classes withing the package name 'com.sun' or any sub-package
+Slice unwanted1 = cp.slice("com.sun..*");
+
+// An arbitrary list of classes
+Slice unwanted2 = cp.sliceOf(ClazzResolver.class, ClassFile.class);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <em>something</em> and the <em>unwanted</em> examples all specify a 'Slice'. Each of them
+can be use in the <code>assertThatSlice</code> or in the <code>doesNotUse</code> part of the assertion.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1786,7 +1855,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-01 20:25:11 UTC
+Last updated 2022-06-02 21:57:11 UTC
 </div>
 </div>
 </body>
