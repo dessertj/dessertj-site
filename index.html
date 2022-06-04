@@ -470,36 +470,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#practical-guide">4. Practical Guide</a>
 <ul class="sectlevel2">
 <li><a href="#detecting-unwanted-dependencies">4.1. Detecting unwanted dependencies</a></li>
-<li><a href="#detect-duplicates">4.2. Detect duplicates</a></li>
-<li><a href="#detect-cycles">4.3. Detect cycles</a></li>
-<li><a href="#investigate-your-project">4.4. Investigate your project</a></li>
-<li><a href="#simulate-refactorings">4.5. Simulate refactorings</a></li>
-<li><a href="#check-your-layers">4.6. Check your layers</a></li>
-<li><a href="#modularize-your-project">4.7. Modularize your project</a></li>
-<li><a href="#define-your-custom-classpath">4.8. Define your custom classpath</a></li>
+<li><a href="#enforcing-architecture-requirements">4.2. Enforcing architecture requirements</a></li>
+<li><a href="#utilize-jpms-information">4.3. Utilize JPMS information</a></li>
+<li><a href="#more-details-about-defining-slices">4.4. More details about defining slices</a></li>
+<li><a href="#detecting-cycles">4.5. Detecting cycles</a></li>
+<li><a href="#keeping-vertical-slices-apart">4.6. Keeping vertical slices apart</a></li>
+<li><a href="#checking-a-layered-architecture">4.7. Checking a layered architecture</a></li>
 </ul>
 </li>
-<li><a href="#design-goals-and-features">5. Design Goals and Features</a></li>
-<li><a href="#getting-involved">6. Getting Involved</a></li>
-<li><a href="#frequently-asked-questsions">7. Frequently asked Questsions</a>
+<li><a href="#tutorial">5. Tutorial</a>
 <ul class="sectlevel2">
-<li><a href="#when-will-be-there-a-1-0-version">7.1. When will be there a 1.0 version?</a></li>
-<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">7.2. Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
+<li><a href="#detect-duplicates">5.1. Detect duplicates</a></li>
+<li><a href="#detect-cycles">5.2. Detect cycles</a></li>
+<li><a href="#investigate-your-project">5.3. Investigate your project</a></li>
+<li><a href="#simulate-refactorings">5.4. Simulate refactorings</a></li>
+<li><a href="#check-your-layers">5.5. Check your layers</a></li>
+<li><a href="#modularize-your-project">5.6. Modularize your project</a></li>
+<li><a href="#define-your-custom-classpath">5.7. Define your custom classpath</a></li>
 </ul>
 </li>
-<li><a href="#plans-for-dessert-core-0-6-x">8. Plans for dessert-core 0.6.x</a></li>
-<li><a href="#release-notes">9. Release Notes</a>
+<li><a href="#design-goals-and-features">6. Design Goals and Features</a></li>
+<li><a href="#getting-involved">7. Getting Involved</a></li>
+<li><a href="#frequently-asked-questsions">8. Frequently asked Questsions</a>
 <ul class="sectlevel2">
-<li><a href="#dessert-core-0-5-1">9.1. dessert-core-0.5.1</a></li>
-<li><a href="#dessert-core-0-5-0">9.2. dessert-core-0.5.0</a></li>
-<li><a href="#dessert-core-0-4-3">9.3. dessert-core-0.4.3</a></li>
-<li><a href="#dessert-core-0-4-2">9.4. dessert-core-0.4.2</a></li>
-<li><a href="#dessert-core-0-4-1">9.5. dessert-core-0.4.1</a></li>
-<li><a href="#dessert-core-0-4-0">9.6. dessert-core-0.4.0</a></li>
-<li><a href="#older-releases">9.7. Older Releases</a></li>
+<li><a href="#when-will-be-there-a-1-0-version">8.1. When will be there a 1.0 version?</a></li>
+<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">8.2. Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
 </ul>
 </li>
-<li><a href="#copyright-and-license">10. Copyright and License</a></li>
+<li><a href="#plans-for-dessert-core-0-6-x">9. Plans for dessert-core 0.6.x</a></li>
+<li><a href="#release-notes">10. Release Notes</a>
+<ul class="sectlevel2">
+<li><a href="#dessert-core-0-5-1">10.1. dessert-core-0.5.1</a></li>
+<li><a href="#dessert-core-0-5-0">10.2. dessert-core-0.5.0</a></li>
+<li><a href="#dessert-core-0-4-3">10.3. dessert-core-0.4.3</a></li>
+<li><a href="#dessert-core-0-4-2">10.4. dessert-core-0.4.2</a></li>
+<li><a href="#dessert-core-0-4-1">10.5. dessert-core-0.4.1</a></li>
+<li><a href="#dessert-core-0-4-0">10.6. dessert-core-0.4.0</a></li>
+<li><a href="#older-releases">10.7. Older Releases</a></li>
+</ul>
+</li>
+<li><a href="#copyright-and-license">11. Copyright and License</a></li>
 </ul>
 </div>
 </div>
@@ -1353,7 +1363,7 @@ certain slice.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">private final static Classpath cp = new Classpath();</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">private static final Classpath cp = new Classpath();</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1428,7 +1438,157 @@ can be use in the <code>assertThatSlice</code> or in the <code>doesNotUse</code>
 </div>
 </div>
 <div class="sect2">
-<h3 id="detect-duplicates"><a class="anchor" href="#detect-duplicates"></a>4.2. Detect duplicates</h3>
+<h3 id="enforcing-architecture-requirements"><a class="anchor" href="#enforcing-architecture-requirements"></a>4.2. Enforcing architecture requirements</h3>
+<div class="paragraph">
+<p>When defining an architecture you don&#8217;t specify which dependencies your building blocks must
+not use, you rather define the dependencies they do have. With <em>dessert</em> you express
+this with the <code>usesOnly</code> assertion:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">assertThatSlice(block).usesOnly(dep1, dep2);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, <code>block</code>, <code>dep1</code> and <code>dep2</code> are slices. Within the <code>usesOnly</code> all dependencies
+that <code>block</code> has, must be listed. Usually there are many common dependencies like Java SE
+classes, logging API&#8217;s or standard libraries used everywhere in your application.
+For this purpose you can define an instances variable that you can use all over your
+architecture test:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">private final Slice common = Slices.of(
+    cp.slice("java.lang|util|io|net..*"), // java packages
+    cp.sliceOf(Logger.class, LogManager.class), // logging
+    cp.rootOf(StringUtils.class) // apache commons-lang
+);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s good practice to have instances variables for all of your main building blocks and
+dependencies. Then you can have a test method for each build block, that lists all the
+dependencies it is allowed to have. Some of these dependencies are other building blocks, of course.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">private static final Classpath cp = new Classpath();
+private static final Root dessert = cp.rootOf(Slice.class);
+private static final Slice classfile = dessert.packageTreeOf(ClassFile.class);
+private static final Slice slicing = dessert.packageTreeOf(Slice.class);
+private static final Slice java = cp.slice("java.lang|util|io|net..*");
+
+@Test
+void testClassfileDependencies() {
+    assertThatSlice(classfile).usesOnly(java);
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Slice</code> instances are immutable.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you have several classes for architecture tests you may want to define your main
+building blocks in a separate class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">public final class BuildingBlocks {
+    public static final Classpath cp = new Classpath();
+    public static final Root dessert = cp.rootOf(Slice.class);
+    public static final Slice classfile = dessert.packageTreeOf(ClassFile.class);
+    public static final Slice slicing = dessert.packageTreeOf(Slice.class);
+    public static final Slice java = cp.slice("java.lang|util|io|net..*");
+
+    private BuildingBlocks() {
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+All slices used for an assertion must stem from the same <code>Classpath</code> instance.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="utilize-jpms-information"><a class="anchor" href="#utilize-jpms-information"></a>4.3. Utilize JPMS information</h3>
+<div class="paragraph">
+<p>Libraries implemented with the Java Platform Module System (JPMS) explicitly list the
+exported packages. These packages form the public API of a library. Every thing else
+is internal and subject to change without notice. Hence, you want to ensure
+your building blocks use only the public API. One way to achieve this is
+using the JPMS for your project. But the JPMS is a bit cumbersome especially when
+it comes to testing. Therefore, it&#8217;s not that wide-spread.</p>
+</div>
+<div class="paragraph">
+<p>With <em>dessert</em> you can profit from the JPMS even if you are not using it for your
+project. You still can make sure that your building blocks use only exported packages.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">private static final Classpath cp = new Classpath();
+private static final ModuleRegistry mr = new ModuleRegistry(cp);
+private static final JavaModules java = new JavaModules(mr);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">assertThatSlice(dessert)
+        .usesOnly(java.base, java.logging);</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">private final ModuleSlice junit = mr.getModule("org.junit.jupiter.api");</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">assertThatSlice(cp.sliceOf(this.getClass()))
+        .doesNotUse(junit.getInternals());</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="more-details-about-defining-slices"><a class="anchor" href="#more-details-about-defining-slices"></a>4.4. More details about defining slices</h3>
+
+</div>
+<div class="sect2">
+<h3 id="detecting-cycles"><a class="anchor" href="#detecting-cycles"></a>4.5. Detecting cycles</h3>
+
+</div>
+<div class="sect2">
+<h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.6. Keeping vertical slices apart</h3>
+
+</div>
+<div class="sect2">
+<h3 id="checking-a-layered-architecture"><a class="anchor" href="#checking-a-layered-architecture"></a>4.7. Checking a layered architecture</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tutorial"><a class="anchor" href="#tutorial"></a>5. Tutorial</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="detect-duplicates"><a class="anchor" href="#detect-duplicates"></a>5.1. Detect duplicates</h3>
 <div class="paragraph">
 <p>Each JAR has its own directory structure, thus a class with the same fully qualified name
 may appear in more than one JAR. The <code>ClassLoader</code> always uses the first matching class
@@ -1458,7 +1618,7 @@ you if there are additional duplicates.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="detect-cycles"><a class="anchor" href="#detect-cycles"></a>4.3. Detect cycles</h3>
+<h3 id="detect-cycles"><a class="anchor" href="#detect-cycles"></a>5.2. Detect cycles</h3>
 <div class="paragraph">
 <p>The problem with a cycle is, it does not have a beginning nor does it have an end. Thus, if you
 pick out any class involved in a dependency cycle you cannot use it without all other classes involved
@@ -1472,7 +1632,7 @@ See the <a href="#cycle-detection">Cycle detection</a> section on how to do this
 </div>
 </div>
 <div class="sect2">
-<h3 id="investigate-your-project"><a class="anchor" href="#investigate-your-project"></a>4.4. Investigate your project</h3>
+<h3 id="investigate-your-project"><a class="anchor" href="#investigate-your-project"></a>5.3. Investigate your project</h3>
 <div class="paragraph">
 <p>If you have any cycles in your software, you might want to find out, which classes cause that
 cycle. Or you may have other questions on your software, for which the search facilities of
@@ -1486,7 +1646,7 @@ of your project use <em>java.io</em>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="simulate-refactorings"><a class="anchor" href="#simulate-refactorings"></a>4.5. Simulate refactorings</h3>
+<h3 id="simulate-refactorings"><a class="anchor" href="#simulate-refactorings"></a>5.4. Simulate refactorings</h3>
 <div class="paragraph">
 <p>Often a package cycle can simply be resolved by moving a class from on package to another,
 but actually moving a class may require many changes and introduce new cycles. Thus, it would
@@ -1501,7 +1661,7 @@ After you have created your simulated cycle, make sure <em>dessert</em> detects 
 </div>
 </div>
 <div class="sect2">
-<h3 id="check-your-layers"><a class="anchor" href="#check-your-layers"></a>4.6. Check your layers</h3>
+<h3 id="check-your-layers"><a class="anchor" href="#check-your-layers"></a>5.5. Check your layers</h3>
 <div class="paragraph">
 <p>Each nontrivial software product is composed of layers. In a classical software product you have
 persistence, business logic a presentation layers. Modern designs are base on the
@@ -1529,7 +1689,7 @@ has any external dependencies it should not.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="modularize-your-project"><a class="anchor" href="#modularize-your-project"></a>4.7. Modularize your project</h3>
+<h3 id="modularize-your-project"><a class="anchor" href="#modularize-your-project"></a>5.6. Modularize your project</h3>
 <div class="paragraph">
 <p>Layers are the first coarse subdivision of your project. Typically, your software is made up
 form smaller parts by cutting down the layers to vertical slices. Each vertical slice
@@ -1552,7 +1712,7 @@ the depending building blocks only use the corresponding interface slice.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="define-your-custom-classpath"><a class="anchor" href="#define-your-custom-classpath"></a>4.8. Define your custom classpath</h3>
+<h3 id="define-your-custom-classpath"><a class="anchor" href="#define-your-custom-classpath"></a>5.7. Define your custom classpath</h3>
 <div class="paragraph">
 <p>By default, the <code>Classpath</code> is based on the path defined by the <em>java.class.path</em> system property.
 This fits most cases, but there might be circumstances where this is not suitable.
@@ -1564,7 +1724,7 @@ in reverse order. Check if your tests produce the same results.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>5. Design Goals and Features</h2>
+<h2 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>6. Design Goals and Features</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re considering to use <em>dessert</em> you probably have problems with dependencies.
@@ -1631,7 +1791,7 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>6. Getting Involved</h2>
+<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>7. Getting Involved</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re missing some feature or find a bug then please
@@ -1648,10 +1808,10 @@ but don&#8217;t expect to get an answer, because I&#8217;m doing all this in my 
 </div>
 </div>
 <div class="sect1">
-<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>7. Frequently asked Questsions</h2>
+<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>8. Frequently asked Questsions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>7.1. When will be there a 1.0 version?</h3>
+<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>8.1. When will be there a 1.0 version?</h3>
 <div class="paragraph">
 <p>As along as I don&#8217;t have any feedback of someone who is using this library, there is no reason to keep the
 API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
@@ -1661,7 +1821,7 @@ from that moment on.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>7.2. Why does dessert find more dependencies than <em>jdeps</em>?</h3>
+<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>8.2. Why does dessert find more dependencies than <em>jdeps</em>?</h3>
 <div class="paragraph">
 <p>Well, <em>jdeps</em> shows all runtime dependencies whereas dessert shows all compile-time
 dependencies. Hence, if you use a class for which a runtime dependency is missing
@@ -1689,7 +1849,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="plans-for-dessert-core-0-6-x"><a class="anchor" href="#plans-for-dessert-core-0-6-x"></a>8. Plans for dessert-core 0.6.x</h2>
+<h2 id="plans-for-dessert-core-0-6-x"><a class="anchor" href="#plans-for-dessert-core-0-6-x"></a>9. Plans for dessert-core 0.6.x</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -1726,10 +1886,10 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="release-notes"><a class="anchor" href="#release-notes"></a>9. Release Notes</h2>
+<h2 id="release-notes"><a class="anchor" href="#release-notes"></a>10. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>9.1. dessert-core-0.5.1</h3>
+<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>10.1. dessert-core-0.5.1</h3>
 <div class="paragraph">
 <p>Bugfixes and minor enhancements:</p>
 </div>
@@ -1751,7 +1911,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>9.2. dessert-core-0.5.0</h3>
+<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>10.2. dessert-core-0.5.0</h3>
 <div class="paragraph">
 <p>This feature release primarily adds support for the JPMS, even for JDK 8 and older:</p>
 </div>
@@ -1786,7 +1946,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>9.3. dessert-core-0.4.3</h3>
+<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>10.3. dessert-core-0.4.3</h3>
 <div class="paragraph">
 <p>Preparation for 0.5.0:</p>
 </div>
@@ -1808,7 +1968,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>9.4. dessert-core-0.4.2</h3>
+<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>10.4. dessert-core-0.4.2</h3>
 <div class="paragraph">
 <p>Bugfix-release:</p>
 </div>
@@ -1821,7 +1981,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>9.5. dessert-core-0.4.1</h3>
+<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>10.5. dessert-core-0.4.1</h3>
 <div class="paragraph">
 <p>Some minor changes:</p>
 </div>
@@ -1845,7 +2005,7 @@ improves the performance if a package has many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>9.6. dessert-core-0.4.0</h3>
+<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>10.6. dessert-core-0.4.0</h3>
 <div class="paragraph">
 <p>Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
 have been changed. The project has been renamed to dessert-core and everything that does not belong
@@ -1885,7 +2045,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>9.7. Older Releases</h3>
+<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>10.7. Older Releases</h3>
 <div class="paragraph">
 <p>See <a href="https://github.com/hajo70/dessert-core/releases">GitHub releases</a>.</p>
 </div>
@@ -1893,7 +2053,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>10. Copyright and License</h2>
+<h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>11. Copyright and License</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Code and documentation copyright 2017–2021 <a href="https://github.com/hajo70">Hans Jörg Heßmann</a>.
@@ -1913,7 +2073,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-04 13:23:40 UTC
+Last updated 2022-06-04 22:03:44 UTC
 </div>
 </div>
 </body>
