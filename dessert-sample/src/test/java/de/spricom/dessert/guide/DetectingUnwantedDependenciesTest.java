@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DetectingUnwantedDependenciesTest {
     // tag::cp[]
-    private final static Classpath cp = new Classpath();
+    private static final Classpath cp = new Classpath();
     // end::cp[]
 
     @Test

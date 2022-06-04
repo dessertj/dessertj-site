@@ -90,6 +90,92 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DetectingUnwantedDe
 The _something_ and the _unwanted_ examples all specify a 'Slice'. Each of them
 can be use in the `assertThatSlice` or in the `doesNotUse` part of the assertion.
 
+=== Enforcing architecture requirements
+
+When defining an architecture you don't specify which dependencies your building blocks must
+not use, you rather define the dependencies they do have. With _dessert_ you express
+this with the `usesOnly` assertion:
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectureTest.java[tags=syntax]
+----
+
+Of course, `block`, `dep1` and `dep2` are slices. Within the `usesOnly` all dependencies
+that `block` has, must be listed. Usually there are many common dependencies like Java SE
+classes, logging API's or standard libraries used everywhere in your application.
+For this purpose you can define an instances variable that you can use all over your
+architecture test:
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectureTest.java[tags=common]
+----
+
+It's good practice to have instances variables for all of your main building blocks and
+dependencies. Then you can have a test method for each build block, that lists all the
+dependencies it is allowed to have. Some of these dependencies are other building blocks, of course.
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectureTest.java[tags=blocks]
+----
+
+NOTE: `Slice` instances are immutable.
+
+If you have several classes for architecture tests you may want to define your main
+building blocks in a separate class:
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/BuildingBlocks.java[tags=code]
+----
+
+IMPORTANT: All slices used for an assertion must stem from the same `Classpath` instance.
+
+=== Utilize JPMS information
+
+Libraries implemented with the Java Platform Module System (JPMS) explicitly list the
+exported packages. These packages form the public API of a library. Every thing else
+is internal and subject to change without notice. Hence, you want to ensure
+your building blocks use only the public API. One way to achieve this is
+using the JPMS for your project. But the JPMS is a bit cumbersome especially when
+it comes to testing. Therefore, it's not that wide-spread.
+
+With _dessert_ you can profit from the JPMS even if you are not using it for your
+project. You still can make sure that your building blocks use only exported packages.
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=jpms]
+----
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=using]
+----
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=module]
+----
+
+[source, xml, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=usesNot]
+----
+
+=== More details about defining slices
+
+=== Detecting cycles
+
+=== Keeping vertical slices apart
+
+=== Checking a layered architecture
+
+
+== Tutorial
+
 === Detect duplicates
 
 Each JAR has its own directory structure, thus a class with the same fully qualified name
