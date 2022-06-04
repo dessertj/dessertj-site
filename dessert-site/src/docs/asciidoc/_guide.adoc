@@ -2,9 +2,34 @@
 
 == Practical Guide
 
+Keeping an architecture clean pays out manifold over time, but it has no immediate business value.
+For developers architecture requirements are an additional burden. If you point out an architecture
+problem, you will get answers like: "I'll do that later, first it must be working to show it
+up to the customer." Actually it's the same with tests, but tests can be written afterwards.
+If you point out the same architecture issue after it's working you get answers like:
+"Well, it's working and the customer tested it. Never change a running system."
+That's why any architecture degrades over time. To get around this, you have to
+establish an architecture awareness across your team.
+
+As I pointed out, communicating architecture requirements won't help. Especially inexperienced
+developers will focus on other things first. Tools like SonarQube won't help much, either.
+Typically, the sonar issues are the last task during a development phase. This is
+adding javadoc comments, making some variables final or something like that.
+But in that phase no developer will dare to resolve a package cycle, because such a
+fundamental change may break the system and needs thorough re-testing.
+
+The _dessert_ library has proved to solve this problem. It's simple and intuitive syntax
+can be read by any developer. Thus, it's an easy way to communicate an architecture
+requirement. Any violation of such a requirement will break the build on your CI system,
+because the corresponding _dessert_ test will fail. Hence, the nose of the
+responsible developer will directly be pointed to the corresponding requirement.
+Now, the only thing you need, is a plausible comment that explains why it is
+important to adhere to that requirement. Over time this will build up
+architecture awareness across your team.
+
 === Detecting unwanted dependencies
 
-Developers tend to use everything, simply because it's there, and it looks it might be useful to accomplish
+Developers tend to use everything, simply because it's there, and it looks promising to accomplish
 some task. Thus, anything which happens to be available on the class-path can be used for any purpose
 in any place. If the software is working and the customers are happy, so what is the problem?
 Well, some reasons for more restrictions might be:
