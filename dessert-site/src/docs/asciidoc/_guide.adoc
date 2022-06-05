@@ -214,6 +214,40 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.
 
 The slice operations don't modify the original slices.
 
+The `slice` and the `minus` methods have variants that accept patterns or predicates:
+
+[source, java, indent=0]
+.Patterns
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=patterns]
+----
+
+NOTE: Patterns are case-sensitive.
+
+[source, java, indent=0]
+.Predicates
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=predicates]
+----
+
+NOTE: Dessert has been optimized for patterns. Evaluation predicates can be slow.
+Thus, predicates should be always the last thing to filter with.
+
+This is the implementation used above to find classes that could not be loaded:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=nodef]
+----
+
+To debug predicates it is very useful to see, what is in a slice. Hence, a method like
+this is very useful:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=dump]
+----
+
 === Detecting cycles
 
 === Keeping vertical slices apart
