@@ -1642,6 +1642,130 @@ An alternative to get the union of slices is the <code>Slices.of</code> method.<
 <div class="paragraph">
 <p>The slice operations don&#8217;t modify the original slices.</p>
 </div>
+<div class="paragraph">
+<p>The <code>slice</code> and the <code>minus</code> methods have variants that accept patterns or predicates:</p>
+</div>
+<div class="listingblock">
+<div class="title">Patterns</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">// All classes within org.springframework
+Slice spring = cp.slice("org.springframework..*");
+
+// All classes with name ending to 'Impl'
+Slice impl = spring.slice("..*Impl");
+
+// All classes that contain 'Service' within their name
+Slice service = spring.slice("..*Service*");
+
+// All classes in any internal package
+Slice internal = spring.slice("..internal..*");
+
+// All classes with the 3rd package named 'core', in this case
+// these are all classes within org.springframework.core
+Slice core = spring.slice("*.*.core..*");
+
+// A sample for a more complex pattern
+Slice complex = cp.slice("..*frame*|hiber*..schema|codec..*Impl");</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Patterns are case-sensitive.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Predicates</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">// All interfaces
+Slice interfaces = spring.slice(ClazzPredicates.INTERFACE);
+
+// All deprecated classes
+Slice deprecated = spring.slice(ClazzPredicates.DEPRECATED);
+
+// All final public classes
+Slice finalpublic = spring.slice(Predicates.and(ClazzPredicates.FINAL, ClazzPredicates.PUBLIC));
+
+// All classes that implement InitializingBean directly
+Slice implementsDirectly = spring.slice(ClazzPredicates.implementsInterface(InitializingBean.class.getName()));
+
+// All classes that implement Slice or another interface that extends Slice
+// or that extend such a super-class
+Slice implementsRecursive = dessert.slice(ClazzPredicates.matches(Slice.class::isAssignableFrom));
+
+// All classes that's simple name matches a regex-pattern
+Slice regex = spring.slice(ClazzPredicates.matchesSimpleName(".*[Ss]ervice.*"));
+
+// All classes located in a META-INF/versions/9 directory
+Slice version = cp.slice(clazz -&gt; Integer.valueOf(9).equals(clazz.getVersion()));
+
+// All classes throwing a NoClassDefFoundError when trying to load
+Slice nodef = spring.slice(this::causesNoClassDefFoundError);
+
+// All classes that have a SourceFileAttribute
+Predicate&lt;ClassFile&gt; hasSourceFile = cf -&gt;
+        !Attributes.filter(cf.getAttributes(), SourceFileAttribute.class).isEmpty();
+Slice source = spring.slice(ClazzPredicates.matchesClassFile(hasSourceFile));
+
+// Some complex predicate using Predicates' combinator logic
+Predicate&lt;Clazz&gt; complexPredicate = Predicates.or(
+        Predicates.and(ClazzPredicates.ABSTRACT, Predicates.not(ClazzPredicates.INNER_TYPE)),
+        ClazzPredicates.ENUM
+);
+Slice complex = spring.slice(complexPredicate);</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Dessert has been optimized for patterns. Evaluation predicates can be slow.
+Thus, predicates should be always the last thing to filter with.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This is the implementation used above to find classes that could not be loaded:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private boolean causesNoClassDefFoundError(Clazz clazz) {
+    try {
+        clazz.getClassImpl();
+        return false;
+    } catch (NoClassDefFoundError er) {
+        return true;
+    } catch (Throwable th) {
+        log.info("{} caused: {}", clazz.getName(), th);
+        return false;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To debug predicates it is very useful to see, what is in a slice. Hence, a method like
+this is very useful:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private void dump(Slice slice) {
+    slice.getClazzes().stream()
+            .map(Clazz::getName)
+            .sorted()
+            .forEach(System.out::println);
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="detecting-cycles"><a class="anchor" href="#detecting-cycles"></a>4.5. Detecting cycles</h3>
@@ -2146,7 +2270,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-05 12:17:09 UTC
+Last updated 2022-06-05 21:07:39 UTC
 </div>
 </div>
 </body>
