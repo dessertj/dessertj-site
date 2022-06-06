@@ -469,13 +469,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#practical-guide">4. Practical Guide</a>
 <ul class="sectlevel2">
-<li><a href="#detecting-unwanted-dependencies">4.1. Detecting unwanted dependencies</a></li>
-<li><a href="#enforcing-architecture-requirements">4.2. Enforcing architecture requirements</a></li>
-<li><a href="#utilize-jpms-information">4.3. Utilize JPMS information</a></li>
-<li><a href="#more-details-about-defining-slices">4.4. More details about defining slices</a></li>
-<li><a href="#detecting-cycles">4.5. Detecting cycles</a></li>
-<li><a href="#keeping-vertical-slices-apart">4.6. Keeping vertical slices apart</a></li>
-<li><a href="#checking-a-layered-architecture">4.7. Checking a layered architecture</a></li>
+<li><a href="#motivation">4.1. Motivation</a></li>
+<li><a href="#detecting-unwanted-dependencies">4.2. Detecting unwanted dependencies</a></li>
+<li><a href="#enforcing-architecture-requirements">4.3. Enforcing architecture requirements</a></li>
+<li><a href="#utilize-jpms-information">4.4. Utilize JPMS information</a></li>
+<li><a href="#more-details-about-defining-slices">4.5. More details about defining slices</a></li>
+<li><a href="#detecting-cycles">4.6. Detecting cycles</a></li>
+<li><a href="#keeping-vertical-slices-apart">4.7. Keeping vertical slices apart</a></li>
+<li><a href="#checking-a-layered-architecture">4.8. Checking a layered architecture</a></li>
 </ul>
 </li>
 <li><a href="#tutorial">5. Tutorial</a>
@@ -1276,6 +1277,8 @@ all module-info classes is <code>slice("module-info")</code> or simple by using 
 <div class="sect1">
 <h2 id="practical-guide"><a class="anchor" href="#practical-guide"></a>4. Practical Guide</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="motivation"><a class="anchor" href="#motivation"></a>4.1. Motivation</h3>
 <div class="paragraph">
 <p>Keeping an architecture clean pays out manifold over time, but it has no immediate business value.
 For developers architecture requirements are an additional burden. If you point out an architecture
@@ -1304,8 +1307,9 @@ Now, the only thing you need, is a plausible comment that explains why it is
 important to adhere to that requirement. Over time this will build up
 architecture awareness across your team.</p>
 </div>
+</div>
 <div class="sect2">
-<h3 id="detecting-unwanted-dependencies"><a class="anchor" href="#detecting-unwanted-dependencies"></a>4.1. Detecting unwanted dependencies</h3>
+<h3 id="detecting-unwanted-dependencies"><a class="anchor" href="#detecting-unwanted-dependencies"></a>4.2. Detecting unwanted dependencies</h3>
 <div class="paragraph">
 <p>Developers tend to use everything, simply because it&#8217;s there, and it looks promising to accomplish
 some task. Thus, anything which happens to be available on the class-path can be used for any purpose
@@ -1438,7 +1442,7 @@ can be use in the <code>assertThatSlice</code> or in the <code>doesNotUse</code>
 </div>
 </div>
 <div class="sect2">
-<h3 id="enforcing-architecture-requirements"><a class="anchor" href="#enforcing-architecture-requirements"></a>4.2. Enforcing architecture requirements</h3>
+<h3 id="enforcing-architecture-requirements"><a class="anchor" href="#enforcing-architecture-requirements"></a>4.3. Enforcing architecture requirements</h3>
 <div class="paragraph">
 <p>When defining an architecture you don&#8217;t specify which dependencies your building blocks must
 not use, you rather define the dependencies they do have. With <em>dessert</em> you express
@@ -1528,7 +1532,7 @@ All slices used for an assertion must stem from the same <code>Classpath</code> 
 </div>
 </div>
 <div class="sect2">
-<h3 id="utilize-jpms-information"><a class="anchor" href="#utilize-jpms-information"></a>4.3. Utilize JPMS information</h3>
+<h3 id="utilize-jpms-information"><a class="anchor" href="#utilize-jpms-information"></a>4.4. Utilize JPMS information</h3>
 <div class="paragraph">
 <p>Libraries implemented with the Java Platform Module System (JPMS) explicitly list the
 exported packages. These packages form the public API of a library. Every thing else
@@ -1596,7 +1600,7 @@ This may be useful to prepare for an update to a later Java version.
 </div>
 </div>
 <div class="sect2">
-<h3 id="more-details-about-defining-slices"><a class="anchor" href="#more-details-about-defining-slices"></a>4.4. More details about defining slices</h3>
+<h3 id="more-details-about-defining-slices"><a class="anchor" href="#more-details-about-defining-slices"></a>4.5. More details about defining slices</h3>
 <div class="paragraph">
 <p>The slice operations can be used to create new slices from existing ones:</p>
 </div>
@@ -1766,17 +1770,76 @@ this is very useful:</p>
 }</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Some libraries use annotations to mark internal or experimental code.
+For example
+<a href="https://junit.org/junit5/docs/current/user-guide/">JUnit 5</a>
+uses <a href="https://github.com/apiguardian-team/apiguardian">@API Guardian</a>
+for that purpose. Therefore, dessert provides the
+<a href="https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/util/AnnotationPattern.html">AnnotationPattern</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">// classes annotated with @Configuration
+Slice config = spring.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(Configuration.class)));
+
+// classes that have methods annotated with @Bean
+Slice beans = spring.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(Bean.class)));
+
+// classes that have methods or fields annotated with @Autowired
+Slice autowired = spring.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(Autowired.class)));
+
+// classes that have methods or fields annotated with @Autowired(required = false)
+Slice autowiredOptional = spring.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(Autowired.class,
+                AnnotationPattern.member("required", false))));
+
+// classes annotated with @ConditionalOnMissingBean({JpaRepositoryFactoryBean.class, JpaRepositoryConfigExtension.class})
+Slice conditional = spring.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(ConditionalOnMissingBean.class,
+                member("value", JpaRepositoryFactoryBean.class, JpaRepositoryConfigExtension.class))));
+
+// a complex annotation pattern which matches to:
+//    @ComponentScan(
+//            excludeFilters = {@ComponentScan.Filter(
+//                    type = FilterType.CUSTOM,
+//                    classes = {TypeExcludeFilter.class}
+//            ), @ComponentScan.Filter(
+//                    type = FilterType.CUSTOM,
+//                    classes = {AutoConfigurationExcludeFilter.class}
+//            )}
+//    )
+Slice scan = spring.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(ComponentScan.class,
+                member("excludeFilters",
+                        AnnotationPattern.of(ComponentScan.Filter.class,
+                                member("type", FilterType.CUSTOM),
+                                member("classes", TypeExcludeFilter.class)
+                        ),
+                        AnnotationPattern.of(ComponentScan.Filter.class)
+                ))
+));
+
+// the experimental junit classes
+Slice experimental = junit.slice(ClazzPredicates.matchesAnnotation(
+        AnnotationPattern.of(API.class, member("status", API.Status.EXPERIMENTAL))
+));</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="detecting-cycles"><a class="anchor" href="#detecting-cycles"></a>4.5. Detecting cycles</h3>
+<h3 id="detecting-cycles"><a class="anchor" href="#detecting-cycles"></a>4.6. Detecting cycles</h3>
 
 </div>
 <div class="sect2">
-<h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.6. Keeping vertical slices apart</h3>
+<h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.7. Keeping vertical slices apart</h3>
 
 </div>
 <div class="sect2">
-<h3 id="checking-a-layered-architecture"><a class="anchor" href="#checking-a-layered-architecture"></a>4.7. Checking a layered architecture</h3>
+<h3 id="checking-a-layered-architecture"><a class="anchor" href="#checking-a-layered-architecture"></a>4.8. Checking a layered architecture</h3>
 
 </div>
 </div>
@@ -2270,7 +2333,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-05 21:07:39 UTC
+Last updated 2022-06-06 08:41:01 UTC
 </div>
 </div>
 </body>
