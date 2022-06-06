@@ -262,7 +262,104 @@ https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/util/Annotation
 include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=annotations]
 ----
 
+NOTE: Dessert recognizes annotations for retention policy `RUNTIME` and `CLASS`.
+
 === Detecting cycles
+
+The problem with a cycle is, it does not have a beginning nor does it have an end. Thus, if you
+pick out any class involved in a dependency cycle you cannot use it without all other classes involved
+in that cycle. This is not a concern for small cycles of closely related classes, but it's a
+nightmare if you have to change a software with big intertwined cycles.
+
+Dessert can detect cycles between any set of slices (remember: a `Clazz` is a `Slice`, too).
+Sometimes it's hard and unnecessary to prevent class cycles, but package-cycles are a clear
+indicator for design flaws. There is always a clean design that without package-cycles.
+Use the following code to assert that some building block `block` has no package-cycles:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=cycle]
+----
+
+Typically, it's necessary to move classes to resolve a cycle. To be backwards compatible
+a deprecated place-holder must be kept in the old place. Such place-holders must be
+ignored, when checking for cycles. A good example for this is JUnit 5:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=junit]
+----
+
+Any collection of slices can be used for cycle detection:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=set]
+----
+
+This can be written even shorter:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=enum]
+----
+
+Because each `Clazz` is a `Slice`, detecting class-cycles is as simple as:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=classes]
+----
+
+Even a `Map` can be used to pass the slices to check:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=map]
+----
+
+The `partitionByPackage()` method for a `Slice` returns a `Map` of package-names
+to their corresponding package slices. Hence, all non-empty packages of a slice
+can be listed like that:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=list]
+----
+
+To show the number of classes in each package use:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=size]
+----
+
+Any function that maps a `Clazz` to a string can be used to partition the
+classes of a slice:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=top]
+----
+
+The implementation below return the top-level package name for spring-framework
+classes:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=topm]
+----
+
+_Dessert_ comes with some pre-defined slice-partitioners. One of them is
+`SlicePartitioners.HOST`. The host is the classes that host all nested classes.
+For a host or a class without nested classes the host is the class itself.
+Thus, this partitoner puts each class together with all its inner-classes
+into separate slices:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=host]
+----
 
 === Keeping vertical slices apart
 
@@ -287,17 +384,6 @@ this class when checking for duplicates.
 
 Often you cannot prevent all duplicates, but at least you should have a test that informs
 you if there are additional duplicates.
-
-=== Detect cycles
-
-The problem with a cycle is, it does not have a beginning nor does it have an end. Thus, if you
-pick out any class involved in a dependency cycle you cannot use it without all other classes involved
-in that cycle. This is not a problem for small cycles of closely related classes, but it's a
-nightmare if you have to change a software with big intertwined cycles.
-
-Dessert can detected cycles between any set of slices (remember: a `Clazz` is a `Slice`, too).
-To start with, make sure, your software does not have any package-cycles.
-See the <<Cycle detection>> section on how to do this.
 
 === Investigate your project
 
