@@ -3,6 +3,9 @@ package de.spricom.dessert.guide;
 import de.spricom.dessert.classfile.ClassFile;
 import de.spricom.dessert.classfile.attribute.Attributes;
 import de.spricom.dessert.classfile.attribute.SourceFileAttribute;
+import de.spricom.dessert.modules.ModuleRegistry;
+import de.spricom.dessert.modules.core.ModuleSlice;
+import de.spricom.dessert.modules.fixed.JavaModules;
 import de.spricom.dessert.partitioning.ClazzPredicates;
 import de.spricom.dessert.resolve.ClassPackage;
 import de.spricom.dessert.resolve.ClassResolver;
@@ -12,20 +15,38 @@ import de.spricom.dessert.slicing.Classpath;
 import de.spricom.dessert.slicing.Clazz;
 import de.spricom.dessert.slicing.Root;
 import de.spricom.dessert.slicing.Slice;
+import de.spricom.dessert.util.AnnotationPattern;
 import de.spricom.dessert.util.Predicate;
 import de.spricom.dessert.util.Predicates;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apiguardian.api.API;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.TypeExcludeFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtension;
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 
 import java.lang.invoke.MethodHandles;
 
+import static de.spricom.dessert.util.AnnotationPattern.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefiningSlicesTest {
     private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     private static final Classpath cp = new Classpath();
+    private static final ModuleRegistry mr = new ModuleRegistry(cp);
+    private static final JavaModules java = new JavaModules(mr);
+
+    private final ModuleSlice junit = mr.getModule("org.junit.jupiter.api");
+    private static final Root dessert = cp.rootOf(Slice.class);
+    private static final Slice spring = cp.slice("org.springframework..*");
 
     @Test
     void operations() {
@@ -83,9 +104,6 @@ public class DefiningSlicesTest {
 
     @Test
     void predicates() {
-        Slice spring = cp.slice("org.springframework..*");
-        Root dessert = cp.rootOf(Slice.class);
-
         // tag::predicates[]
         // All interfaces
         Slice interfaces = spring.slice(ClazzPredicates.INTERFACE);
@@ -159,4 +177,66 @@ public class DefiningSlicesTest {
                 .forEach(System.out::println);
     }
     // end::dump[]
+
+
+    @Test
+    void annotations() {
+        // tag::annotations[]
+        // classes annotated with @Configuration
+        Slice config = spring.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(Configuration.class)));
+
+        // classes that have methods annotated with @Bean
+        Slice beans = spring.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(Bean.class)));
+
+        // classes that have methods or fields annotated with @Autowired
+        Slice autowired = spring.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(Autowired.class)));
+
+        // classes that have methods or fields annotated with @Autowired(required = false)
+        Slice autowiredOptional = spring.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(Autowired.class,
+                        AnnotationPattern.member("required", false))));
+
+        // classes annotated with @ConditionalOnMissingBean({JpaRepositoryFactoryBean.class, JpaRepositoryConfigExtension.class})
+        Slice conditional = spring.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(ConditionalOnMissingBean.class,
+                        member("value", JpaRepositoryFactoryBean.class, JpaRepositoryConfigExtension.class))));
+
+        // a complex annotation pattern which matches to:
+        //    @ComponentScan(
+        //            excludeFilters = {@ComponentScan.Filter(
+        //                    type = FilterType.CUSTOM,
+        //                    classes = {TypeExcludeFilter.class}
+        //            ), @ComponentScan.Filter(
+        //                    type = FilterType.CUSTOM,
+        //                    classes = {AutoConfigurationExcludeFilter.class}
+        //            )}
+        //    )
+        Slice scan = spring.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(ComponentScan.class,
+                        member("excludeFilters",
+                                AnnotationPattern.of(ComponentScan.Filter.class,
+                                        member("type", FilterType.CUSTOM),
+                                        member("classes", TypeExcludeFilter.class)
+                                ),
+                                AnnotationPattern.of(ComponentScan.Filter.class)
+                        ))
+        ));
+
+        // the experimental junit classes
+        Slice experimental = junit.slice(ClazzPredicates.matchesAnnotation(
+                AnnotationPattern.of(API.class, member("status", API.Status.EXPERIMENTAL))
+        ));
+        // end::annotations[]
+
+        assertThat(config.getClazzes()).isNotEmpty();
+        assertThat(beans.getClazzes()).isNotEmpty();
+        assertThat(autowired.getClazzes()).isNotEmpty();
+        assertThat(autowiredOptional.getClazzes()).isNotEmpty();
+        assertThat(conditional.getClazzes()).isNotEmpty();
+        assertThat(scan.getClazzes()).isNotEmpty();
+        assertThat(experimental.getClazzes()).isNotEmpty();
+    }
 }

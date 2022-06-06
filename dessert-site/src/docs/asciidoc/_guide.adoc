@@ -2,6 +2,8 @@
 
 == Practical Guide
 
+=== Motivation
+
 Keeping an architecture clean pays out manifold over time, but it has no immediate business value.
 For developers architecture requirements are an additional burden. If you point out an architecture
 problem, you will get answers like: "I'll do that later, first it must be working to show it
@@ -246,6 +248,18 @@ this is very useful:
 [source, java, indent=0]
 ----
 include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=dump]
+----
+
+Some libraries use annotations to mark internal or experimental code.
+For example
+https://junit.org/junit5/docs/current/user-guide/[JUnit 5]
+uses https://github.com/apiguardian-team/apiguardian[@API Guardian]
+for that purpose. Therefore, dessert provides the
+https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/util/AnnotationPattern.html[AnnotationPattern]:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=annotations]
 ----
 
 === Detecting cycles
