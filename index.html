@@ -484,9 +484,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#detect-duplicates">5.1. Detect duplicates</a></li>
 <li><a href="#investigate-your-project">5.2. Investigate your project</a></li>
 <li><a href="#simulate-refactorings">5.3. Simulate refactorings</a></li>
-<li><a href="#check-your-layers">5.4. Check your layers</a></li>
-<li><a href="#modularize-your-project">5.5. Modularize your project</a></li>
-<li><a href="#define-your-custom-classpath">5.6. Define your custom classpath</a></li>
+<li><a href="#define-your-custom-classpath">5.4. Define your custom classpath</a></li>
 </ul>
 </li>
 <li><a href="#design-goals-and-features">6. Design Goals and Features</a></li>
@@ -1172,12 +1170,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
+	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
 	CycleDump -&gt; Foo
 de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar
-de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
-	Bar -&gt; CycleDump</pre>
+	Foo -&gt; Bar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1957,10 +1955,10 @@ classes:</p>
 </div>
 <div class="paragraph">
 <p><em>Dessert</em> comes with some pre-defined slice-partitioners. One of them is
-<code>SlicePartitioners.HOST</code>. The host is the classes that host all nested classes.
+<code>SlicePartitioners.HOST</code>. The host is the class that hosts all nested classes.
 For a host or a class without nested classes the host is the class itself.
-Thus, this partitoner puts each class together with all its inner-classes
-into separate slices:</p>
+Thus, this partitioner produces slices where each slice contains a class
+together with all its inner-classes:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1970,11 +1968,82 @@ into separate slices:</p>
 </div>
 <div class="sect2">
 <h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.7. Keeping vertical slices apart</h3>
-
+<div class="paragraph">
+<p>Big applications, sometimes called <em>monolith</em>, are used be different stakeholders for
+very different use-cases. Image some stamp-shop where a customer can buy stamps. The shop-owner
+mast be able to add new offerings and update prices. An office clerk handles the orders
+and sends the stamps to customer. Once a month the shop-owner needs to get some statistics.
+Hence, an application consists of verify different and hopefully independent parts
+(typically there is no 1:1 mapping between use-case and part, that&#8217;s why I name it part).
+Normally the parts share components, the business model, services and other things,
+and they are tied together within a common shell that provides authentication and
+access control. Thus, the architecture of the application looks something like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/vertical-slices.svg" alt="vertical slices" width="305" height="202">
+</div>
+</div>
+<div class="paragraph">
+<p>In a clean design each part has its own module with explicit dependencies
+to prevent any unintended cross-connections. But, this brings some overhead,
+especially if there are many small parts. An alternative approach is to
+use <em>dessert</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Root stampShop = cp.rootOf(ShopApplication.class);
+Slice parts = stampShop.slice("..stampshop.parts..*"); // the parent package of all parts
+Map&lt;String, ? extends Slice&gt; partsByName = parts.partitionBy(clazz -&gt;
+        clazz.getPackageName().split("\\.", 6)[5]); // partition by sub-package name
+partsByName.forEach((nameA, partA) -&gt; partsByName.forEach((nameB, partB) -&gt; {
+    if (!(nameA.equals(nameB))) {
+        assertThatSlice(partA).doesNotUse(partB);
+    }
+}));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The doubly nested loop can be replaced by using <em>dessert&#8217;s</em> <code>CombinationUtils</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">CombinationUtils.combinations(new ArrayList&lt;&gt;(partsByName.values()))
+        .forEach(pair -&gt; assertThatSlice(pair.getLeft()).doesNotUse(pair.getRight()));</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="checking-a-layered-architecture"><a class="anchor" href="#checking-a-layered-architecture"></a>4.8. Checking a layered architecture</h3>
+<div class="paragraph">
+<p>The stamp-shop above is also an example for a layered architecture with 3 layers:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/layers.svg" alt="layers" width="144" height="202">
+</div>
+</div>
+<div class="paragraph">
+<p><em>Dessert</em> provides convenience methods to check layers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Root stampShop = cp.rootOf(ShopApplication.class);
+Slice application = stampShop.slice("..stampshop.application..*");
+Slice parts = stampShop.slice("..stampshop.parts..*");
+Slice commons = stampShop.slice("..stampshop.commons..*");
 
+assertThatSlice(application, parts, commons).isLayeredStrict();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The test above will fail if <em>application</em> uses <em>commons</em>. To relax this use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlice(application, parts, common).isLayeredRelaxed();</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2041,58 +2110,7 @@ After you have created your simulated cycle, make sure <em>dessert</em> detects 
 </div>
 </div>
 <div class="sect2">
-<h3 id="check-your-layers"><a class="anchor" href="#check-your-layers"></a>5.4. Check your layers</h3>
-<div class="paragraph">
-<p>Each nontrivial software product is composed of layers. In a classical software product you have
-persistence, business logic a presentation layers. Modern designs are base on the
-<a href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">hexagonal architecture</a>, also
-called <em>ports and adapters architecture</em>. But these are still layered architectures with the
-business logic at the bottom, now.</p>
-</div>
-<div class="paragraph">
-<p>The architecture may be strict where one layer can only access the layer below. This is typically
-the case in network protocol implementations similar to the
-<a href="https://en.wikipedia.org/wiki/OSI_model">OSI model</a>. In most applications the architecture
-is relaxed, hence one layer can access all layers below.</p>
-</div>
-<div class="paragraph">
-<p>A common property of the classes within one layer are there external dependencies. Thus, classes
-in the presentation layer should not have dependencies to persistence libraries like hibernate
-and classes in the persistence layer should not have dependencies to presentation libraries like
-JavaFX or Vaadin.</p>
-</div>
-<div class="paragraph">
-<p>Now it&#8217;s time to define the layers of your project. Define a slice for each layer. You may want
-to use the <code>Slice</code> method <code>named</code> to assign it a name. Then use <a href="#architecture-verification">Architecture verification</a>
-to ensure your code complies with your architecture. Additionally, make sure none of your layers
-has any external dependencies it should not.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="modularize-your-project"><a class="anchor" href="#modularize-your-project"></a>5.5. Modularize your project</h3>
-<div class="paragraph">
-<p>Layers are the first coarse subdivision of your project. Typically, your software is made up
-form smaller parts by cutting down the layers to vertical slices. Each vertical slice
-is tied to one domain and has certain dependencies to other parts of the software or
-to external libraries. It&#8217;s good practice to explicitly name the dependencies of each
-such part.</p>
-</div>
-<div class="paragraph">
-<p>Start from the layers defined in the previous exercise and use the <code>slice</code> method to
-cut them down into vertical slices. Then make sure, each such slice uses only the dependencies
-it is allowed to, by using the <code>usesOnly</code> assertion. You might want to group your
-external dependencies into corresponding slices, to do this.</p>
-</div>
-<div class="paragraph">
-<p>The slices defined in this step are the building blocks of your project. We might call some
-modules, but that term is already occupied in the java world, thus I&#8217;ll stay with building
-block. Often you don&#8217;t want to expose anything from one building block to others. You can
-accomplish this by defining one or more interface slices for each build block and make sure
-the depending building blocks only use the corresponding interface slice.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="define-your-custom-classpath"><a class="anchor" href="#define-your-custom-classpath"></a>5.6. Define your custom classpath</h3>
+<h3 id="define-your-custom-classpath"><a class="anchor" href="#define-your-custom-classpath"></a>5.4. Define your custom classpath</h3>
 <div class="paragraph">
 <p>By default, the <code>Classpath</code> is based on the path defined by the <em>java.class.path</em> system property.
 This fits most cases, but there might be circumstances where this is not suitable.
@@ -2453,7 +2471,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-06 15:29:56 UTC
+Last updated 2022-06-10 16:59:51 UTC
 </div>
 </div>
 </body>
