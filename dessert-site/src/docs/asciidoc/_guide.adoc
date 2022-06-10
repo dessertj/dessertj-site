@@ -351,10 +351,10 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags
 ----
 
 _Dessert_ comes with some pre-defined slice-partitioners. One of them is
-`SlicePartitioners.HOST`. The host is the classes that host all nested classes.
+`SlicePartitioners.HOST`. The host is the class that hosts all nested classes.
 For a host or a class without nested classes the host is the class itself.
-Thus, this partitoner puts each class together with all its inner-classes
-into separate slices:
+Thus, this partitioner produces slices where each slice contains a class
+together with all its inner-classes:
 
 [source, java, indent=0]
 ----
@@ -363,8 +363,80 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags
 
 === Keeping vertical slices apart
 
+Big applications, sometimes called _monolith_, are used be different stakeholders for
+very different use-cases. Image some stamp-shop where a customer can buy stamps. The shop-owner
+mast be able to add new offerings and update prices. An office clerk handles the orders
+and sends the stamps to customer. Once a month the shop-owner needs to get some statistics.
+Hence, an application consists of verify different and hopefully independent parts
+(typically there is no 1:1 mapping between use-case and part, that's why I name it part).
+Normally the parts share components, the business model, services and other things,
+and they are tied together within a common shell that provides authentication and
+access control. Thus, the architecture of the application looks something like this:
+
+[plantuml,vertical-slices,svg]
+....
+@startuml
+package application
+package part1
+package part2
+package part3
+package commons
+
+application <-- part1
+application <-- part2
+application <-- part3
+part1 <-- commons
+part2 <-- commons
+part3 <-- commons
+@enduml
+....
+
+In a clean design each part has its own module with explicit dependencies
+to prevent any unintended cross-connections. But, this brings some overhead,
+especially if there are many small parts. An alternative approach is to
+use _dessert_:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=parts]
+----
+
+The doubly nested loop can be replaced by using _dessert's_ `CombinationUtils`:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=combinations]
+----
+
 === Checking a layered architecture
 
+The stamp-shop above is also an example for a layered architecture with 3 layers:
+
+[plantuml,layers,svg]
+....
+@startuml
+package application
+package parts
+package commons
+
+application <-- parts
+parts <-- commons
+@enduml
+....
+
+_Dessert_ provides convenience methods to check layers:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=layered]
+----
+
+The test above will fail if _application_ uses _commons_. To relax this use:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=relaxed]
+----
 
 == Tutorial
 
@@ -407,48 +479,6 @@ the removal of a `Clazz` from one slice and the addition to another.
 Simulate the introduction of a new package-cycle by creating new slices from existing package
 slices with one or more classes moved from one package to another.
 After you have created your simulated cycle, make sure _dessert_ detects it.
-
-=== Check your layers
-
-Each nontrivial software product is composed of layers. In a classical software product you have
-persistence, business logic a presentation layers. Modern designs are base on the
-https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)[hexagonal architecture], also
-called _ports and adapters architecture_. But these are still layered architectures with the
-business logic at the bottom, now.
-
-The architecture may be strict where one layer can only access the layer below. This is typically
-the case in network protocol implementations similar to the
-https://en.wikipedia.org/wiki/OSI_model[OSI model]. In most applications the architecture
-is relaxed, hence one layer can access all layers below.
-
-A common property of the classes within one layer are there external dependencies. Thus, classes
-in the presentation layer should not have dependencies to persistence libraries like hibernate
-and classes in the persistence layer should not have dependencies to presentation libraries like
-JavaFX or Vaadin.
-
-Now it's time to define the layers of your project. Define a slice for each layer. You may want
-to use the `Slice` method `named` to assign it a name. Then use <<Architecture verification>>
-to ensure your code complies with your architecture. Additionally, make sure none of your layers
-has any external dependencies it should not.
-
-=== Modularize your project
-
-Layers are the first coarse subdivision of your project. Typically, your software is made up
-form smaller parts by cutting down the layers to vertical slices. Each vertical slice
-is tied to one domain and has certain dependencies to other parts of the software or
-to external libraries. It's good practice to explicitly name the dependencies of each
-such part.
-
-Start from the layers defined in the previous exercise and use the `slice` method to
-cut them down into vertical slices. Then make sure, each such slice uses only the dependencies
-it is allowed to, by using the `usesOnly` assertion. You might want to group your
-external dependencies into corresponding slices, to do this.
-
-The slices defined in this step are the building blocks of your project. We might call some
-modules, but that term is already occupied in the java world, thus I'll stay with building
-block. Often you don't want to expose anything from one building block to others. You can
-accomplish this by defining one or more interface slices for each build block and make sure
-the depending building blocks only use the corresponding interface slice.
 
 === Define your custom classpath
 
