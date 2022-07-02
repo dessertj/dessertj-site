@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.spricom.dessert.assertions.SliceAssertions.assertThatSlice;
+import static de.spricom.dessert.assertions.SliceAssertions.assertThatSlices;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CycleTest {
@@ -59,11 +60,11 @@ public class CycleTest {
 
         // tag::set[]
         List<Slice> slices = Arrays.asList(slice1, slice2, slice3);
-        assertThatSlice(slices).isCycleFree();
+        assertThatSlices(slices).areCycleFree();
         // end::set[]
 
         // tag::enum[]
-        assertThatSlice(slice1, slice2, slice3).isCycleFree();
+        assertThatSlices(slice1, slice2, slice3).areCycleFree();
         // end::enum[]
 
         // tag::classes[]
@@ -76,7 +77,7 @@ public class CycleTest {
                 "slice2", slice2,
                 "slice3", slice3
         );
-        assertThatSlice(slicesByName).isCycleFree();
+        assertThatSlices(slicesByName).areCycleFree();
         // end::map[]
 
         for (Slice slice : slices) {
@@ -103,7 +104,7 @@ public class CycleTest {
     void testTop() {
         // tag::top[]
         SortedMap<String, PartitionSlice> topLevelPackages = spring.partitionBy(this::topLevelPackageName);
-        assertThatSlice(topLevelPackages).isCycleFree();
+        assertThatSlices(topLevelPackages).areCycleFree();
         // end::top[]
         topLevelPackages.forEach((k, s) -> System.out.printf("%s[%d]%n", k, s.getClazzes().size()));
     }

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static de.spricom.dessert.assertions.SliceAssertions.assertThatSlice;
+import static de.spricom.dessert.assertions.SliceAssertions.assertThatSlices;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VerticalSlicesTest {
@@ -52,7 +53,7 @@ public class VerticalSlicesTest {
         Slice parts = stampShop.slice("..stampshop.parts..*");
         Slice commons = stampShop.slice("..stampshop.commons..*");
 
-        assertThatSlice(application, parts, commons).isLayeredStrict();
+        assertThatSlices(application, parts, commons).areLayeredStrict();
         // end::layered[]
         List.of(application, parts, commons).forEach(slice -> assertThat(slice.getClazzes()).isNotEmpty());
     }
@@ -65,7 +66,7 @@ public class VerticalSlicesTest {
         Slice common = stampShop.slice("..stampshop.common..*");
 
         // tag::relaxed[]
-        assertThatSlice(application, parts, common).isLayeredRelaxed();
+        assertThatSlices(application, parts, common).areLayeredRelaxed();
         // end::relaxed[]
     }
 

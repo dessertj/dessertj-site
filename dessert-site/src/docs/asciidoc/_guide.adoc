@@ -438,9 +438,7 @@ The test above will fail if _application_ uses _commons_. To relax this use:
 include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=relaxed]
 ----
 
-== Tutorial
-
-=== Detect duplicates
+=== Detecting duplicates
 
 Each JAR has its own directory structure, thus a class with the same fully qualified name
 may appear in more than one JAR. The `ClassLoader` always uses the first matching class
@@ -457,18 +455,7 @@ this class when checking for duplicates.
 Often you cannot prevent all duplicates, but at least you should have a test that informs
 you if there are additional duplicates.
 
-=== Investigate your project
-
-If you have any cycles in your software, you might want to find out, which classes cause that
-cycle. Or you may have other questions on your software, for which the search facilities of
-your IDE are not sufficient. The `slice` method in combination with <<Predicates>> lets you
-filter your classes by almost any condition.
-
-If you have a package cycle, write some code that tells you exactly which classes from two
-packages involved in the cycle cause that cycle. Alternatively find out, which classes
-of your project use _java.io_.
-
-=== Simulate refactorings
+=== Simulating refactorings
 
 Often a package cycle can simply be resolved by moving a class from on package to another,
 but actually moving a class may require many changes and introduce new cycles. Thus, it would
@@ -480,7 +467,7 @@ Simulate the introduction of a new package-cycle by creating new slices from exi
 slices with one or more classes moved from one package to another.
 After you have created your simulated cycle, make sure _dessert_ detects it.
 
-=== Define your custom classpath
+=== Defining a custom classpath
 
 By default, the `Classpath` is based on the path defined by the _java.class.path_ system property.
 This fits most cases, but there might be circumstances where this is not suitable.
