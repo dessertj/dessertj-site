@@ -477,37 +477,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#detecting-cycles">4.6. Detecting cycles</a></li>
 <li><a href="#keeping-vertical-slices-apart">4.7. Keeping vertical slices apart</a></li>
 <li><a href="#checking-a-layered-architecture">4.8. Checking a layered architecture</a></li>
+<li><a href="#detecting-duplicates">4.9. Detecting duplicates</a></li>
+<li><a href="#simulating-refactorings">4.10. Simulating refactorings</a></li>
+<li><a href="#defining-a-custom-classpath">4.11. Defining a custom classpath</a></li>
 </ul>
 </li>
-<li><a href="#tutorial">5. Tutorial</a>
+<li><a href="#design-goals-and-features">5. Design Goals and Features</a></li>
+<li><a href="#getting-involved">6. Getting Involved</a></li>
+<li><a href="#frequently-asked-questsions">7. Frequently asked Questsions</a>
 <ul class="sectlevel2">
-<li><a href="#detect-duplicates">5.1. Detect duplicates</a></li>
-<li><a href="#investigate-your-project">5.2. Investigate your project</a></li>
-<li><a href="#simulate-refactorings">5.3. Simulate refactorings</a></li>
-<li><a href="#define-your-custom-classpath">5.4. Define your custom classpath</a></li>
+<li><a href="#when-will-be-there-a-1-0-version">7.1. When will be there a 1.0 version?</a></li>
+<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">7.2. Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
 </ul>
 </li>
-<li><a href="#design-goals-and-features">6. Design Goals and Features</a></li>
-<li><a href="#getting-involved">7. Getting Involved</a></li>
-<li><a href="#frequently-asked-questsions">8. Frequently asked Questsions</a>
+<li><a href="#plans-for-dessert-core-0-6-x">8. Plans for dessert-core 0.6.x</a></li>
+<li><a href="#release-notes">9. Release Notes</a>
 <ul class="sectlevel2">
-<li><a href="#when-will-be-there-a-1-0-version">8.1. When will be there a 1.0 version?</a></li>
-<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">8.2. Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
+<li><a href="#dessert-core-0-5-1">9.1. dessert-core-0.5.1</a></li>
+<li><a href="#dessert-core-0-5-0">9.2. dessert-core-0.5.0</a></li>
+<li><a href="#dessert-core-0-4-3">9.3. dessert-core-0.4.3</a></li>
+<li><a href="#dessert-core-0-4-2">9.4. dessert-core-0.4.2</a></li>
+<li><a href="#dessert-core-0-4-1">9.5. dessert-core-0.4.1</a></li>
+<li><a href="#dessert-core-0-4-0">9.6. dessert-core-0.4.0</a></li>
+<li><a href="#older-releases">9.7. Older Releases</a></li>
 </ul>
 </li>
-<li><a href="#plans-for-dessert-core-0-6-x">9. Plans for dessert-core 0.6.x</a></li>
-<li><a href="#release-notes">10. Release Notes</a>
-<ul class="sectlevel2">
-<li><a href="#dessert-core-0-5-1">10.1. dessert-core-0.5.1</a></li>
-<li><a href="#dessert-core-0-5-0">10.2. dessert-core-0.5.0</a></li>
-<li><a href="#dessert-core-0-4-3">10.3. dessert-core-0.4.3</a></li>
-<li><a href="#dessert-core-0-4-2">10.4. dessert-core-0.4.2</a></li>
-<li><a href="#dessert-core-0-4-1">10.5. dessert-core-0.4.1</a></li>
-<li><a href="#dessert-core-0-4-0">10.6. dessert-core-0.4.0</a></li>
-<li><a href="#older-releases">10.7. Older Releases</a></li>
-</ul>
-</li>
-<li><a href="#copyright-and-license">11. Copyright and License</a></li>
+<li><a href="#copyright-and-license">10. Copyright and License</a></li>
 </ul>
 </div>
 </div>
@@ -1170,12 +1165,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
+	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
 	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo
-de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar</pre>
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1876,7 +1871,7 @@ ignored, when checking for cycles. A good example for this is JUnit 5:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">List&lt;Slice&gt; slices = Arrays.asList(slice1, slice2, slice3);
-assertThatSlice(slices).isCycleFree();</code></pre>
+assertThatSlices(slices).areCycleFree();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1884,7 +1879,7 @@ assertThatSlice(slices).isCycleFree();</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlice(slice1, slice2, slice3).isCycleFree();</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlices(slice1, slice2, slice3).areCycleFree();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1905,7 +1900,7 @@ assertThatSlice(slices).isCycleFree();</code></pre>
         "slice2", slice2,
         "slice3", slice3
 );
-assertThatSlice(slicesByName).isCycleFree();</code></pre>
+assertThatSlices(slicesByName).areCycleFree();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1934,7 +1929,7 @@ classes of a slice:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">SortedMap&lt;String, PartitionSlice&gt; topLevelPackages = spring.partitionBy(this::topLevelPackageName);
-assertThatSlice(topLevelPackages).isCycleFree();</code></pre>
+assertThatSlices(topLevelPackages).areCycleFree();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2033,7 +2028,7 @@ Slice application = stampShop.slice("..stampshop.application..*");
 Slice parts = stampShop.slice("..stampshop.parts..*");
 Slice commons = stampShop.slice("..stampshop.commons..*");
 
-assertThatSlice(application, parts, commons).isLayeredStrict();</code></pre>
+assertThatSlices(application, parts, commons).areLayeredStrict();</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2041,17 +2036,12 @@ assertThatSlice(application, parts, commons).isLayeredStrict();</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlice(application, parts, common).isLayeredRelaxed();</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlices(application, parts, common).areLayeredRelaxed();</code></pre>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="tutorial"><a class="anchor" href="#tutorial"></a>5. Tutorial</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="detect-duplicates"><a class="anchor" href="#detect-duplicates"></a>5.1. Detect duplicates</h3>
+<h3 id="detecting-duplicates"><a class="anchor" href="#detecting-duplicates"></a>4.9. Detecting duplicates</h3>
 <div class="paragraph">
 <p>Each JAR has its own directory structure, thus a class with the same fully qualified name
 may appear in more than one JAR. The <code>ClassLoader</code> always uses the first matching class
@@ -2081,21 +2071,7 @@ you if there are additional duplicates.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="investigate-your-project"><a class="anchor" href="#investigate-your-project"></a>5.2. Investigate your project</h3>
-<div class="paragraph">
-<p>If you have any cycles in your software, you might want to find out, which classes cause that
-cycle. Or you may have other questions on your software, for which the search facilities of
-your IDE are not sufficient. The <code>slice</code> method in combination with <a href="#predicates">Predicates</a> lets you
-filter your classes by almost any condition.</p>
-</div>
-<div class="paragraph">
-<p>If you have a package cycle, write some code that tells you exactly which classes from two
-packages involved in the cycle cause that cycle. Alternatively find out, which classes
-of your project use <em>java.io</em>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="simulate-refactorings"><a class="anchor" href="#simulate-refactorings"></a>5.3. Simulate refactorings</h3>
+<h3 id="simulating-refactorings"><a class="anchor" href="#simulating-refactorings"></a>4.10. Simulating refactorings</h3>
 <div class="paragraph">
 <p>Often a package cycle can simply be resolved by moving a class from on package to another,
 but actually moving a class may require many changes and introduce new cycles. Thus, it would
@@ -2110,7 +2086,7 @@ After you have created your simulated cycle, make sure <em>dessert</em> detects 
 </div>
 </div>
 <div class="sect2">
-<h3 id="define-your-custom-classpath"><a class="anchor" href="#define-your-custom-classpath"></a>5.4. Define your custom classpath</h3>
+<h3 id="defining-a-custom-classpath"><a class="anchor" href="#defining-a-custom-classpath"></a>4.11. Defining a custom classpath</h3>
 <div class="paragraph">
 <p>By default, the <code>Classpath</code> is based on the path defined by the <em>java.class.path</em> system property.
 This fits most cases, but there might be circumstances where this is not suitable.
@@ -2122,7 +2098,7 @@ in reverse order. Check if your tests produce the same results.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>6. Design Goals and Features</h2>
+<h2 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>5. Design Goals and Features</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re considering to use <em>dessert</em> you probably have problems with dependencies.
@@ -2189,7 +2165,7 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>7. Getting Involved</h2>
+<h2 id="getting-involved"><a class="anchor" href="#getting-involved"></a>6. Getting Involved</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re missing some feature or find a bug then please
@@ -2206,10 +2182,10 @@ but don&#8217;t expect to get an answer, because I&#8217;m doing all this in my 
 </div>
 </div>
 <div class="sect1">
-<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>8. Frequently asked Questsions</h2>
+<h2 id="frequently-asked-questsions"><a class="anchor" href="#frequently-asked-questsions"></a>7. Frequently asked Questsions</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>8.1. When will be there a 1.0 version?</h3>
+<h3 id="when-will-be-there-a-1-0-version"><a class="anchor" href="#when-will-be-there-a-1-0-version"></a>7.1. When will be there a 1.0 version?</h3>
 <div class="paragraph">
 <p>As along as I don&#8217;t have any feedback of someone who is using this library, there is no reason to keep the
 API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
@@ -2219,7 +2195,7 @@ from that moment on.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>8.2. Why does dessert find more dependencies than <em>jdeps</em>?</h3>
+<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>7.2. Why does dessert find more dependencies than <em>jdeps</em>?</h3>
 <div class="paragraph">
 <p>Well, <em>jdeps</em> shows all runtime dependencies whereas dessert shows all compile-time
 dependencies. Hence, if you use a class for which a runtime dependency is missing
@@ -2247,7 +2223,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="plans-for-dessert-core-0-6-x"><a class="anchor" href="#plans-for-dessert-core-0-6-x"></a>9. Plans for dessert-core 0.6.x</h2>
+<h2 id="plans-for-dessert-core-0-6-x"><a class="anchor" href="#plans-for-dessert-core-0-6-x"></a>8. Plans for dessert-core 0.6.x</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -2284,10 +2260,10 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="release-notes"><a class="anchor" href="#release-notes"></a>10. Release Notes</h2>
+<h2 id="release-notes"><a class="anchor" href="#release-notes"></a>9. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>10.1. dessert-core-0.5.1</h3>
+<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>9.1. dessert-core-0.5.1</h3>
 <div class="paragraph">
 <p>Bugfixes and minor enhancements:</p>
 </div>
@@ -2309,7 +2285,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>10.2. dessert-core-0.5.0</h3>
+<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>9.2. dessert-core-0.5.0</h3>
 <div class="paragraph">
 <p>This feature release primarily adds support for the JPMS, even for JDK 8 and older:</p>
 </div>
@@ -2344,7 +2320,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>10.3. dessert-core-0.4.3</h3>
+<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>9.3. dessert-core-0.4.3</h3>
 <div class="paragraph">
 <p>Preparation for 0.5.0:</p>
 </div>
@@ -2366,7 +2342,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>10.4. dessert-core-0.4.2</h3>
+<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>9.4. dessert-core-0.4.2</h3>
 <div class="paragraph">
 <p>Bugfix-release:</p>
 </div>
@@ -2379,7 +2355,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>10.5. dessert-core-0.4.1</h3>
+<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>9.5. dessert-core-0.4.1</h3>
 <div class="paragraph">
 <p>Some minor changes:</p>
 </div>
@@ -2403,7 +2379,7 @@ improves the performance if a package has many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>10.6. dessert-core-0.4.0</h3>
+<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>9.6. dessert-core-0.4.0</h3>
 <div class="paragraph">
 <p>Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
 have been changed. The project has been renamed to dessert-core and everything that does not belong
@@ -2443,7 +2419,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>10.7. Older Releases</h3>
+<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>9.7. Older Releases</h3>
 <div class="paragraph">
 <p>See <a href="https://github.com/hajo70/dessert-core/releases">GitHub releases</a>.</p>
 </div>
@@ -2451,7 +2427,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>11. Copyright and License</h2>
+<h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>10. Copyright and License</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Code and documentation copyright 2017–2021 <a href="https://github.com/hajo70">Hans Jörg Heßmann</a>.
@@ -2471,7 +2447,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-06-10 16:59:51 UTC
+Last updated 2022-07-02 20:13:38 UTC
 </div>
 </div>
 </body>
