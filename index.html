@@ -2077,7 +2077,44 @@ have a test that informs you if there are additional duplicates.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in _guide.adoc - include::C:\Code\git\dessert\dessert-site\dessert-duplicates-sample/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=noAdditionalDuplicates]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+@DisplayName("Make sure there are no additional duplicates")
+void ensureNoAdditonalDuplicates() {
+    Slice duplicates = cp.duplicates().minus("module-info");
+
+    List&lt;File&gt; duplicateJars = duplicates.getClazzes().stream()
+            .map(this::getRootFile).distinct()
+            .sorted(Comparator.comparing(File::getName))
+            .collect(Collectors.toList());
+
+    Map&lt;String, Set&lt;File&gt;&gt; duplicateJarsByClass = duplicates.getClazzes().stream()
+            .collect(Collectors.groupingBy(Clazz::getName,
+                    TreeMap::new,
+                    Collectors.mapping(this::getRootFile, Collectors.toSet())));
+
+    System.out.printf("There are %d duplicate classes spread over %d jars:%n",
+            duplicateJarsByClass.size(), duplicateJars.size());
+    System.out.println("\nDuplicate classes:");
+    duplicateJarsByClass.forEach((name, files) -&gt; System.out.printf("%s (%s)%n", name,
+            files.stream().map(File::getName).sorted().collect(Collectors.joining(", "))));
+    System.out.println("\nJARs containing duplicates:");
+    duplicateJars.forEach(jar -&gt; System.out.printf("%s%n", jar.getAbsolutePath()));
+
+    // make sure there are no additional jars involved
+    assertThat(duplicateJars.stream().map(File::getName))
+            .areAtLeast(3, matching(startsWith("jakarta.")))
+            .hasSize(5);
+
+    // make sure there are no additonal classes involved
+    assertThat(duplicates
+            .minus("javax.activation|annotation|transaction|xml..*")
+            .minus("com.sun.activation..*")
+            .getClazzes()).isEmpty();
+}
+
+private File getRootFile(Clazz clazz) {
+    return clazz.getRoot().getRootFile();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2089,7 +2126,35 @@ binary differences in the .class file, you can use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in _guide.adoc - include::C:\Code\git\dessert\dessert-site\dessert-duplicates-sample/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=binary]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+@DisplayName("Dump all duplicates for which the .class files are different")
+void dumpBinaryDifferences() {
+    Slice duplicates = cp.duplicates().minus("module-info");
+
+    Map&lt;String, List&lt;Clazz&gt;&gt; duplicatesByName = duplicates.getClazzes().stream()
+            .collect(Collectors.groupingBy(Clazz::getName));
+
+    for (List&lt;Clazz&gt; list : duplicatesByName.values()) {
+        list.subList(1, list.size()).forEach(c -&gt; checkBinaryContent(list.get(0), c));
+    }
+}
+
+private void checkBinaryContent(Clazz c1, Clazz c2) {
+    if (!isSameBinaryContent(c1, c2)) {
+        System.out.printf("Binaries of %s in %s and %s are different.%n",
+                c1.getName(), getRootFile(c1).getPath(), getRootFile(c2).getPath());
+    }
+}
+
+private boolean isSameBinaryContent(Clazz c1, Clazz c2) {
+    try {
+        byte[] bin1 = IOUtils.toByteArray(c1.getURI().toURL().openStream());
+        byte[] bin2 = IOUtils.toByteArray(c2.getURI().toURL().openStream());
+        return Arrays.equals(bin1, bin2);
+    } catch (IOException ex) {
+        throw new IllegalStateException("Cannot compare duplicates of " + c1.getName());
+    }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2097,7 +2162,64 @@ binary differences in the .class file, you can use:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in _guide.adoc - include::C:\Code\git\dessert\dessert-site\dessert-duplicates-sample/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=api]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+@DisplayName("Dump all duplicates for which the API differs")
+void dumpApiDifferences() {
+    Slice duplicates = cp.duplicates().minus("module-info");
+
+    Map&lt;String, List&lt;Clazz&gt;&gt; duplicatesByName = duplicates.getClazzes().stream()
+            .collect(Collectors.groupingBy(Clazz::getName));
+
+    for (List&lt;Clazz&gt; list : duplicatesByName.values()) {
+        list.subList(1, list.size()).forEach(c -&gt; checkAPI(list.get(0), c));
+    }
+}
+
+private void checkAPI(Clazz c1, Clazz c2) {
+    if (!isSameAPI(c1, c2)) {
+        System.out.printf("API of %s in %s and %s is different.%n",
+                c1.getName(), getRootFile(c1).getPath(), getRootFile(c2).getPath());
+    }
+}
+
+private boolean isSameAPI(Clazz c1, Clazz c2) {
+    ClassFile cf1 = c1.getClassFile();
+    ClassFile cf2 = c2.getClassFile();
+    return cf1.getAccessFlags() == cf2.getAccessFlags()
+            &amp;&amp; cf1.getThisClass().equals(cf2.getThisClass())
+            &amp;&amp; cf1.getSuperClass().equals(cf2.getSuperClass())
+            &amp;&amp; Arrays.equals(cf1.getInterfaces(), cf2.getInterfaces())
+            &amp;&amp; isEqual(cf1.getFields(), cf2.getFields(), this::isEqual)
+            &amp;&amp; isEqual(cf1.getMethods(), cf2.getMethods(), this::isEqual);
+}
+
+private &lt;T&gt; boolean isEqual(T[] t1, T[] t2, BiPredicate&lt;T, T&gt; predicate) {
+    if (t1 == null &amp;&amp; t2 == null) {
+        return true;
+    }
+    if (t1 == null || t2 == null) {
+        return false;
+    }
+    if (t1.length != t2.length) {
+        return false;
+    }
+    for (int i = 0; i &lt; t1.length; i++) {
+        if (!predicate.test(t1[i], t2[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+private boolean isEqual(MethodInfo m1, MethodInfo m2) {
+    return m1.getAccessFlags() == m2.getAccessFlags()
+            &amp;&amp; m1.getDeclaration().equals(m2.getDeclaration());
+}
+
+private boolean isEqual(FieldInfo f1, FieldInfo f2) {
+    return f1.getAccessFlags() == f2.getAccessFlags()
+            &amp;&amp; f1.getDeclaration().equals(f2.getDeclaration());
+}</code></pre>
 </div>
 </div>
 </div>
@@ -2478,7 +2600,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-09 10:52:32 UTC
+Last updated 2022-07-09 11:34:12 UTC
 </div>
 </div>
 </body>
