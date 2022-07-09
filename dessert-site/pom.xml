@@ -72,6 +72,7 @@
                     <attributes>
                         <plantuml-config>${project.basedir}/src/docs/config/plantuml_config.txt</plantuml-config>
                         <sample-dir>${project.basedir}/../dessert-sample</sample-dir>
+                        <duplicates-sample-dir>${project.basedir}/../dessert-duplicates-sample</duplicates-sample-dir>
                     </attributes>
                 </configuration>
                 <executions>
