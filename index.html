@@ -1165,12 +1165,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
+	CycleDump -&gt; Foo
 de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
 	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
-	Bar -&gt; CycleDump
-de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo</pre>
+	Bar -&gt; CycleDump</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2046,11 +2046,17 @@ assertThatSlices(application, parts, commons).areLayeredStrict();</code></pre>
 <p>Each JAR has its own directory structure, thus a class with the same fully qualified name
 may appear in more than one JAR. The <code>ClassLoader</code> always uses the first matching class
 on the classpath, but the order of the JARs on the classpath may vary on different systems.
-If there are different implementations for one of the duplicates that is actually used,
-some systems may fail. Such errors are hard to track down. Thus, write a test
-that makes sure, there are no duplicates on the classpath. See the <a href="#duplicates">Duplicates</a>
-section on how to do this. If you have duplicates write
-some code that helps you to track down the problem (i.e list the classes and jars involved).</p>
+Hence, your application may use the implementation of class A from jar X on one system
+and the implementation from jar Y on other systems. If these two implementations behave
+differently, then you have a problem.</p>
+</div>
+<div class="paragraph">
+<p>To prevent duplicates in your application write a test as simple as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">assertThat(cp.duplicates().minus("module-info").getClazzes()).isEmpty();</code></pre>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2066,8 +2072,33 @@ this class when checking for duplicates.
 </table>
 </div>
 <div class="paragraph">
-<p>Often you cannot prevent all duplicates, but at least you should have a test that informs
-you if there are additional duplicates.</p>
+<p>Sometimes you cannot prevent all duplicates (i.e. if you&#8217;re using Java 8), but at least you should
+have a test that informs you if there are additional duplicates.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in _guide.adoc - include::C:\Code\git\dessert\dessert-site\dessert-duplicates-sample/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=noAdditionalDuplicates]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The sample above prints all duplicate classes and the corresponding jars.</p>
+</div>
+<div class="paragraph">
+<p>You may want to do some further investigations. To list all classes for which there are
+binary differences in the .class file, you can use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in _guide.adoc - include::C:\Code\git\dessert\dessert-site\dessert-duplicates-sample/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=binary]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To list all classes for which there are API differences, you can use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in _guide.adoc - include::C:\Code\git\dessert\dessert-site\dessert-duplicates-sample/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=api]</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2447,7 +2478,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-02 20:13:38 UTC
+Last updated 2022-07-09 10:52:32 UTC
 </div>
 </div>
 </body>
