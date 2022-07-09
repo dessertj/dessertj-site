@@ -1,4 +1,5 @@
 :sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
+:duplicates-sample-dir: C:\Code\git\dessert\dessert-site\dessert-duplicates-sample
 
 == Practical Guide
 
@@ -443,17 +444,44 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.
 Each JAR has its own directory structure, thus a class with the same fully qualified name
 may appear in more than one JAR. The `ClassLoader` always uses the first matching class
 on the classpath, but the order of the JARs on the classpath may vary on different systems.
-If there are different implementations for one of the duplicates that is actually used,
-some systems may fail. Such errors are hard to track down. Thus, write a test
-that makes sure, there are no duplicates on the classpath. See the <<Duplicates>>
-section on how to do this. If you have duplicates write
-some code that helps you to track down the problem (i.e list the classes and jars involved).
+Hence, your application may use the implementation of class A from jar X on one system
+and the implementation from jar Y on other systems. If these two implementations behave
+differently, then you have a problem.
+
+To prevent duplicates in your application write a test as simple as:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DuplicatesTest.java[tags=noDuplicates]
+----
 
 NOTE: Many JARs contain a `module-info` class in their root package. Make sure to ignore
 this class when checking for duplicates.
 
-Often you cannot prevent all duplicates, but at least you should have a test that informs
-you if there are additional duplicates.
+Sometimes you cannot prevent all duplicates (i.e. if you're using Java 8), but at least you should
+have a test that informs you if there are additional duplicates.
+
+[source, java, indent=0]
+----
+include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=noAdditionalDuplicates]
+----
+
+The sample above prints all duplicate classes and the corresponding jars.
+
+You may want to do some further investigations. To list all classes for which there are
+binary differences in the .class file, you can use:
+
+[source, java, indent=0]
+----
+include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=binary]
+----
+
+To list all classes for which there are API differences, you can use:
+
+[source, java, indent=0]
+----
+include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=api]
+----
 
 === Simulating refactorings
 
