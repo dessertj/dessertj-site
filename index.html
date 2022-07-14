@@ -470,16 +470,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#practical-guide">4. Practical Guide</a>
 <ul class="sectlevel2">
 <li><a href="#motivation">4.1. Motivation</a></li>
-<li><a href="#detecting-unwanted-dependencies">4.2. Detecting unwanted dependencies</a></li>
-<li><a href="#enforcing-architecture-requirements">4.3. Enforcing architecture requirements</a></li>
-<li><a href="#utilize-jpms-information">4.4. Utilize JPMS information</a></li>
-<li><a href="#more-details-about-defining-slices">4.5. More details about defining slices</a></li>
-<li><a href="#detecting-cycles">4.6. Detecting cycles</a></li>
-<li><a href="#keeping-vertical-slices-apart">4.7. Keeping vertical slices apart</a></li>
-<li><a href="#checking-a-layered-architecture">4.8. Checking a layered architecture</a></li>
-<li><a href="#detecting-duplicates">4.9. Detecting duplicates</a></li>
-<li><a href="#simulating-refactorings">4.10. Simulating refactorings</a></li>
-<li><a href="#defining-a-custom-classpath">4.11. Defining a custom classpath</a></li>
+<li><a href="#sample-code">4.2. Sample Code</a></li>
+<li><a href="#detecting-unwanted-dependencies">4.3. Detecting unwanted dependencies</a></li>
+<li><a href="#enforcing-architecture-requirements">4.4. Enforcing architecture requirements</a></li>
+<li><a href="#utilize-jpms-information">4.5. Utilize JPMS information</a></li>
+<li><a href="#more-details-about-defining-slices">4.6. More details about defining slices</a></li>
+<li><a href="#detecting-cycles">4.7. Detecting cycles</a></li>
+<li><a href="#keeping-vertical-slices-apart">4.8. Keeping vertical slices apart</a></li>
+<li><a href="#checking-a-layered-architecture">4.9. Checking a layered architecture</a></li>
+<li><a href="#detecting-duplicates">4.10. Detecting duplicates</a></li>
+<li><a href="#simulating-refactorings">4.11. Simulating refactorings</a></li>
+<li><a href="#defining-a-custom-classpath">4.12. Defining a custom classpath</a></li>
 </ul>
 </li>
 <li><a href="#design-goals-and-features">5. Design Goals and Features</a></li>
@@ -1301,7 +1302,14 @@ architecture awareness across your team.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="detecting-unwanted-dependencies"><a class="anchor" href="#detecting-unwanted-dependencies"></a>4.2. Detecting unwanted dependencies</h3>
+<h3 id="sample-code"><a class="anchor" href="#sample-code"></a>4.2. Sample Code</h3>
+<div class="paragraph">
+<p>The code fragments below are excerpts of executable unit tests. See the
+<a href="https://github.com/hajo70/dessert-site/tree/main/dessert-sample/src/test/java/de/spricom/dessert/guide">dessert-site</a> project for the full source code.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="detecting-unwanted-dependencies"><a class="anchor" href="#detecting-unwanted-dependencies"></a>4.3. Detecting unwanted dependencies</h3>
 <div class="paragraph">
 <p>Developers tend to use everything, simply because it&#8217;s there, and it looks promising to accomplish
 some task. Thus, anything which happens to be available on the class-path can be used for any purpose
@@ -1434,7 +1442,7 @@ can be use in the <code>assertThatSlice</code> or in the <code>doesNotUse</code>
 </div>
 </div>
 <div class="sect2">
-<h3 id="enforcing-architecture-requirements"><a class="anchor" href="#enforcing-architecture-requirements"></a>4.3. Enforcing architecture requirements</h3>
+<h3 id="enforcing-architecture-requirements"><a class="anchor" href="#enforcing-architecture-requirements"></a>4.4. Enforcing architecture requirements</h3>
 <div class="paragraph">
 <p>When defining an architecture you don&#8217;t specify which dependencies your building blocks must
 not use, you rather define the dependencies they do have. With <em>dessert</em> you express
@@ -1524,7 +1532,7 @@ All slices used for an assertion must stem from the same <code>Classpath</code> 
 </div>
 </div>
 <div class="sect2">
-<h3 id="utilize-jpms-information"><a class="anchor" href="#utilize-jpms-information"></a>4.4. Utilize JPMS information</h3>
+<h3 id="utilize-jpms-information"><a class="anchor" href="#utilize-jpms-information"></a>4.5. Utilize JPMS information</h3>
 <div class="paragraph">
 <p>Libraries implemented with the Java Platform Module System (JPMS) explicitly list the
 exported packages. These packages form the public API of a library. Every thing else
@@ -1592,7 +1600,7 @@ This may be useful to prepare for an update to a later Java version.
 </div>
 </div>
 <div class="sect2">
-<h3 id="more-details-about-defining-slices"><a class="anchor" href="#more-details-about-defining-slices"></a>4.5. More details about defining slices</h3>
+<h3 id="more-details-about-defining-slices"><a class="anchor" href="#more-details-about-defining-slices"></a>4.6. More details about defining slices</h3>
 <div class="paragraph">
 <p>The slice operations can be used to create new slices from existing ones:</p>
 </div>
@@ -1835,7 +1843,7 @@ Dessert recognizes annotations for retention policy <code>RUNTIME</code> and <co
 </div>
 </div>
 <div class="sect2">
-<h3 id="detecting-cycles"><a class="anchor" href="#detecting-cycles"></a>4.6. Detecting cycles</h3>
+<h3 id="detecting-cycles"><a class="anchor" href="#detecting-cycles"></a>4.7. Detecting cycles</h3>
 <div class="paragraph">
 <p>The problem with a cycle is, it does not have a beginning nor does it have an end. Thus, if you
 pick out any class involved in a dependency cycle you cannot use it without all other classes involved
@@ -1962,7 +1970,7 @@ together with all its inner-classes:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.7. Keeping vertical slices apart</h3>
+<h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.8. Keeping vertical slices apart</h3>
 <div class="paragraph">
 <p>Big applications, sometimes called <em>monolith</em>, are used be different stakeholders for
 very different use-cases. Image some stamp-shop where a customer can buy stamps. The shop-owner
@@ -2009,7 +2017,7 @@ partsByName.forEach((nameA, partA) -&gt; partsByName.forEach((nameB, partB) -&gt
 </div>
 </div>
 <div class="sect2">
-<h3 id="checking-a-layered-architecture"><a class="anchor" href="#checking-a-layered-architecture"></a>4.8. Checking a layered architecture</h3>
+<h3 id="checking-a-layered-architecture"><a class="anchor" href="#checking-a-layered-architecture"></a>4.9. Checking a layered architecture</h3>
 <div class="paragraph">
 <p>The stamp-shop above is also an example for a layered architecture with 3 layers:</p>
 </div>
@@ -2041,7 +2049,7 @@ assertThatSlices(application, parts, commons).areLayeredStrict();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="detecting-duplicates"><a class="anchor" href="#detecting-duplicates"></a>4.9. Detecting duplicates</h3>
+<h3 id="detecting-duplicates"><a class="anchor" href="#detecting-duplicates"></a>4.10. Detecting duplicates</h3>
 <div class="paragraph">
 <p>Each JAR has its own directory structure, thus a class with the same fully qualified name
 may appear in more than one JAR. The <code>ClassLoader</code> always uses the first matching class
@@ -2224,22 +2232,60 @@ private boolean isEqual(FieldInfo f1, FieldInfo f2) {
 </div>
 </div>
 <div class="sect2">
-<h3 id="simulating-refactorings"><a class="anchor" href="#simulating-refactorings"></a>4.10. Simulating refactorings</h3>
+<h3 id="simulating-refactorings"><a class="anchor" href="#simulating-refactorings"></a>4.11. Simulating refactorings</h3>
 <div class="paragraph">
-<p>Often a package cycle can simply be resolved by moving a class from on package to another,
-but actually moving a class may require many changes and introduce new cycles. Thus, it would
-be very useful if one could find out the effects of moving a classes without actually
-doing it. With <em>dessert</em> you can use the <code>Slice</code> methods <code>minus</code> and <code>plus</code> to simulate
-the removal of a <code>Clazz</code> from one slice and the addition to another.</p>
+<p>Sometimes a package cycle can be resolved by moving a class from one package to another.
+Doing that may require many changes and&#8201;&#8212;&#8201;as a side effect&#8201;&#8212;&#8201;new cycles may be introduced.
+Wouldn&#8217;t it be nice if one could predict the effects of moving a class?</p>
 </div>
 <div class="paragraph">
-<p>Simulate the introduction of a new package-cycle by creating new slices from existing package
-slices with one or more classes moved from one package to another.
-After you have created your simulated cycle, make sure <em>dessert</em> detects it.</p>
+<p>With <em>dessert</em> you can use the <code>Slice</code> methods <code>minus</code> and <code>plus</code> to simulate
+the removal of a <code>Clazz</code> from one slice and the addition to another:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Root stampshop = cp.rootOf(ShopApplication.class);
+
+// Make sure original packages are cycle-free.
+SortedMap&lt;String, Slice&gt; packages = new TreeMap&lt;&gt;(stampshop.partitionByPackage()); <i class="conum" data-value="1"></i><b>(1)</b>
+assertThatSlices(packages).areCycleFree();
+
+// Simulate moving class SomeUtil to package of the ShopApplication class.
+Clazz classToMove = cp.asClazz(SomeUtil.class);
+packages.compute(classToMove.getPackageName(),
+        (packageName, slice) -&gt; slice.minus(classToMove).named(packageName)); <i class="conum" data-value="2"></i><b>(2)</b>
+packages.compute(ShopApplication.class.getPackageName(),
+        (packageName, slice) -&gt; slice.plus(classToMove).named(packageName));
+
+// Check for package cycles after moving the class.
+assertThatSlices(packages).areCycleFree(); <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The sample shows: If one moved <code>SomeUtil</code> from <code>..stampshop.parts.part3</code> to
+<code>..stampshop.application</code> that would introduce a package cycle.</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create new Map&lt;String, Slice&gt; from Map&lt;String, PackageSlice&gt; to be able to replace a <code>PackageSlice</code>
+by a <code>Slice</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Assign the package-name to the newly create <code>Slice</code> so that it looks like a <code>PackageSlice</code>
+in the <code>AssertionError</code> message.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>This assertion will fail, because a package-cycle would be introduced by moving <code>SomeUtil</code>.</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="defining-a-custom-classpath"><a class="anchor" href="#defining-a-custom-classpath"></a>4.11. Defining a custom classpath</h3>
+<h3 id="defining-a-custom-classpath"><a class="anchor" href="#defining-a-custom-classpath"></a>4.12. Defining a custom classpath</h3>
 <div class="paragraph">
 <p>By default, the <code>Classpath</code> is based on the path defined by the <em>java.class.path</em> system property.
 This fits most cases, but there might be circumstances where this is not suitable.
@@ -2600,7 +2646,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-09 11:34:12 UTC
+Last updated 2022-07-14 20:57:56 UTC
 </div>
 </div>
 </body>
