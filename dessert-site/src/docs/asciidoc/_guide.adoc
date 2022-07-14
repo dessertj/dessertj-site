@@ -1,5 +1,6 @@
 :sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
 :duplicates-sample-dir: C:\Code\git\dessert\dessert-site\dessert-duplicates-sample
+:icons: font
 
 == Practical Guide
 
@@ -29,6 +30,11 @@ responsible developer will directly be pointed to the corresponding requirement.
 Now, the only thing you need, is a plausible comment that explains why it is
 important to adhere to that requirement. Over time this will build up
 architecture awareness across your team.
+
+=== Sample Code
+
+The code fragments below are excerpts of executable unit tests. See the
+https://github.com/hajo70/dessert-site/tree/main/dessert-sample/src/test/java/de/spricom/dessert/guide[dessert-site] project for the full source code.
 
 === Detecting unwanted dependencies
 
@@ -485,15 +491,26 @@ include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/Sho
 
 === Simulating refactorings
 
-Often a package cycle can simply be resolved by moving a class from on package to another,
-but actually moving a class may require many changes and introduce new cycles. Thus, it would
-be very useful if one could find out the effects of moving a classes without actually
-doing it. With _dessert_ you can use the `Slice` methods `minus` and `plus` to simulate
-the removal of a `Clazz` from one slice and the addition to another.
+Sometimes a package cycle can be resolved by moving a class from one package to another.
+Doing that may require many changes and -- as a side effect -- new cycles may be introduced.
+Wouldn't it be nice if one could predict the effects of moving a class?
 
-Simulate the introduction of a new package-cycle by creating new slices from existing package
-slices with one or more classes moved from one package to another.
-After you have created your simulated cycle, make sure _dessert_ detects it.
+With _dessert_ you can use the `Slice` methods `minus` and `plus` to simulate
+the removal of a `Clazz` from one slice and the addition to another:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/SimulatingRefactoringsTest.java[tags=simulate]
+----
+
+The sample shows: If one moved `SomeUtil` from `..stampshop.parts.part3` to
+`..stampshop.application` that would introduce a package cycle.
+
+<1> Create new Map<String, Slice> from Map<String, PackageSlice> to be able to replace a `PackageSlice`
+by a `Slice`.
+<2> Assign the package-name to the newly create `Slice` so that it looks like a `PackageSlice`
+in the `AssertionError` message.
+<3> This assertion will fail, because a package-cycle would be introduced by moving `SomeUtil`.
 
 === Defining a custom classpath
 
