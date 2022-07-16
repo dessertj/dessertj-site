@@ -494,13 +494,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#plans-for-dessert-core-0-6-x">8. Plans for dessert-core 0.6.x</a></li>
 <li><a href="#release-notes">9. Release Notes</a>
 <ul class="sectlevel2">
-<li><a href="#dessert-core-0-5-1">9.1. dessert-core-0.5.1</a></li>
-<li><a href="#dessert-core-0-5-0">9.2. dessert-core-0.5.0</a></li>
-<li><a href="#dessert-core-0-4-3">9.3. dessert-core-0.4.3</a></li>
-<li><a href="#dessert-core-0-4-2">9.4. dessert-core-0.4.2</a></li>
-<li><a href="#dessert-core-0-4-1">9.5. dessert-core-0.4.1</a></li>
-<li><a href="#dessert-core-0-4-0">9.6. dessert-core-0.4.0</a></li>
-<li><a href="#older-releases">9.7. Older Releases</a></li>
+<li><a href="#dessert-core-0-5-2">9.1. dessert-core-0.5.2</a></li>
+<li><a href="#dessert-core-0-5-1">9.2. dessert-core-0.5.1</a></li>
+<li><a href="#dessert-core-0-5-0">9.3. dessert-core-0.5.0</a></li>
+<li><a href="#dessert-core-0-4-3">9.4. dessert-core-0.4.3</a></li>
+<li><a href="#dessert-core-0-4-2">9.5. dessert-core-0.4.2</a></li>
+<li><a href="#dessert-core-0-4-1">9.6. dessert-core-0.4.1</a></li>
+<li><a href="#dessert-core-0-4-0">9.7. dessert-core-0.4.0</a></li>
+<li><a href="#older-releases">9.8. Older Releases</a></li>
 </ul>
 </li>
 <li><a href="#copyright-and-license">10. Copyright and License</a></li>
@@ -676,6 +677,9 @@ The methods <code>plus</code> and <code>minus</code> can be used do create new s
 The most important methods for slice assertions are <code>doesNotUse</code> and <code>usesOnly</code>.
 Both accept more than one slice.</p>
 </div>
+<div class="paragraph">
+<p>To find out more read the <a href="#practical-guide">Practical Guide</a>.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="first-modules-test"><a class="anchor" href="#first-modules-test"></a>1.4. First Modules Test</h3>
@@ -732,8 +736,9 @@ are used from the modules listed.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The name <strong>dessert</strong> comes from <strong>de</strong>pendency a<strong>ssert</strong>.
-Hence, <strong>dessert</strong> is library for unit-tests to check the dependencies between classes.
-It can be used to clean up the architecture of a software and to ensure it remains clean.</p>
+Hence, <strong>dessert</strong> is a library for unit-tests to check dependencies between classes.
+It can be used to clean up the architecture of a software produkt
+and to ensure it remains clean.</p>
 </div>
 <div class="paragraph">
 <p>When you describe architecture requirements as unit-tests each
@@ -744,7 +749,7 @@ your architecture.</p>
 </div>
 <div class="paragraph">
 <p>An architecture describes a complex system by breaking it apart
-into smaller pieces and specifying the relations to or
+into smaller pieces. Then it specifies the relations to or
 interactions with the other pieces of the system.
 In an implementation of the system the relations
 or interactions show up as dependencies. Hence, checking
@@ -799,7 +804,7 @@ Just imagine the <code>Classpath</code> to be big cake you have to slice down.
 Thus the most import concept of <em>dessert</em> is the <code>Slice</code>.</p>
 </div>
 <div class="paragraph">
-<p>The requirement is expressed with a fluent API starting with the static
+<p>Architecture requirements are expressed with a fluent API starting with the static
 <code>SliceAssertions</code> method <code>assertThatSlice</code>. The application code to
 check is the parameter of this method. Next comes the requirement, which
 is one of the methods <code>doesNotUse</code> or <code>usesOnly</code>. The parameter(s) of
@@ -1166,12 +1171,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
+	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
 	CycleDump -&gt; Foo
 de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar
-de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
-	Bar -&gt; CycleDump</pre>
+	Foo -&gt; Bar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2288,10 +2293,124 @@ in the <code>AssertionError</code> message.</td>
 <h3 id="defining-a-custom-classpath"><a class="anchor" href="#defining-a-custom-classpath"></a>4.12. Defining a custom classpath</h3>
 <div class="paragraph">
 <p>By default, the <code>Classpath</code> is based on the path defined by the <em>java.class.path</em> system property.
-This fits most cases, but there might be circumstances where this is not suitable.
-See <a href="#class-resolving">Class resolving</a> on how you can define your own custom classpath.
-Then define a custom Classpath that contains all elements of the <em>java.class.path</em> system property
-in reverse order. Check if your tests produce the same results.</p>
+For most use-cases that&#8217;s what you want, but there might be circumstances where this is not suitable.
+<code>Classpath</code> uses a <code>ClassResolver</code> to determine the locations it looks for classes.
+<code>ClassResolver</code> has static factory methods for most common use cases, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath customClasspath = new Classpath(ClassResolver.ofClassPathWithoutJars());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The code above defines a <code>Classpath</code> that contains only the <em>classes</em> directories of the current class-path.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Never use different <code>Classpath</code> instances in a <em>dessert</em> test. The result of <code>Slice</code> operations
+and assertions is undefined if the slices originate from different <code>Classpath</code> instances and the
+behaviour may change over time.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A  <code>Classpath</code>, that does not contain all classes used for an application, has some restrictions.
+For example, assertions using name patterns do work:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlice(customClasspath).doesNotUse(customClasspath.slice("org.junit.jupiter..*"));</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Classpath</code> implements the <code>Slice</code> interfaces, thus <code>assertThatSlice</code> can be called
+with <code>customClasspath</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>But assertions, that need access to the .class file, will fail:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">assertThatSlice(customClasspath).doesNotUse(customClasspath.rootOf(Test.class));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The code above will throw:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>java.lang.IllegalArgumentException: org.junit.jupiter.api.Test not found within this classpath.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see all locations, where classes are searched for, you might use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">customClasspath.getClazzes().stream()
+        .map(Clazz::getRoot)
+        .map(Root::getURI)
+        .distinct()
+        .forEach(System.out::println);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The code above is very slow, because it iterates over all classes, rather use
+<code>ClassResolver.getPath()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">private void dumpRoots(ClassResolver resolver) {
+    resolver.getPath().stream()
+            .map(ClassRoot::getURI)
+            .forEach(System.out::println);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To see all locations used by default you can use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">dumpRoots(ClassResolver.ofClassPathAndJavaRuntime());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The code above lists all locations where a <code>Classpath</code> instance, created with the default-constructor,
+searches for classes.</p>
+</div>
+<div class="paragraph">
+<p>You may even use the default <code>Classpath</code> to determine the location of .jar files, so that you
+can build a custom <code>Classpath</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">Classpath cp = new Classpath();
+File jupiterApiJar = cp.asClazz(Test.class).getRoot().getRootFile();
+File jupiterEngine = cp.asClazz(JupiterTestEngine.class).getRoot().getRootFile();
+File junitPlatformEngine = cp.asClazz(TestEngine.class).getRoot().getRootFile();
+
+ClassResolver resolver = new ClassResolver();
+resolver.add(junitPlatformEngine);
+resolver.add(jupiterEngine);
+resolver.add(jupiterApiJar);
+Classpath customClasspath = new Classpath(resolver);</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -2462,7 +2581,38 @@ cannot be detected in the .class file anymore.
 <h2 id="release-notes"><a class="anchor" href="#release-notes"></a>9. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>9.1. dessert-core-0.5.1</h3>
+<h3 id="dessert-core-0-5-2"><a class="anchor" href="#dessert-core-0-5-2"></a>9.1. dessert-core-0.5.2</h3>
+<div class="paragraph">
+<p>Minor additions and bugfixes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Assertions method aliases added for using plural in assertions.</p>
+</li>
+<li>
+<p>Alias <code>assertThatSlice</code> added for <code>dessert</code>.</p>
+</li>
+<li>
+<p>Bugfix: <code>isLayeredStrict</code> does not skip first slice anymore.</p>
+</li>
+<li>
+<p>Bugfix: Doesn&#8217;t log warning for versioned duplicates in multi-release jars.</p>
+</li>
+<li>
+<p>Bugfix: Encoded URL&#8217;s in within Manifest Class-Path entries will be resolved correctly.</p>
+</li>
+<li>
+<p>Javadocs added and typos fixed.</p>
+</li>
+<li>
+<p>Documentation: Tutorial replaced by practical guide.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>9.2. dessert-core-0.5.1</h3>
 <div class="paragraph">
 <p>Bugfixes and minor enhancements:</p>
 </div>
@@ -2484,7 +2634,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>9.2. dessert-core-0.5.0</h3>
+<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>9.3. dessert-core-0.5.0</h3>
 <div class="paragraph">
 <p>This feature release primarily adds support for the JPMS, even for JDK 8 and older:</p>
 </div>
@@ -2519,7 +2669,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>9.3. dessert-core-0.4.3</h3>
+<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>9.4. dessert-core-0.4.3</h3>
 <div class="paragraph">
 <p>Preparation for 0.5.0:</p>
 </div>
@@ -2541,7 +2691,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>9.4. dessert-core-0.4.2</h3>
+<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>9.5. dessert-core-0.4.2</h3>
 <div class="paragraph">
 <p>Bugfix-release:</p>
 </div>
@@ -2554,7 +2704,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>9.5. dessert-core-0.4.1</h3>
+<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>9.6. dessert-core-0.4.1</h3>
 <div class="paragraph">
 <p>Some minor changes:</p>
 </div>
@@ -2578,7 +2728,7 @@ improves the performance if a package has many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>9.6. dessert-core-0.4.0</h3>
+<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>9.7. dessert-core-0.4.0</h3>
 <div class="paragraph">
 <p>Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
 have been changed. The project has been renamed to dessert-core and everything that does not belong
@@ -2618,7 +2768,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>9.7. Older Releases</h3>
+<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>9.8. Older Releases</h3>
 <div class="paragraph">
 <p>See <a href="https://github.com/hajo70/dessert-core/releases">GitHub releases</a>.</p>
 </div>
@@ -2646,7 +2796,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-14 20:57:56 UTC
+Last updated 2022-07-16 16:53:31 UTC
 </div>
 </div>
 </body>
