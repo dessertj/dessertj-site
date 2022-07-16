@@ -1,5 +1,17 @@
 == Release Notes
 
+=== dessert-core-0.5.2
+
+Minor additions and bugfixes:
+
+- Assertions method aliases added for using plural in assertions.
+- Alias `assertThatSlice` added for `dessert`.
+- Bugfix: `isLayeredStrict` does not skip first slice anymore.
+- Bugfix: Doesn't log warning for versioned duplicates in multi-release jars.
+- Bugfix: Encoded URL's in within Manifest Class-Path entries will be resolved correctly.
+- Javadocs added and typos fixed.
+- Documentation: Tutorial replaced by practical guide.
+
 === dessert-core-0.5.1
 
 Bugfixes and minor enhancements:

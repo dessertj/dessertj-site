@@ -67,6 +67,8 @@ The methods `plus` and `minus` can be used do create new slices from existing sl
 The most important methods for slice assertions are `doesNotUse` and `usesOnly`.
 Both accept more than one slice.
 
+To find out more read the <<Practical Guide>>.
+
 === First Modules Test
 
 With dessert projects can profit form the Java Platform Module System (JPMS), even

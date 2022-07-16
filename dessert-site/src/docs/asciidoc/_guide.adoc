@@ -515,7 +515,73 @@ in the `AssertionError` message.
 === Defining a custom classpath
 
 By default, the `Classpath` is based on the path defined by the _java.class.path_ system property.
-This fits most cases, but there might be circumstances where this is not suitable.
-See <<Class resolving>> on how you can define your own custom classpath.
-Then define a custom Classpath that contains all elements of the _java.class.path_ system property
-in reverse order. Check if your tests produce the same results.
+For most use-cases that's what you want, but there might be circumstances where this is not suitable.
+`Classpath` uses a `ClassResolver` to determine the locations it looks for classes.
+`ClassResolver` has static factory methods for most common use cases, for example:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=customClasspath]
+----
+
+The code above defines a `Classpath` that contains only the _classes_ directories of the current class-path.
+
+CAUTION: Never use different `Classpath` instances in a _dessert_ test. The result of `Slice` operations
+and assertions is undefined if the slices originate from different `Classpath` instances and the
+behaviour may change over time.
+
+A  `Classpath`, that does not contain all classes used for an application, has some restrictions.
+For example, assertions using name patterns do work:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=pattern]
+----
+
+NOTE: `Classpath` implements the `Slice` interfaces, thus `assertThatSlice` can be called
+with `customClasspath`.
+
+But assertions, that need access to the .class file, will fail:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=class]
+----
+
+The code above will throw:
+----
+java.lang.IllegalArgumentException: org.junit.jupiter.api.Test not found within this classpath.
+----
+
+To see all locations, where classes are searched for, you might use:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=slowDump]
+----
+
+The code above is very slow, because it iterates over all classes, rather use
+`ClassResolver.getPath()`:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=fastDump]
+----
+
+To see all locations used by default you can use:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=dumpDefault]
+----
+
+The code above lists all locations where a `Classpath` instance, created with the default-constructor,
+searches for classes.
+
+You may even use the default `Classpath` to determine the location of .jar files, so that you
+can build a custom `Classpath`:
+
+[source, java, indent=0]
+----
+include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=junitClasspath]
+----

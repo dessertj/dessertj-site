@@ -3,8 +3,9 @@
 == Introduction
 
 The name *dessert* comes from **de**pendency a**ssert**.
-Hence, *dessert* is library for unit-tests to check the dependencies between classes.
-It can be used to clean up the architecture of a software and to ensure it remains clean.
+Hence, *dessert* is a library for unit-tests to check dependencies between classes.
+It can be used to clean up the architecture of a software produkt
+and to ensure it remains clean.
 
 When you describe architecture requirements as unit-tests each
 violation will turn on a red traffic-light on your CI-pipeline.
@@ -13,7 +14,7 @@ attention within your team. Over time this improves the quality of
 your architecture.
 
 An architecture describes a complex system by breaking it apart
-into smaller pieces and specifying the relations to or
+into smaller pieces. Then it specifies the relations to or
 interactions with the other pieces of the system.
 In an implementation of the system the relations
 or interactions show up as dependencies. Hence, checking
@@ -44,7 +45,7 @@ Therefore, the `Classpath` has different methods to get a `Slice` from it.
 Just imagine the `Classpath` to be big cake you have to slice down.
 Thus the most import concept of _dessert_ is the `Slice`.
 
-The requirement is expressed with a fluent API starting with the static
+Architecture requirements are expressed with a fluent API starting with the static
 `SliceAssertions` method `assertThatSlice`. The application code to
 check is the parameter of this method. Next comes the requirement, which
 is one of the methods `doesNotUse` or `usesOnly`. The parameter(s) of
