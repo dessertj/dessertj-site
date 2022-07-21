@@ -3,7 +3,7 @@
 
 = Dessert Dependency Assertion Library for Java
 
-A library for unit-tests to check the dependencies between classes.
+A library for unit-tests to check dependencies between classes.
 
 [cols="1,2"]
 .Resources on GitHub
