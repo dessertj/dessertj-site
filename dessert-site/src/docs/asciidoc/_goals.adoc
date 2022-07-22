@@ -4,8 +4,8 @@ If you're considering to use _dessert_ you probably have problems with dependenc
 Hence the most important design goal was to not introduce any additional dependency
 that might cause you a headache.
 
-* No other dependencies but pure java
-* Support a wide range of java versions an execution environments
+* No other dependencies but pure java (no 3rd party libraries required)
+* Support a wide range of java versions and execution environments
 * Easy and seamless integration with other testing or assertion frameworks
 * Simple and intuitive API (motivated by https://joel-costigliola.github.io/assertj/[AssertJ])
 * Assertions should be robust against refactorings (no strings for class- or package names required)

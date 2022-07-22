@@ -113,7 +113,7 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectu
 Of course, `block`, `dep1` and `dep2` are slices. Within the `usesOnly` all dependencies
 that `block` has, must be listed. Usually there are many common dependencies like Java SE
 classes, logging API's or standard libraries used everywhere in your application.
-For this purpose you can define an instances variable that you can use all over your
+For this purpose you can define an instance variable that you can use all over your
 architecture test:
 
 [source, java, indent=0]
@@ -147,7 +147,7 @@ IMPORTANT: All slices used for an assertion must stem from the same `Classpath` 
 Libraries implemented with the Java Platform Module System (JPMS) explicitly list the
 exported packages. These packages form the public API of a library. Every thing else
 is internal and subject to change without notice. Hence, you want to ensure
-your building blocks use only the public API. One way to achieve this is
+your building blocks use only the public API. One way to achieve this, is
 using the JPMS for your project. But the JPMS is a bit cumbersome especially when
 it comes to testing. Therefore, it's not that wide-spread.
 
@@ -280,8 +280,8 @@ nightmare if you have to change a software with big intertwined cycles.
 
 Dessert can detect cycles between any set of slices (remember: a `Clazz` is a `Slice`, too).
 Sometimes it's hard and unnecessary to prevent class cycles, but package-cycles are a clear
-indicator for design flaws. There is always a clean design that without package-cycles.
-Use the following code to assert that some building block `block` has no package-cycles:
+indicator for design flaws. There is always a clean design without package-cycles.
+Use the following code to assert that some building block `block` has no package-cycle:
 
 [source, java, indent=0]
 ----
@@ -370,9 +370,9 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags
 
 === Keeping vertical slices apart
 
-Big applications, sometimes called _monolith_, are used be different stakeholders for
+Big applications, sometimes called _monolith_, are used by different stakeholders for
 very different use-cases. Image some stamp-shop where a customer can buy stamps. The shop-owner
-mast be able to add new offerings and update prices. An office clerk handles the orders
+must be able to add new offerings and update prices. An office clerk handles the orders
 and sends the stamps to customer. Once a month the shop-owner needs to get some statistics.
 Hence, an application consists of verify different and hopefully independent parts
 (typically there is no 1:1 mapping between use-case and part, that's why I name it part).
