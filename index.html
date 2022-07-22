@@ -557,12 +557,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core">0.5.2-SNAPSHOT</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core">0.5.3-SNAPSHOT</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hajo70.github.io/dessert-site/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hajo70.github.io/dessert-core/index.html">javadoc</a></p></td>
 </tr>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.1">0.5.1</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.2">0.5.2</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessert.spricom.de/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessert.spricom.de/apidocs/index.html">javadoc</a></p></td>
 </tr>
@@ -583,7 +583,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
     &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
-    &lt;version&gt;0.5.1&lt;/version&gt;
+    &lt;version&gt;0.5.2&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -599,7 +599,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
     &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
-    &lt;version&gt;0.5.2-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;0.5.3-SNAPSHOT&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -1462,7 +1462,7 @@ this with the <code>usesOnly</code> assertion:</p>
 <p>Of course, <code>block</code>, <code>dep1</code> and <code>dep2</code> are slices. Within the <code>usesOnly</code> all dependencies
 that <code>block</code> has, must be listed. Usually there are many common dependencies like Java SE
 classes, logging API&#8217;s or standard libraries used everywhere in your application.
-For this purpose you can define an instances variable that you can use all over your
+For this purpose you can define an instance variable that you can use all over your
 architecture test:</p>
 </div>
 <div class="listingblock">
@@ -1542,7 +1542,7 @@ All slices used for an assertion must stem from the same <code>Classpath</code> 
 <p>Libraries implemented with the Java Platform Module System (JPMS) explicitly list the
 exported packages. These packages form the public API of a library. Every thing else
 is internal and subject to change without notice. Hence, you want to ensure
-your building blocks use only the public API. One way to achieve this is
+your building blocks use only the public API. One way to achieve this, is
 using the JPMS for your project. But the JPMS is a bit cumbersome especially when
 it comes to testing. Therefore, it&#8217;s not that wide-spread.</p>
 </div>
@@ -1858,8 +1858,8 @@ nightmare if you have to change a software with big intertwined cycles.</p>
 <div class="paragraph">
 <p>Dessert can detect cycles between any set of slices (remember: a <code>Clazz</code> is a <code>Slice</code>, too).
 Sometimes it&#8217;s hard and unnecessary to prevent class cycles, but package-cycles are a clear
-indicator for design flaws. There is always a clean design that without package-cycles.
-Use the following code to assert that some building block <code>block</code> has no package-cycles:</p>
+indicator for design flaws. There is always a clean design without package-cycles.
+Use the following code to assert that some building block <code>block</code> has no package-cycle:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1977,9 +1977,9 @@ together with all its inner-classes:</p>
 <div class="sect2">
 <h3 id="keeping-vertical-slices-apart"><a class="anchor" href="#keeping-vertical-slices-apart"></a>4.8. Keeping vertical slices apart</h3>
 <div class="paragraph">
-<p>Big applications, sometimes called <em>monolith</em>, are used be different stakeholders for
+<p>Big applications, sometimes called <em>monolith</em>, are used by different stakeholders for
 very different use-cases. Image some stamp-shop where a customer can buy stamps. The shop-owner
-mast be able to add new offerings and update prices. An office clerk handles the orders
+must be able to add new offerings and update prices. An office clerk handles the orders
 and sends the stamps to customer. Once a month the shop-owner needs to get some statistics.
 Hence, an application consists of verify different and hopefully independent parts
 (typically there is no 1:1 mapping between use-case and part, that&#8217;s why I name it part).
@@ -2426,10 +2426,10 @@ that might cause you a headache.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>No other dependencies but pure java</p>
+<p>No other dependencies but pure java (no 3rd party libraries required)</p>
 </li>
 <li>
-<p>Support a wide range of java versions an execution environments</p>
+<p>Support a wide range of java versions and execution environments</p>
 </li>
 <li>
 <p>Easy and seamless integration with other testing or assertion frameworks</p>
@@ -2796,7 +2796,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-21 21:11:02 UTC
+Last updated 2022-07-22 20:39:28 UTC
 </div>
 </div>
 </body>
