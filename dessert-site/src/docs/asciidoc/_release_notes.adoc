@@ -1,5 +1,11 @@
 == Release Notes
 
+=== dessert-core-0.5.3
+
+Bugfix-release:
+
+- Return same URI as ClassLoader for JDK classes by removing modules prefix.
+
 === dessert-core-0.5.2
 
 Minor additions and bugfixes:
