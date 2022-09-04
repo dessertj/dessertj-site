@@ -1,5 +1,13 @@
 == Release Notes
 
+=== dessert-core-0.5.4
+
+Performance improvement:
+
+- Does not resolve all classes of a deferred slice to check whether one
+  class belongs to the slice. This brings a huge performance boost for
+  library slices given by name-patterns that comprise many classes.
+
 === dessert-core-0.5.3
 
 Bugfix-release:

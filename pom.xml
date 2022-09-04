@@ -13,13 +13,13 @@
 
     <groupId>de.spricom.dessert</groupId>
     <artifactId>dessert-site-parent</artifactId>
-    <version>0.5.4-SNAPSHOT</version>
+    <version>0.5.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <java.version>17</java.version>
         <dessert-java.version>18</dessert-java.version>
-        <dessert-release.version>0.5.3</dessert-release.version>
+        <dessert-release.version>0.5.4</dessert-release.version>
     </properties>
 
     <modules>
