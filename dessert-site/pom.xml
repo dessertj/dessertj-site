@@ -7,13 +7,13 @@
     <parent>
         <groupId>de.spricom.dessert</groupId>
         <artifactId>dessert-site-parent</artifactId>
-        <version>0.5.5-SNAPSHOT</version>
+        <version>0.5.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>dessert-site</artifactId>
 
     <properties>
-        <snapshot-version>0.5.5-SNAPSHOT</snapshot-version>
+        <snapshot-version>0.5.6-SNAPSHOT</snapshot-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>15</maven.compiler.source>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>de.spricom.dessert</groupId>
             <artifactId>dessert-sample</artifactId>
-            <version>0.5.5-SNAPSHOT</version>
+            <version>0.5.6-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>

@@ -1,5 +1,12 @@
 == Release Notes
 
+=== dessert-core-0.5.5
+
+Bugfix-release:
+
+- Does not recurse into subpackages of xx.yy when resolving name patterns like '..xx.yy.*'.
+- Performance for slice.slice(pattern).slice(pattern) has been improved.
+
 === dessert-core-0.5.4
 
 Performance improvement:
