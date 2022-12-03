@@ -4,8 +4,22 @@
 
 The name *dessert* comes from **de**pendency a**ssert**.
 Hence, *dessert* is a library for unit-tests to check dependencies between classes.
-It can be used to clean up the architecture of a software produkt
-and to ensure it remains clean.
+It's used to keep an architecture clean.
+
+Simply said an architecture is something you can express with
+a https://en.wikipedia.org/wiki/Block_diagram[block diagram],
+that is a diagram with blocks and arrows between them.
+A block is an arbitrary part of a software-system. The arrows show the
+dependencies between the blocks.
+
+Dessert provides an API to write down such block diagrams in Java code:
+The `Slice` interface represents a block. Dessert has many ways
+to specify what belongs to such a block.
+Dessert's assertion API expresses the dependencies between the block.
+
+Can you see the advantage? If you use this API to describe your
+architecture within a unit-test, it will ensure reality matches
+the design each time the test is run.
 
 When you describe architecture requirements as unit-tests each
 violation will turn on a red traffic-light on your CI-pipeline.

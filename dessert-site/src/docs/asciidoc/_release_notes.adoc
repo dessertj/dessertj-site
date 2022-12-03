@@ -1,5 +1,13 @@
 == Release Notes
 
+=== dessert-core-0.5.6 (coming soon)
+
+Minor additions:
+- Documentation points to Java 19.
+- Tests updated to run with Java 19.
+- Minor changes in documentation
+- Slice.plus and Slice.minus directly accept classes.
+
 === dessert-core-0.5.5
 
 Bugfix-release:
