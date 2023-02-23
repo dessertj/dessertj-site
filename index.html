@@ -1192,12 +1192,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
+	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
 	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo
-de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar</pre>
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2576,6 +2576,9 @@ cannot be detected in the .class file anymore.
 <p>Double-scan of Jar-Files to reduce open file-handles, memory-consumption and startup-time</p>
 </li>
 <li>
+<p>Slice-Methods plus und minus for Java-Classes.</p>
+</li>
+<li>
 <p>Performance improvements by optimized pattern-matching and more lazy evaluation</p>
 </li>
 <li>
@@ -2603,12 +2606,28 @@ cannot be detected in the .class file anymore.
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="dessert-core-0-5-6-coming-soon"><a class="anchor" href="#dessert-core-0-5-6-coming-soon"></a>9.1. dessert-core-0.5.6 (coming soon)</h3>
-<div class="paragraph">
-<p>Minor additions:
-- Documentation points to Java 19.
-- Tests updated to run with Java 19.
-- Minor changes in documentation
-- Slice.plus and Slice.minus directly accept classes.</p>
+<div class="ulist">
+<div class="title">Minor additions:</div>
+<ul>
+<li>
+<p>Documentation points to Java 19.</p>
+</li>
+<li>
+<p>Tests updated to run with Java 19.</p>
+</li>
+<li>
+<p>Minor changes in documentation</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Bugfix:</div>
+<ul>
+<li>
+<p>Adding path to ClassResolver does not throw NPE when threre are
+JDK-Modules on the class-path.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -2871,7 +2890,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-12-03 15:31:55 UTC
+Last updated 2023-02-23 07:08:48 UTC
 </div>
 </div>
 </body>
