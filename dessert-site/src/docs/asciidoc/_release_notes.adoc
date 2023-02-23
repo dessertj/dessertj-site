@@ -2,11 +2,14 @@
 
 === dessert-core-0.5.6 (coming soon)
 
-Minor additions:
+.Minor additions:
 - Documentation points to Java 19.
 - Tests updated to run with Java 19.
 - Minor changes in documentation
-- Slice.plus and Slice.minus directly accept classes.
+
+.Bugfix:
+- Adding path to ClassResolver does not throw NPE when threre are
+  JDK-Modules on the class-path.
 
 === dessert-core-0.5.5
 

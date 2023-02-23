@@ -3,6 +3,7 @@
 . Removal of all deprecated classes and methods
 . Virtual Clazzes (a view on specific methods or fields of a Clazz)
 . Double-scan of Jar-Files to reduce open file-handles, memory-consumption and startup-time
+. Slice-Methods plus und minus for Java-Classes.
 . Performance improvements by optimized pattern-matching and more lazy evaluation
 . Considering related classes when processing predicates to be able to recognize:
   * Any ancestor of the super classes or an implemented interface
