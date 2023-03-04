@@ -494,7 +494,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#plans-for-dessert-core-0-6-x">8. Plans for dessert-core 0.6.x</a></li>
 <li><a href="#release-notes">9. Release Notes</a>
 <ul class="sectlevel2">
-<li><a href="#dessert-core-0-5-6-coming-soon">9.1. dessert-core-0.5.6 (coming soon)</a></li>
+<li><a href="#dessert-core-0-5-6">9.1. dessert-core-0.5.6</a></li>
 <li><a href="#dessert-core-0-5-5">9.2. dessert-core-0.5.5</a></li>
 <li><a href="#dessert-core-0-5-4">9.3. dessert-core-0.5.4</a></li>
 <li><a href="#dessert-core-0-5-3">9.4. dessert-core-0.5.3</a></li>
@@ -561,12 +561,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core">0.5.6-SNAPSHOT</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core">0.5.7-SNAPSHOT</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hajo70.github.io/dessert-site/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hajo70.github.io/dessert-core/index.html">javadoc</a></p></td>
 </tr>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.5">0.5.5</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.6">0.5.6</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessert.spricom.de/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessert.spricom.de/apidocs/index.html">javadoc</a></p></td>
 </tr>
@@ -587,7 +587,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
     &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
-    &lt;version&gt;0.5.5&lt;/version&gt;
+    &lt;version&gt;0.5.6&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -603,7 +603,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
     &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
-    &lt;version&gt;0.5.6-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;0.5.7-SNAPSHOT&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -1192,12 +1192,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
+	CycleDump -&gt; Foo
 de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
 	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
-	Bar -&gt; CycleDump
-de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo</pre>
+	Bar -&gt; CycleDump</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2605,7 +2605,7 @@ cannot be detected in the .class file anymore.
 <h2 id="release-notes"><a class="anchor" href="#release-notes"></a>9. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessert-core-0-5-6-coming-soon"><a class="anchor" href="#dessert-core-0-5-6-coming-soon"></a>9.1. dessert-core-0.5.6 (coming soon)</h3>
+<h3 id="dessert-core-0-5-6"><a class="anchor" href="#dessert-core-0-5-6"></a>9.1. dessert-core-0.5.6</h3>
 <div class="ulist">
 <div class="title">Minor additions:</div>
 <ul>
@@ -2890,7 +2890,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-23 07:08:48 UTC
+Last updated 2023-03-04 20:23:07 UTC
 </div>
 </div>
 </body>
