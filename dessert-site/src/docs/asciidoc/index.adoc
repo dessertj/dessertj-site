@@ -30,8 +30,8 @@ A library for unit-tests to check dependencies between classes.
 |https://hajo70.github.io/dessert-core/index.html[javadoc]
 
 |https://github.com/hajo70/dessert-core/releases/tag/dessert-core-{release-version}[{release-version}]
-|https://dessert.spricom.de/index.html[reference]
-|https://dessert.spricom.de/apidocs/index.html[javadoc]
+|https://dessertj.org/index.html[reference]
+|https://dessertj.org/apidocs/index.html[javadoc]
 |===
 
 include::_getting_started.adoc[]
