@@ -567,8 +567,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core/releases/tag/dessert-core-0.5.6">0.5.6</a></p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessert.spricom.de/index.html">reference</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessert.spricom.de/apidocs/index.html">javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.org/index.html">reference</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.org/apidocs/index.html">javadoc</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -1192,12 +1192,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
+	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
 	CycleDump -&gt; Foo
 de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar
-de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
-	Bar -&gt; CycleDump</pre>
+	Foo -&gt; Bar</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1571,7 +1571,7 @@ it comes to testing. Therefore, it&#8217;s not that wide-spread.</p>
 <p>With <em>dessert</em> you can profit from the JPMS even if you are not using it for your
 project. You still can make sure that your building blocks use only exported packages.
 To access module information you need a
-<a href="https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/modules/ModuleRegistry.html">ModuleRegistry</a>:</p>
+<a href="https://dessertj.org/apidocs/index.html?de/spricom/dessert/modules/ModuleRegistry.html">ModuleRegistry</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1581,8 +1581,8 @@ private static final JavaModules java = new JavaModules(mr);</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <a href="https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/modules/fixed/JavaModules.html">JavaModules</a>
-and <a href="https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/modules/fixed/JdkModules.html">JdkModules</a>
+<p>The <a href="https://dessertj.org/apidocs/index.html?de/spricom/dessert/modules/fixed/JavaModules.html">JavaModules</a>
+and <a href="https://dessertj.org/apidocs/index.html?de/spricom/dessert/modules/fixed/JdkModules.html">JdkModules</a>
 define constants for the modules of the <em>Java Platform, Standard Edition (Java SE)</em> and
 the <em>Java Development Kit (JDK)</em> respectively. To ensure some building block uses only the exported
 packages of certain Java SE modules, you simply write:</p>
@@ -1802,7 +1802,7 @@ For example
 <a href="https://junit.org/junit5/docs/current/user-guide/">JUnit 5</a>
 uses <a href="https://github.com/apiguardian-team/apiguardian">@API Guardian</a>
 for that purpose. Therefore, dessert provides the
-<a href="https://dessert.spricom.de/apidocs/index.html?de/spricom/dessert/util/AnnotationPattern.html">AnnotationPattern</a>:</p>
+<a href="https://dessertj.org/apidocs/index.html?de/spricom/dessert/util/AnnotationPattern.html">AnnotationPattern</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2890,7 +2890,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-04 20:23:07 UTC
+Last updated 2023-03-11 12:00:41 UTC
 </div>
 </div>
 </body>
