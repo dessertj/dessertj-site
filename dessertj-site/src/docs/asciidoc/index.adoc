@@ -26,8 +26,8 @@ A library for unit-tests to check dependencies between classes.
 |Release|Reference Doc.|API Doc.
 
 |https://github.com/dessertj/dessertj-core[{snapshot-version}]
-|https://dessertj.github.io/dessert-site/index.html[reference]
-|https://dessertj.github.io/dessert-core/index.html[javadoc]
+|https://dessertj.github.io/dessertj-site/index.html[reference]
+|https://dessertj.github.io/dessertj-core/index.html[javadoc]
 
 |https://github.com/hajo70/dessert-core/releases/tag/dessert-core-{release-version}[{release-version}]
 |https://dessertj.org/index.html[reference]
