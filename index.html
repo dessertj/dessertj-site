@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
-<title>Dessert Dependency Assertion Library for Java</title>
+<title>DessertJ Dependency Assertion Library for Java</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,7 +441,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Dessert Dependency Assertion Library for Java</h1>
+<h1>DessertJ Dependency Assertion Library for Java</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -488,10 +488,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#frequently-asked-questsions">7. Frequently asked Questsions</a>
 <ul class="sectlevel2">
 <li><a href="#when-will-be-there-a-1-0-version">7.1. When will be there a 1.0 version?</a></li>
-<li><a href="#why-does-dessert-find-more-dependencies-than-jdeps">7.2. Why does dessert find more dependencies than <em>jdeps</em>?</a></li>
+<li><a href="#why-does-dessertj-find-more-dependencies-than-jdeps">7.2. Why does dessertj find more dependencies than <em>jdeps</em>?</a></li>
 </ul>
 </li>
-<li><a href="#plans-for-dessert-core-0-6-x">8. Plans for dessert-core 0.6.x</a></li>
+<li><a href="#plans-for-dessertj-core-0-6-x">8. Plans for dessertj-core 0.6.x</a></li>
 <li><a href="#release-notes">9. Release Notes</a>
 <ul class="sectlevel2">
 <li><a href="#dessert-core-0-5-6">9.1. dessert-core-0.5.6</a></li>
@@ -580,12 +580,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="maven-dependency"><a class="anchor" href="#maven-dependency"></a>1.1. Maven Dependency</h3>
 <div class="paragraph">
-<p>Add the <em>dessert-core</em> dependency to your project:</p>
+<p>Add the <em>dessertj-core</em> dependency to your project:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.dessertj&lt;/groupId&gt;
+    &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
     &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
     &lt;version&gt;0.5.6&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
@@ -643,7 +643,7 @@ void willFail() {
 </div>
 </div>
 <div class="paragraph">
-<p>Each <em>dessert</em> test starts with the <code>Classpath</code>. <code>Classpath</code>, <code>Clazz</code> and <code>Root</code> all implement
+<p>Each <em>dessertj</em> test starts with the <code>Classpath</code>. <code>Classpath</code>, <code>Clazz</code> and <code>Root</code> all implement
 the <code>Slice</code> interface. Imagine the <code>Classpath</code> to be a cake that has to be sliced down to
 suitable pieces. The <code>Clazz</code> is the smallest possible piece, it represents a single .class file.
 A <code>Root</code> is a classes directory, a .jar file or a JDK module. <code>SliceAssertion</code> provides a
@@ -688,8 +688,8 @@ Both accept more than one slice.</p>
 <div class="sect2">
 <h3 id="first-modules-test"><a class="anchor" href="#first-modules-test"></a>1.4. First Modules Test</h3>
 <div class="paragraph">
-<p>With dessert projects can profit form the Java Platform Module System (JPMS), even
-if they don&#8217;t use modules. Therefore, dessert provides an easy and intuitive module API:</p>
+<p>With dessertj projects can profit form the Java Platform Module System (JPMS), even
+if they don&#8217;t use modules. Therefore, dessertj provides an easy and intuitive module API:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -739,8 +739,8 @@ are used from the modules listed.</p>
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>2. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The name <strong>dessert</strong> comes from <strong>de</strong>pendency a<strong>ssert</strong>.
-Hence, <strong>dessert</strong> is a library for unit-tests to check dependencies between classes.
+<p>The name <strong>dessertj</strong> comes from <strong>de</strong>pendency a<strong>ssert</strong> for <strong>J</strong>ava.
+Hence, <strong>dessertj</strong> is a library for unit-tests to check dependencies between classes.
 It&#8217;s used to keep an architecture clean.</p>
 </div>
 <div class="paragraph">
@@ -751,10 +751,10 @@ A block is an arbitrary part of a software-system. The arrows show the
 dependencies between the blocks.</p>
 </div>
 <div class="paragraph">
-<p>Dessert provides an API to write down such block diagrams in Java code:
-The <code>Slice</code> interface represents a block. Dessert has many ways
+<p>DessertJ provides an API to write down such block diagrams in Java code:
+The <code>Slice</code> interface represents a block. DessertJ has many ways
 to specify what belongs to such a block.
-Dessert&#8217;s assertion API expresses the dependencies between the block.</p>
+DessertJ&#8217;s assertion API expresses the dependencies between the block.</p>
 </div>
 <div class="paragraph">
 <p>Can you see the advantage? If you use this API to describe your
@@ -778,7 +778,7 @@ architecture requirements can be reduced to dependency checking.</p>
 </div>
 <div class="paragraph">
 <p>The goal of dependency checking is finding unwanted dependencies.
-Dessert does this be analyzing .class files.
+DessertJ does this be analyzing .class files.
 The java compiler generates a .class file for each
 class, interface, annotation, record or enum and their inner variants.</p>
 </div>
@@ -795,14 +795,14 @@ A java source file can define more than one class.
 </table>
 </div>
 <div class="paragraph">
-<p>In <em>dessert</em>  a .class file is represented by <code>Clazz</code>.
-The <code>Clazz</code> is the smallest unit of granularity <em>dessert</em> can work with. The biggest
+<p>In <em>dessertj</em>  a .class file is represented by <code>Clazz</code>.
+The <code>Clazz</code> is the smallest unit of granularity <em>dessertj</em> can work with. The biggest
 unit is the <code>Classpath</code>. The <code>Classpath</code> contains all classes available for an application,
 these are the classes of the application code, all classes of its dependencies and
 all JDK classes.</p>
 </div>
 <div class="paragraph">
-<p>A <em>dessert</em> based test checks dependency assertions. Each dependency assertion requires
+<p>A <em>dessertj</em> based test checks dependency assertions. Each dependency assertion requires
 three parts:</p>
 </div>
 <div class="olist arabic">
@@ -822,7 +822,7 @@ three parts:</p>
 <p>Both the application code and the dependencies are a slice of classes taken from the class-path.
 Therefore, the <code>Classpath</code> has different methods to get a <code>Slice</code> from it.
 Just imagine the <code>Classpath</code> to be big cake you have to slice down.
-Thus the most import concept of <em>dessert</em> is the <code>Slice</code>.</p>
+Thus the most import concept of <em>dessertj</em> is the <code>Slice</code>.</p>
 </div>
 <div class="paragraph">
 <p>Architecture requirements are expressed with a fluent API starting with the static
@@ -832,7 +832,7 @@ is one of the methods <code>doesNotUse</code> or <code>usesOnly</code>. The para
 these methods are the dependencies the assertion is about.</p>
 </div>
 <div class="paragraph">
-<p>Hence, a complete <em>dessert</em> test looks like this:</p>
+<p>Hence, a complete <em>dessertj</em> test looks like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -870,14 +870,14 @@ class SlicingSampleTest {
 <div class="sect2">
 <h3 id="slices"><a class="anchor" href="#slices"></a>3.1. Slices</h3>
 <div class="paragraph">
-<p>When using dessert you work most of the time with some <code>Slice</code> implementation.
+<p>When using dessertj you work most of the time with some <code>Slice</code> implementation.
 Mostly this is one of:</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Slice</dt>
 <dd>
-<p>Dessert is all about slices. A slice is an arbitrary set of .class files.</p>
+<p>DessertJ is all about slices. A slice is an arbitrary set of .class files.</p>
 </dd>
 <dt class="hdlist1">Clazz</dt>
 <dd>
@@ -885,7 +885,7 @@ Mostly this is one of:</p>
 </dd>
 <dt class="hdlist1">Classpath</dt>
 <dd>
-<p>The <code>Classpath</code> is the starting point of every <em>dessert</em> test and the biggest
+<p>The <code>Classpath</code> is the starting point of every <em>dessertj</em> test and the biggest
 possible slice.
 <strong>Warning: Never try to combine slices from different Classpath instances!</strong></p>
 </dd>
@@ -901,7 +901,7 @@ For a JPMS module these are all unqualified exports.</p>
 </dl>
 </div>
 <div class="paragraph">
-<p>The following diagram gives an overview of the implementations provided by dessert:</p>
+<p>The following diagram gives an overview of the implementations provided by dessertj:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -927,11 +927,11 @@ If this does not work either, it creates a placeholder <code>Clazz</code> that c
 set of classes. A slice may also be defined by a name-pattern or some predicate. For such a slice one
 can use the <code>contains</code> method to check whether a <code>Clazz</code> belongs to it, thus the class fulfills
 all predicates. But calling <code>getClazzes</code> will throw a <code>ResolveException</code>. This happens if the
-<code>Classpath</code> contains none of the classes belonging to the slice. Internally <em>dessert</em> works with such
+<code>Classpath</code> contains none of the classes belonging to the slice. Internally <em>dessertj</em> works with such
 predicate based slices as long as <code>getClazzes</code> has not been called, for performance reasons.</p>
 </div>
 <div class="paragraph">
-<p><em>Dessert</em> has been optimized to resolve name-pattern very fast. Hence, it&#8217;s a good practice to first
+<p><em>DessertJ</em> has been optimized to resolve name-pattern very fast. Hence, it&#8217;s a good practice to first
 slice be name (or <code>packageOf</code>/<code>packageTreeOf</code>) then used predicates to slice-down the slices further.</p>
 </div>
 <div class="paragraph">
@@ -983,7 +983,7 @@ they are exported. The <code>JpmsModule</code> method <code>getExportsTo</code> 
 to some certain module.</p>
 </div>
 <div class="paragraph">
-<p>The module API is fully supported for JDK 8 and earlier. Therefore, dessert comes <code>FixedModule</code>
+<p>The module API is fully supported for JDK 8 and earlier. Therefore, dessertj comes with <code>FixedModule</code>
 definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
 provide modules.</p>
 </div>
@@ -1109,14 +1109,14 @@ SliceAssertions.dessert(assertions).usesNot(slicing.minus(slicingInterfaces));</
 </div>
 <div class="paragraph">
 <p><code>slicingInterfaces</code> contains all public interfaces, enums or annotations of the <code>slicing</code> package within the
-<code>dessert-core</code> library. The assertion checks that the <code>assertions</code> packages uses only these types by asserting
+<code>dessertj-core</code> library. The assertion checks that the <code>assertions</code> packages uses only these types by asserting
 that it uses nothing from the complement. That check will fail, because <code>assertions</code> uses i.e. <code>Clazz</code>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="assertions"><a class="anchor" href="#assertions"></a>3.5. Assertions</h3>
 <div class="paragraph">
-<p>All dessert assertions start with one of the static <code>SliceAssertions</code> methods <code>assertThat</code>
+<p>All dessertj assertions start with one of the static <code>SliceAssertions</code> methods <code>assertThat</code>
 or its alias <code>dessert</code>. These methods return a <code>SliceAssert</code> object with its most important
 methods <code>usesNot</code> and <code>usesOnly</code>. Both methods return a <code>SliceAssert</code> again, so that assertions
 can be queued:</p>
@@ -1317,10 +1317,10 @@ But in that phase no developer will dare to resolve a package cycle, because suc
 fundamental change may break the system and needs thorough re-testing.</p>
 </div>
 <div class="paragraph">
-<p>The <em>dessert</em> library has proved to solve this problem. It&#8217;s simple and intuitive syntax
+<p>The <em>dessertj library has proved to solve this problem. It&#8217;s simple and intuitive syntax
 can be read by any developer. Thus, it&#8217;s an easy way to communicate an architecture
 requirement. Any violation of such a requirement will break the build on your CI system,
-because the corresponding <em>dessert</em> test will fail. Hence, the nose of the
+because the corresponding _dessertj</em> test will fail. Hence, the nose of the
 responsible developer will directly be pointed to the corresponding requirement.
 Now, the only thing you need, is a plausible comment that explains why it is
 important to adhere to that requirement. Over time this will build up
@@ -2440,7 +2440,7 @@ Classpath customClasspath = new Classpath(resolver);</code></pre>
 <h2 id="design-goals-and-features"><a class="anchor" href="#design-goals-and-features"></a>5. Design Goals and Features</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>If you&#8217;re considering to use <em>dessert</em> you probably have problems with dependencies.
+<p>If you&#8217;re considering to use <em>dessertj</em> you probably have problems with dependencies.
 Hence the most important design goal was to not introduce any additional dependency
 that might cause you a headache.</p>
 </div>
@@ -2508,11 +2508,11 @@ Thus its safe to use on big projects with lots of dependencies.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you&#8217;re missing some feature or find a bug then please
-<a href="https://github.com/hajo70/dessert-core/issues/new">open an issue</a> on GibHub.</p>
+<a href="https://github.com/dessertj/dessertj-core/issues/new">open an issue</a> on GibHub.</p>
 </div>
 <div class="paragraph">
 <p>If you have questions the best way to get in contact is
-<a href="https://github.com/hajo70/dessert-core/discussions">discussions</a>.</p>
+<a href="https://github.com/dessertj/dessertj-core/discussions">discussions</a>.</p>
 </div>
 <div class="paragraph">
 <p>If you just want to send (positive) feedback, then send an e-mail to <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>,
@@ -2528,22 +2528,22 @@ but don&#8217;t expect to get an answer, because I&#8217;m doing all this in my 
 <div class="paragraph">
 <p>As along as I don&#8217;t have any feedback of someone who is using this library, there is no reason to keep the
 API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
-If you are using <em>dessert</em> and if you&#8217;re fine with the API then send an e-mail to <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>.
+If you are using <em>dessertj</em> and if you&#8217;re fine with the API then send an e-mail to <a href="mailto:dessert@spricom.de">dessert@spricom.de</a>.
 As soon as there are enough e-mails I&#8217;ll release a 1.0.0 and try to keep the API backwards compatible
 from that moment on.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="why-does-dessert-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessert-find-more-dependencies-than-jdeps"></a>7.2. Why does dessert find more dependencies than <em>jdeps</em>?</h3>
+<h3 id="why-does-dessertj-find-more-dependencies-than-jdeps"><a class="anchor" href="#why-does-dessertj-find-more-dependencies-than-jdeps"></a>7.2. Why does dessertj find more dependencies than <em>jdeps</em>?</h3>
 <div class="paragraph">
-<p>Well, <em>jdeps</em> shows all runtime dependencies whereas dessert shows all compile-time
+<p>Well, <em>jdeps</em> shows all runtime dependencies whereas dessertj shows all compile-time
 dependencies. Hence, if you use a class for which a runtime dependency is missing
 you&#8217;ll get a <code>NoClassDefFoundError</code>. There are dependencies within generics or
 within annotations that were required during compilation but not while using the
 compiled class. For more information
 see <a href="https://bugs.openjdk.java.net/browse/JDK-8134625">JDK-8134625</a>.
 If you want to split a project into modules, then all the compile-time
-dependencies are relevant. Thus, that&#8217;s what dessert operates on.</p>
+dependencies are relevant. Thus, that&#8217;s what dessertj operates on.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -2562,7 +2562,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="plans-for-dessert-core-0-6-x"><a class="anchor" href="#plans-for-dessert-core-0-6-x"></a>8. Plans for dessert-core 0.6.x</h2>
+<h2 id="plans-for-dessertj-core-0-6-x"><a class="anchor" href="#plans-for-dessertj-core-0-6-x"></a>8. Plans for dessertj-core 0.6.x</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -2882,7 +2882,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 <div id="footnotes">
 <hr>
 <div class="footnote" id="_footnotedef_1">
-<a href="#_footnoteref_1">1</a>. See the <a href="https://github.com/hajo70/dessert-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java">dessert-tests</a> project for a corresponding performanc test.
+<a href="#_footnoteref_1">1</a>. See the <a href="https://github.com/dessertj/dessertj-tests/blob/master/dessert-jdeps-tests/src/test/java/de/spricom/dessert/classfile/DessertPerformanceTest.java">dessert-tests</a> project for a corresponding performanc test.
 </div>
 <div class="footnote" id="_footnotedef_2">
 <a href="#_footnoteref_2">2</a>. This has been verified for more that 40000 classes. See <a href="https://github.com/hajo70/dessert-tests">dessert-tests</a> for details. Please   <a href="https://github.com/hajo70/dessert-core/issues/new">open an issue</a>   if you encounter any class for which this is not true.
@@ -2890,7 +2890,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-18 10:34:09 UTC
+Last updated 2023-03-18 10:51:19 UTC
 </div>
 </div>
 </body>
