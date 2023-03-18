@@ -1,6 +1,4 @@
-:sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
-:duplicates-sample-dir: C:\Code\git\dessert\dessert-site\dessert-duplicates-sample
-:icons: font
+include::_attributes.adoc[]
 
 == Practical Guide
 
@@ -34,7 +32,7 @@ architecture awareness across your team.
 === Sample Code
 
 The code fragments below are excerpts of executable unit tests. See the
-https://github.com/hajo70/dessert-site/tree/main/dessert-sample/src/test/java/de/spricom/dessert/guide[dessert-site] project for the full source code.
+https://github.com/hajo70/dessert-site/tree/main/dessert-sample/src/test/java/org/dessertj/guide[dessert-site] project for the full source code.
 
 === Detecting unwanted dependencies
 
@@ -62,7 +60,7 @@ Detecting unwanted dependencies using _dessert_ is as simple as:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DetectingUnwantedDependenciesTest.java[tags=doesNotUse]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DetectingUnwantedDependenciesTest.java[tags=doesNotUse]
 ----
 
 Every developer should be able to read and understand this.
@@ -77,7 +75,7 @@ The starting-point for each `Slice` is the `Classpath`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DetectingUnwantedDependenciesTest.java[tags=cp]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DetectingUnwantedDependenciesTest.java[tags=cp]
 ----
 
 NOTE: The `Classpath` is a `Slice`, too.
@@ -86,14 +84,14 @@ The _something_ is a part of your handwritten code:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DetectingUnwantedDependenciesTest.java[tags=slices]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DetectingUnwantedDependenciesTest.java[tags=slices]
 ----
 
 The _unwanted_ might be something like:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DetectingUnwantedDependenciesTest.java[tags=unwanted]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DetectingUnwantedDependenciesTest.java[tags=unwanted]
 ----
 
 The _something_ and the _unwanted_ examples all specify a 'Slice'. Each of them
@@ -107,7 +105,7 @@ this with the `usesOnly` assertion:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectureTest.java[tags=syntax]
+include::{sample-dir}/src/test/java/org/dessertj/guide/EnforcingArchitectureTest.java[tags=syntax]
 ----
 
 Of course, `block`, `dep1` and `dep2` are slices. Within the `usesOnly` all dependencies
@@ -118,7 +116,7 @@ architecture test:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectureTest.java[tags=common]
+include::{sample-dir}/src/test/java/org/dessertj/guide/EnforcingArchitectureTest.java[tags=common]
 ----
 
 It's good practice to have instances variables for all of your main building blocks and
@@ -127,7 +125,7 @@ dependencies it is allowed to have. Some of these dependencies are other buildin
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/EnforcingArchitectureTest.java[tags=blocks]
+include::{sample-dir}/src/test/java/org/dessertj/guide/EnforcingArchitectureTest.java[tags=blocks]
 ----
 
 NOTE: `Slice` instances are immutable.
@@ -137,7 +135,7 @@ building blocks in a separate class:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/BuildingBlocks.java[tags=code]
+include::{sample-dir}/src/test/java/org/dessertj/guide/BuildingBlocks.java[tags=code]
 ----
 
 IMPORTANT: All slices used for an assertion must stem from the same `Classpath` instance.
@@ -154,29 +152,29 @@ it comes to testing. Therefore, it's not that wide-spread.
 With _dessert_ you can profit from the JPMS even if you are not using it for your
 project. You still can make sure that your building blocks use only exported packages.
 To access module information you need a
-https://dessertj.org/apidocs/index.html?de/spricom/dessert/modules/ModuleRegistry.html[ModuleRegistry]:
+https://dessertj.org/apidocs/index.html?org/dessertj/modules/ModuleRegistry.html[ModuleRegistry]:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=jpms]
+include::{sample-dir}/src/test/java/org/dessertj/guide/JpmsTest.java[tags=jpms]
 ----
 
-The https://dessertj.org/apidocs/index.html?de/spricom/dessert/modules/fixed/JavaModules.html[JavaModules]
-and https://dessertj.org/apidocs/index.html?de/spricom/dessert/modules/fixed/JdkModules.html[JdkModules]
+The https://dessertj.org/apidocs/index.html?org/dessertj/modules/fixed/JavaModules.html[JavaModules]
+and https://dessertj.org/apidocs/index.html?org/dessertj/modules/fixed/JdkModules.html[JdkModules]
 define constants for the modules of the _Java Platform, Standard Edition (Java SE)_ and
 the _Java Development Kit (JDK)_ respectively. To ensure some building block uses only the exported
 packages of certain Java SE modules, you simply write:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=using]
+include::{sample-dir}/src/test/java/org/dessertj/guide/JpmsTest.java[tags=using]
 ----
 
 Any other module can be accessed by name from the `ModuleRegistry`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=module]
+include::{sample-dir}/src/test/java/org/dessertj/guide/JpmsTest.java[tags=module]
 ----
 
 If you want to make sure the internal API of a module is not used, then
@@ -184,7 +182,7 @@ use an assertion like:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/JpmsTest.java[tags=usesNot]
+include::{sample-dir}/src/test/java/org/dessertj/guide/JpmsTest.java[tags=usesNot]
 ----
 
 NOTE: Dessert's module features are available for older Java versions, too.
@@ -201,7 +199,7 @@ The slice operations can be used to create new slices from existing ones:
 |
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=union]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=union]
 ----
 |The resulting slice contains all classes from _slice1_ and all classes from _sice2_.
 An alternative to get the union of slices is the `Slices.of` method.
@@ -209,14 +207,14 @@ An alternative to get the union of slices is the `Slices.of` method.
 |
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=intersection]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=intersection]
 ----
 |The resulting slice contains only the classes found in both slices.
 
 |
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=difference]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=difference]
 ----
 |The resulting slice contains the classes of _slice1_ that don't belong to _slice2_.
 |===
@@ -228,7 +226,7 @@ The `slice` and the `minus` methods have variants that accept patterns or predic
 [source, java, indent=0]
 .Patterns
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=patterns]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=patterns]
 ----
 
 NOTE: Patterns are case-sensitive.
@@ -236,7 +234,7 @@ NOTE: Patterns are case-sensitive.
 [source, java, indent=0]
 .Predicates
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=predicates]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=predicates]
 ----
 
 NOTE: Dessert has been optimized for patterns. Evaluation predicates can be slow.
@@ -246,7 +244,7 @@ This is the implementation used above to find classes that could not be loaded:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=nodef]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=nodef]
 ----
 
 To debug predicates it is very useful to see, what is in a slice. Hence, a method like
@@ -254,7 +252,7 @@ this is very useful:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=dump]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=dump]
 ----
 
 Some libraries use annotations to mark internal or experimental code.
@@ -262,11 +260,11 @@ For example
 https://junit.org/junit5/docs/current/user-guide/[JUnit 5]
 uses https://github.com/apiguardian-team/apiguardian[@API Guardian]
 for that purpose. Therefore, dessert provides the
-https://dessertj.org/apidocs/index.html?de/spricom/dessert/util/AnnotationPattern.html[AnnotationPattern]:
+https://dessertj.org/apidocs/index.html?org/dessertj/util/AnnotationPattern.html[AnnotationPattern]:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DefiningSlicesTest.java[tags=annotations]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DefiningSlicesTest.java[tags=annotations]
 ----
 
 NOTE: Dessert recognizes annotations for retention policy `RUNTIME` and `CLASS`.
@@ -285,7 +283,7 @@ Use the following code to assert that some building block `block` has no package
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=cycle]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=cycle]
 ----
 
 Typically, it's necessary to move classes to resolve a cycle. To be backwards compatible
@@ -294,35 +292,35 @@ ignored, when checking for cycles. A good example for this is JUnit 5:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=junit]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=junit]
 ----
 
 Any collection of slices can be used for cycle detection:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=set]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=set]
 ----
 
 This can be written even shorter:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=enum]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=enum]
 ----
 
 Because each `Clazz` is a `Slice`, detecting class-cycles is as simple as:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=classes]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=classes]
 ----
 
 Even a `Map` can be used to pass the slices to check:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=map]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=map]
 ----
 
 The `partitionByPackage()` method for a `Slice` returns a `Map` of package-names
@@ -331,14 +329,14 @@ can be listed like that:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=list]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=list]
 ----
 
 To show the number of classes in each package use:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=size]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=size]
 ----
 
 Any function that maps a `Clazz` to a string can be used to partition the
@@ -346,7 +344,7 @@ classes of a slice:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=top]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=top]
 ----
 
 The implementation below return the top-level package name for spring-framework
@@ -354,7 +352,7 @@ classes:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=topm]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=topm]
 ----
 
 _Dessert_ comes with some pre-defined slice-partitioners. One of them is
@@ -365,7 +363,7 @@ together with all its inner-classes:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CycleTest.java[tags=host]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CycleTest.java[tags=host]
 ----
 
 === Keeping vertical slices apart
@@ -405,14 +403,14 @@ use _dessert_:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=parts]
+include::{sample-dir}/src/test/java/org/dessertj/guide/VerticalSlicesTest.java[tags=parts]
 ----
 
 The doubly nested loop can be replaced by using _dessert's_ `CombinationUtils`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=combinations]
+include::{sample-dir}/src/test/java/org/dessertj/guide/VerticalSlicesTest.java[tags=combinations]
 ----
 
 === Checking a layered architecture
@@ -435,14 +433,14 @@ _Dessert_ provides convenience methods to check layers:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=layered]
+include::{sample-dir}/src/test/java/org/dessertj/guide/VerticalSlicesTest.java[tags=layered]
 ----
 
 The test above will fail if _application_ uses _commons_. To relax this use:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/VerticalSlicesTest.java[tags=relaxed]
+include::{sample-dir}/src/test/java/org/dessertj/guide/VerticalSlicesTest.java[tags=relaxed]
 ----
 
 === Detecting duplicates
@@ -458,7 +456,7 @@ To prevent duplicates in your application write a test as simple as:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/DuplicatesTest.java[tags=noDuplicates]
+include::{sample-dir}/src/test/java/org/dessertj/guide/DuplicatesTest.java[tags=noDuplicates]
 ----
 
 NOTE: Many JARs contain a `module-info` class in their root package. Make sure to ignore
@@ -469,7 +467,7 @@ have a test that informs you if there are additional duplicates.
 
 [source, java, indent=0]
 ----
-include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=noAdditionalDuplicates]
+include::{duplicates-sample-dir}/src/test/java/org/dessertj/duplicates/ShowDuplicatesTest.java[tags=noAdditionalDuplicates]
 ----
 
 The sample above prints all duplicate classes and the corresponding jars.
@@ -479,14 +477,14 @@ binary differences in the .class file, you can use:
 
 [source, java, indent=0]
 ----
-include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=binary]
+include::{duplicates-sample-dir}/src/test/java/org/dessertj/duplicates/ShowDuplicatesTest.java[tags=binary]
 ----
 
 To list all classes for which there are API differences, you can use:
 
 [source, java, indent=0]
 ----
-include::{duplicates-sample-dir}/src/test/java/de/spricom/dessert/duplicates/ShowDuplicatesTest.java[tags=api]
+include::{duplicates-sample-dir}/src/test/java/org/dessertj/duplicates/ShowDuplicatesTest.java[tags=api]
 ----
 
 === Simulating refactorings
@@ -500,7 +498,7 @@ the removal of a `Clazz` from one slice and the addition to another:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/SimulatingRefactoringsTest.java[tags=simulate]
+include::{sample-dir}/src/test/java/org/dessertj/guide/SimulatingRefactoringsTest.java[tags=simulate]
 ----
 
 The sample shows: If one moved `SomeUtil` from `..stampshop.parts.part3` to
@@ -521,7 +519,7 @@ For most use-cases that's what you want, but there might be circumstances where 
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=customClasspath]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=customClasspath]
 ----
 
 The code above defines a `Classpath` that contains only the _classes_ directories of the current class-path.
@@ -535,7 +533,7 @@ For example, assertions using name patterns do work:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=pattern]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=pattern]
 ----
 
 NOTE: `Classpath` implements the `Slice` interfaces, thus `assertThatSlice` can be called
@@ -545,7 +543,7 @@ But assertions, that need access to the .class file, will fail:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=class]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=class]
 ----
 
 The code above will throw:
@@ -557,7 +555,7 @@ To see all locations, where classes are searched for, you might use:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=slowDump]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=slowDump]
 ----
 
 The code above is very slow, because it iterates over all classes, rather use
@@ -565,14 +563,14 @@ The code above is very slow, because it iterates over all classes, rather use
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=fastDump]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=fastDump]
 ----
 
 To see all locations used by default you can use:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=dumpDefault]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=dumpDefault]
 ----
 
 The code above lists all locations where a `Classpath` instance, created with the default-constructor,
@@ -583,5 +581,5 @@ can build a custom `Classpath`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/guide/CustomClasspathTest.java[tags=junitClasspath]
+include::{sample-dir}/src/test/java/org/dessertj/guide/CustomClasspathTest.java[tags=junitClasspath]
 ----

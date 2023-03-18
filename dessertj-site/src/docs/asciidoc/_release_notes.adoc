@@ -101,7 +101,7 @@ to the core functionality (i.e. DuplicateFinder) has been deleted.
 
 The most prominent changes are:
 
-- New maven coordinates: de.spricom.dessert:dessert-core
+- New maven coordinates: org.dessertj:dessert-core
 - Removal of DuplicateFinder and corresponding traversal API
 - Support for any Classfile-Format up to Java 15
 - Multi-Release JARs don't cause an error (but version specific classes are ignored)

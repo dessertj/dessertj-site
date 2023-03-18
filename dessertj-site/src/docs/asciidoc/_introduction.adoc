@@ -1,4 +1,4 @@
-:sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
+include::_attributes.adoc[]
 
 == Introduction
 
@@ -69,5 +69,5 @@ Hence, a complete _dessertj_ test looks like this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/intro/SlicingSampleTest.java[]
+include::{sample-dir}/src/test/java/org/dessertj/intro/SlicingSampleTest.java[]
 ----

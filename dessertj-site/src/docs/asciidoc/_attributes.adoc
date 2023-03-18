@@ -1,0 +1,5 @@
+:imagesdir: images
+:icons: font
+:sample-dir: ../../../../dessertj-sample
+:duplicates-sample-dir: ../../../../dessertj-duplicates-sample
+

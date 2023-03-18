@@ -1,4 +1,4 @@
-:sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
+include::_attributes.adoc[]
 
 == Concepts and Terminology
 
@@ -65,14 +65,14 @@ for the corresponding JDK 17 modules:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/modules/ModulesTest.java[tags=declaration]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/modules/ModulesTest.java[tags=declaration]
 ----
 
 The following sample is not very useful, but it shows how to use the module API:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/modules/ModulesTest.java[tags=junit]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/modules/ModulesTest.java[tags=junit]
 ----
 
 A `ModuleSlice` itself contains only the classes exported to anyone.
@@ -132,7 +132,7 @@ The following code fragment demonstrates their usage:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/predicates/PredicatesSampleTest.java[tags=predicates]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/predicates/PredicatesSampleTest.java[tags=predicates]
 ----
 
 `slicingInterfaces` contains all public interfaces, enums or annotations of the `slicing` package within the
@@ -148,7 +148,7 @@ can be queued:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=queuing]
+include::{sample-dir}/src/test/java/org/dessertj/start/DessertSampleTest.java[tags=queuing]
 ----
 
 When an assertion fails it throws an `AssertionError`. The message shows details about the cause
@@ -165,7 +165,7 @@ for a cycle like this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/cycle/CycleTest.java[tags=classCycle]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/cycle/CycleTest.java[tags=classCycle]
 ----
 
 The sample contains a cycle, hence it produces the following output:
@@ -180,7 +180,7 @@ To detect these you can use:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/cycle/CycleTest.java[tags=packageCycle]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/cycle/CycleTest.java[tags=packageCycle]
 ----
 
 This produces:
@@ -213,7 +213,7 @@ The following example shows how to use this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/arch/ArchitectureTest.java[tags=arch]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/arch/ArchitectureTest.java[tags=arch]
 ----
 
 === Class resolving
@@ -237,7 +237,7 @@ The following code fragment demonstrates this:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/duplicates/DuplicatesTest.java[tags=duplicates]
+include::{sample-dir}/src/test/java/org/dessertj/concepts/duplicates/DuplicatesTest.java[tags=duplicates]
 ----
 
 The sample uses JUnit 5 which has a _module-info.class_ in each of its jars, thus `duplicates` is

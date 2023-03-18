@@ -1,4 +1,4 @@
-:sample-dir: C:\Code\git\dessert\dessert-site\dessert-sample
+include::_attributes.adoc[]
 
 [[getting_started]]
 == Getting Started
@@ -39,7 +39,7 @@ Implement your first dependency test:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=fails]
+include::{sample-dir}/src/test/java/org/dessertj/start/DessertSampleTest.java[tags=fails]
 ----
 
 Each _dessertj_ test starts with the `Classpath`. `Classpath`, `Clazz` and `Root` all implement
@@ -59,7 +59,7 @@ The following test shows some other methods to get slices from the `Classpath`:
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=succeeds]
+include::{sample-dir}/src/test/java/org/dessertj/start/DessertSampleTest.java[tags=succeeds]
 ----
 
 The _java..*_ slice represents all classes in the `java` package or any nested package.
@@ -76,7 +76,7 @@ if they don't use modules. Therefore, dessertj provides an easy and intuitive mo
 
 [source, java, indent=0]
 ----
-include::{sample-dir}/src/test/java/de/spricom/dessert/intro/ModulesSampleTest.java[]
+include::{sample-dir}/src/test/java/org/dessertj/intro/ModulesSampleTest.java[]
 ----
 
 Through the `ModuleRegistry` modules can be accessed by name. `JavaModules` provides
