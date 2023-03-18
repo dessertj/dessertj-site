@@ -10,7 +10,7 @@ Add the _dessert-core_ dependency to your project:
 [source, xml, indent=0, subs=attributes+]
 ----
         <dependency>
-            <groupId>de.spricom.dessert</groupId>
+            <groupId>org.dessertj</groupId>
             <artifactId>dessert-core</artifactId>
             <version>{release-version}</version>
             <scope>test</scope>

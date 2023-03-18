@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.spricom.dessert</groupId>
-        <artifactId>dessert-site-parent</artifactId>
-        <version>0.5.7-SNAPSHOT</version>
+        <groupId>org.dessertj</groupId>
+        <artifactId>dessertj-site-parent</artifactId>
+        <version>0.6.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dessert-site</artifactId>
+    <artifactId>dessertj-site</artifactId>
 
     <properties>
-        <snapshot-version>0.5.7-SNAPSHOT</snapshot-version>
+        <snapshot-version>0.6.0-SNAPSHOT</snapshot-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>15</maven.compiler.source>
@@ -28,9 +28,9 @@
     <dependencies>
         <!-- sample must be built before site to generate documentation -->
         <dependency>
-            <groupId>de.spricom.dessert</groupId>
-            <artifactId>dessert-sample</artifactId>
-            <version>0.5.7-SNAPSHOT</version>
+            <groupId>org.dessertj</groupId>
+            <artifactId>dessertj-sample</artifactId>
+            <version>0.6.0-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
@@ -71,8 +71,8 @@
                     </requires>
                     <attributes>
                         <plantuml-config>${project.basedir}/src/docs/config/plantuml_config.txt</plantuml-config>
-                        <sample-dir>${project.basedir}/../dessert-sample</sample-dir>
-                        <duplicates-sample-dir>${project.basedir}/../dessert-duplicates-sample</duplicates-sample-dir>
+                        <sample-dir>${project.basedir}/../dessertj-sample</sample-dir>
+                        <duplicates-sample-dir>${project.basedir}/../dessertj-duplicates-sample</duplicates-sample-dir>
                     </attributes>
                 </configuration>
                 <executions>
