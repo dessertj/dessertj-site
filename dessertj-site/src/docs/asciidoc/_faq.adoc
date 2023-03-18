@@ -4,20 +4,20 @@
 
 As along as I don't have any feedback of someone who is using this library, there is no reason to keep the
 API backwards compatible. Within the 0.x.y versions the API is subject to change without notice.
-If you are using _dessert_ and if you're fine with the API then send an e-mail to dessert@spricom.de.
+If you are using _dessertj_ and if you're fine with the API then send an e-mail to dessert@spricom.de.
 As soon as there are enough e-mails I'll release a 1.0.0 and try to keep the API backwards compatible
 from that moment on.
 
-=== Why does dessert find more dependencies than _jdeps_?
+=== Why does dessertj find more dependencies than _jdeps_?
 
-Well, _jdeps_ shows all runtime dependencies whereas dessert shows all compile-time
+Well, _jdeps_ shows all runtime dependencies whereas dessertj shows all compile-time
 dependencies. Hence, if you use a class for which a runtime dependency is missing
 you'll get a `NoClassDefFoundError`. There are dependencies within generics or
 within annotations that were required during compilation but not while using the
 compiled class. For more information
 see https://bugs.openjdk.java.net/browse/JDK-8134625[JDK-8134625].
 If you want to split a project into modules, then all the compile-time
-dependencies are relevant. Thus, that's what dessert operates on.
+dependencies are relevant. Thus, that's what dessertj operates on.
 
 NOTE: The compiler may have removed some source dependency that
 cannot be detected in the .class file anymore.

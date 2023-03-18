@@ -5,12 +5,12 @@
 
 === Maven Dependency
 
-Add the _dessert-core_ dependency to your project:
+Add the _dessertj-core_ dependency to your project:
 
 [source, xml, indent=0, subs=attributes+]
 ----
         <dependency>
-            <groupId>org.dessertj</groupId>
+            <groupId>de.spricom.dessert</groupId>
             <artifactId>dessert-core</artifactId>
             <version>{release-version}</version>
             <scope>test</scope>
@@ -42,7 +42,7 @@ Implement your first dependency test:
 include::{sample-dir}/src/test/java/de/spricom/dessert/start/DessertSampleTest.java[tags=fails]
 ----
 
-Each _dessert_ test starts with the `Classpath`. `Classpath`, `Clazz` and `Root` all implement
+Each _dessertj_ test starts with the `Classpath`. `Classpath`, `Clazz` and `Root` all implement
 the `Slice` interface. Imagine the `Classpath` to be a cake that has to be sliced down to
 suitable pieces. The `Clazz` is the smallest possible piece, it represents a single .class file.
 A `Root` is a classes directory, a .jar file or a JDK module. `SliceAssertion` provides a
@@ -71,8 +71,8 @@ To find out more read the <<Practical Guide>>.
 
 === First Modules Test
 
-With dessert projects can profit form the Java Platform Module System (JPMS), even
-if they don't use modules. Therefore, dessert provides an easy and intuitive module API:
+With dessertj projects can profit form the Java Platform Module System (JPMS), even
+if they don't use modules. Therefore, dessertj provides an easy and intuitive module API:
 
 [source, java, indent=0]
 ----

@@ -1,4 +1,4 @@
-== Plans for dessert-core 0.6.x
+== Plans for dessertj-core 0.6.x
 
 . Removal of all deprecated classes and methods
 . Virtual Clazzes (a view on specific methods or fields of a Clazz)

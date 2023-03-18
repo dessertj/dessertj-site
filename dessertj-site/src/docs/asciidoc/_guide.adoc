@@ -22,10 +22,10 @@ adding javadoc comments, making some variables final or something like that.
 But in that phase no developer will dare to resolve a package cycle, because such a
 fundamental change may break the system and needs thorough re-testing.
 
-The _dessert_ library has proved to solve this problem. It's simple and intuitive syntax
+The _dessertj library has proved to solve this problem. It's simple and intuitive syntax
 can be read by any developer. Thus, it's an easy way to communicate an architecture
 requirement. Any violation of such a requirement will break the build on your CI system,
-because the corresponding _dessert_ test will fail. Hence, the nose of the
+because the corresponding _dessertj_ test will fail. Hence, the nose of the
 responsible developer will directly be pointed to the corresponding requirement.
 Now, the only thing you need, is a plausible comment that explains why it is
 important to adhere to that requirement. Over time this will build up

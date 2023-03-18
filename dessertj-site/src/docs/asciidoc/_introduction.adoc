@@ -2,8 +2,8 @@
 
 == Introduction
 
-The name *dessert* comes from **de**pendency a**ssert**.
-Hence, *dessert* is a library for unit-tests to check dependencies between classes.
+The name *dessertj* comes from **de**pendency a**ssert** for **J**ava.
+Hence, *dessertj* is a library for unit-tests to check dependencies between classes.
 It's used to keep an architecture clean.
 
 Simply said an architecture is something you can express with
@@ -12,10 +12,10 @@ that is a diagram with blocks and arrows between them.
 A block is an arbitrary part of a software-system. The arrows show the
 dependencies between the blocks.
 
-Dessert provides an API to write down such block diagrams in Java code:
-The `Slice` interface represents a block. Dessert has many ways
+DessertJ provides an API to write down such block diagrams in Java code:
+The `Slice` interface represents a block. DessertJ has many ways
 to specify what belongs to such a block.
-Dessert's assertion API expresses the dependencies between the block.
+DessertJ's assertion API expresses the dependencies between the block.
 
 Can you see the advantage? If you use this API to describe your
 architecture within a unit-test, it will ensure reality matches
@@ -35,19 +35,19 @@ or interactions show up as dependencies. Hence, checking
 architecture requirements can be reduced to dependency checking.
 
 The goal of dependency checking is finding unwanted dependencies.
-Dessert does this be analyzing .class files.
+DessertJ does this be analyzing .class files.
 The java compiler generates a .class file for each
 class, interface, annotation, record or enum and their inner variants.
 
 NOTE: A java source file can define more than one class.
 
-In _dessert_  a .class file is represented by `Clazz`.
-The `Clazz` is the smallest unit of granularity _dessert_ can work with. The biggest
+In _dessertj_  a .class file is represented by `Clazz`.
+The `Clazz` is the smallest unit of granularity _dessertj_ can work with. The biggest
 unit is the `Classpath`. The `Classpath` contains all classes available for an application,
 these are the classes of the application code, all classes of its dependencies and
 all JDK classes.
 
-A _dessert_ based test checks dependency assertions. Each dependency assertion requires
+A _dessertj_ based test checks dependency assertions. Each dependency assertion requires
 three parts:
 
 . The application code the assertion is about.
@@ -57,7 +57,7 @@ three parts:
 Both the application code and the dependencies are a slice of classes taken from the class-path.
 Therefore, the `Classpath` has different methods to get a `Slice` from it.
 Just imagine the `Classpath` to be big cake you have to slice down.
-Thus the most import concept of _dessert_ is the `Slice`.
+Thus the most import concept of _dessertj_ is the `Slice`.
 
 Architecture requirements are expressed with a fluent API starting with the static
 `SliceAssertions` method `assertThatSlice`. The application code to
@@ -65,7 +65,7 @@ check is the parameter of this method. Next comes the requirement, which
 is one of the methods `doesNotUse` or `usesOnly`. The parameter(s) of
 these methods are the dependencies the assertion is about.
 
-Hence, a complete _dessert_ test looks like this:
+Hence, a complete _dessertj_ test looks like this:
 
 [source, java, indent=0]
 ----

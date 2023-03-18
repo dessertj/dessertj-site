@@ -4,15 +4,15 @@
 
 === Slices
 
-When using dessert you work most of the time with some `Slice` implementation.
+When using dessertj you work most of the time with some `Slice` implementation.
 Mostly this is one of:
 
 Slice::
-Dessert is all about slices. A slice is an arbitrary set of .class files.
+DessertJ is all about slices. A slice is an arbitrary set of .class files.
 Clazz::
 The `Clazz` is the smallest possible slice. It represents a single .class file.
 Classpath::
-The `Classpath` is the starting point of every _dessert_ test and the biggest
+The `Classpath` is the starting point of every _dessertj_ test and the biggest
 possible slice.
 *Warning: Never try to combine slices from different Classpath instances!*
 Root::
@@ -21,7 +21,7 @@ ModuleSlice::
 A `ModuleSlice` represents the public interface of a module.
 For a JPMS module these are all unqualified exports.
 
-The following diagram gives an overview of the implementations provided by dessert:
+The following diagram gives an overview of the implementations provided by dessertj:
 
 [plantuml, slice-overview, svg]
 ....
@@ -44,10 +44,10 @@ The `slice` methods of `Classpath` do not necessarily return a slice that can be
 set of classes. A slice may also be defined by a name-pattern or some predicate. For such a slice one
 can use the `contains` method to check whether a `Clazz` belongs to it, thus the class fulfills
 all predicates. But calling `getClazzes` will throw a `ResolveException`. This happens if the
-`Classpath` contains none of the classes belonging to the slice. Internally _dessert_ works with such
+`Classpath` contains none of the classes belonging to the slice. Internally _dessertj_ works with such
 predicate based slices as long as `getClazzes` has not been called, for performance reasons.
 
-_Dessert_ has been optimized to resolve name-pattern very fast. Hence, it's a good practice to first
+_DessertJ_ has been optimized to resolve name-pattern very fast. Hence, it's a good practice to first
 slice be name (or `packageOf`/`packageTreeOf`) then used predicates to slice-down the slices further.
 
 `getDependencies` returns the dependencies of a slice and `uses` checks whether some other slice
@@ -80,7 +80,7 @@ The `getImplementation` method of a `ModuleSlice` returns all classes of a modul
 they are exported. The `JpmsModule` method `getExportsTo` returns the classes that are exported
 to some certain module.
 
-The module API is fully supported for JDK 8 and earlier. Therefore, dessert comes `FixedModule`
+The module API is fully supported for JDK 8 and earlier. Therefore, dessertj comes with `FixedModule`
 definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
 provide modules.
 
@@ -136,12 +136,12 @@ include::{sample-dir}/src/test/java/de/spricom/dessert/concepts/predicates/Predi
 ----
 
 `slicingInterfaces` contains all public interfaces, enums or annotations of the `slicing` package within the
-`dessert-core` library. The assertion checks that the `assertions` packages uses only these types by asserting
+`dessertj-core` library. The assertion checks that the `assertions` packages uses only these types by asserting
 that it uses nothing from the complement. That check will fail, because `assertions` uses i.e. `Clazz`.
 
 === Assertions
 
-All dessert assertions start with one of the static `SliceAssertions` methods `assertThat`
+All dessertj assertions start with one of the static `SliceAssertions` methods `assertThat`
 or its alias `dessert`. These methods return a `SliceAssert` object with its most important
 methods `usesNot` and `usesOnly`. Both methods return a `SliceAssert` again, so that assertions
 can be queued:

@@ -1,7 +1,7 @@
 :toc:
 :sectnums:
 
-= Dessert Dependency Assertion Library for Java
+= DessertJ Dependency Assertion Library for Java
 
 A library for unit-tests to check dependencies between classes.
 
