@@ -561,7 +561,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core">0.5.7-SNAPSHOT</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/hajo70/dessert-core">0.6.0-SNAPSHOT</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hajo70.github.io/dessert-site/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://hajo70.github.io/dessert-core/index.html">javadoc</a></p></td>
 </tr>
@@ -585,7 +585,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
-    &lt;groupId&gt;de.spricom.dessert&lt;/groupId&gt;
+    &lt;groupId&gt;org.dessertj&lt;/groupId&gt;
     &lt;artifactId&gt;dessert-core&lt;/artifactId&gt;
     &lt;version&gt;0.5.6&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
@@ -1192,12 +1192,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
+	Foo -&gt; Bar
 de.spricom.dessert.concepts.cycle.bar -&gt; de.spricom.dessert.concepts.cycle:
 	Bar -&gt; CycleDump
 de.spricom.dessert.concepts.cycle -&gt; de.spricom.dessert.concepts.cycle.foo:
-	CycleDump -&gt; Foo
-de.spricom.dessert.concepts.cycle.foo -&gt; de.spricom.dessert.concepts.cycle.bar:
-	Foo -&gt; Bar</pre>
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2890,7 +2890,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-11 12:00:41 UTC
+Last updated 2023-03-18 10:16:18 UTC
 </div>
 </div>
 </body>
