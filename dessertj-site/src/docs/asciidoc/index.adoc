@@ -10,13 +10,13 @@ A library for unit-tests to check dependencies between classes.
 |===
 |Repository|Description
 
-|https://github.com/hajo70/dessert-core[dessert-core]
+|https://github.com/dessertj/dessertj-core[dessertj-core]
 |Library source code
 
-|https://github.com/hajo70/dessert-site[dessert-site]
+|https://github.com/dessertj/dessertj-site[dessertj-site]
 |Documentation source code
 
-|https://github.com/hajo70/dessert-tests[dessert-tests]
+|https://github.com/dessertj/dessertj-tests[dessertj-tests]
 |Tests and samples
 |===
 
@@ -25,9 +25,9 @@ A library for unit-tests to check dependencies between classes.
 |===
 |Release|Reference Doc.|API Doc.
 
-|https://github.com/hajo70/dessert-core[{snapshot-version}]
-|https://hajo70.github.io/dessert-site/index.html[reference]
-|https://hajo70.github.io/dessert-core/index.html[javadoc]
+|https://github.com/dessertj/dessertj-core[{snapshot-version}]
+|https://dessertj.github.io/dessert-site/index.html[reference]
+|https://dessertj.github.io/dessert-core/index.html[javadoc]
 
 |https://github.com/hajo70/dessert-core/releases/tag/dessert-core-{release-version}[{release-version}]
 |https://dessertj.org/index.html[reference]
