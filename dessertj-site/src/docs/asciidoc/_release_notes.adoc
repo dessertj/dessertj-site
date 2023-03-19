@@ -1,5 +1,19 @@
 == Release Notes
 
+=== dessertj-core-0.6.0 (comming soon)
+
+.Project moved to dessertj.org:
+- New maven coordinates: org.dessertj:dessertj-core:latest
+- New web-site: https://dessertj.org
+- All projects hosted in new GitHub-Organisation https://github.com/dessertj
+- All packages renamed from _de.spricom.dessert_ to _org.dessertj_
+
+.Changes:
+- Removal of all deprecated classes and methods
+- Documentation points to Java 20.
+- Tests updated to run with Java 20.
+- Minor changes in documentation
+
 === dessert-core-0.5.6
 
 .Minor additions:
