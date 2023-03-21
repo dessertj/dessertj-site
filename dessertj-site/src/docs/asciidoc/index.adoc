@@ -29,7 +29,7 @@ A library for unit-tests to check dependencies between classes.
 |https://dessertj.github.io/dessertj-site/index.html[reference]
 |https://dessertj.github.io/dessertj-core/index.html[javadoc]
 
-|https://github.com/hajo70/dessert-core/releases/tag/dessert-core-{release-version}[{release-version}]
+|https://github.com/dessertj/dessertj-core/releases/tag/dessertj-core-{release-version}[{release-version}]
 |https://dessertj.org/index.html[reference]
 |https://dessertj.org/apidocs/index.html[javadoc]
 |===
@@ -54,5 +54,5 @@ include::_release_notes.adoc[]
 
 == Copyright and License
 
-Code and documentation copyright 2017–2021 https://github.com/hajo70[Hans Jörg Heßmann].
+Code and documentation copyright 2017–2023 https://github.com/hajo70[Hans Jörg Heßmann].
 Code released under the https://www.apache.org/licenses/LICENSE-2.0[Apache License 2.0].

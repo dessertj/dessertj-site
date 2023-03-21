@@ -1,14 +1,14 @@
 == Release Notes
 
-=== dessertj-core-0.6.0 (comming soon)
+=== dessertj-core-0.6.0
 
 .Project moved to dessertj.org:
 - New maven coordinates: org.dessertj:dessertj-core:latest
 - New web-site: https://dessertj.org
-- All projects hosted in new GitHub-Organisation https://github.com/dessertj
+- All projects hosted by new GitHub organisation https://github.com/dessertj
 - All packages renamed from _de.spricom.dessert_ to _org.dessertj_
 
-.Changes:
+.Other changes:
 - Removal of all deprecated classes and methods
 - Documentation points to Java 20.
 - Tests updated to run with Java 20.
@@ -74,7 +74,7 @@ This feature release primarily adds support for the JPMS, even for JDK 8 and old
 - Utilize information within module-info classes, to make sure only exported classes are used.
 - Ready-to-use module definitions for the JDK that resemble the Java17 modules,
   to be used for older java versions
-- Supports .class files up to Java 18 (inkl. sealed classes and records)
+- Supports .class files up to Java 20 (inkl. sealed classes and records)
 - Support multi-release jars
 - Predicates for filtering by Annotations (for retention types class and runtime)
 - API for nested classes
