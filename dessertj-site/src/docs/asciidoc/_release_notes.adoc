@@ -1,5 +1,12 @@
 == Release Notes
 
+=== dessertj-core-0.6.1
+
+.Bugfix:
+- Signature of generics in record components had been treated like
+  the signature of generics in class declarations. Now they are tread
+  like signature of generics in field declarations.
+
 === dessertj-core-0.6.0
 
 .Project moved to dessertj.org:
