@@ -856,7 +856,7 @@ class SlicingSampleTest {
         Root dessert = cp.rootOf(Slice.class);
 
         // dependencies:
-        Slice allowedDependencies = cp.slice("java.lang|util|io|net..*");
+        Slice allowedDependencies = cp.slice("java.lang|util|io|nio|net..*");
 
         // requirement:
         assertThatSlice(dessert).usesOnly(allowedDependencies);
@@ -1194,12 +1194,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+org.dessertj.concepts.cycle.foo -&gt; org.dessertj.concepts.cycle.bar:
+	Foo -&gt; Bar
 org.dessertj.concepts.cycle.bar -&gt; org.dessertj.concepts.cycle:
 	Bar -&gt; CycleDump
 org.dessertj.concepts.cycle -&gt; org.dessertj.concepts.cycle.foo:
-	CycleDump -&gt; Foo
-org.dessertj.concepts.cycle.foo -&gt; org.dessertj.concepts.cycle.bar:
-	Foo -&gt; Bar</pre>
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2942,7 +2942,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-13 11:15:08 UTC
+Last updated 2023-09-29 17:07:58 UTC
 </div>
 </div>
 </body>
