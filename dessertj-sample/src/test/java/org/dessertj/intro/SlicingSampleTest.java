@@ -16,7 +16,7 @@ class SlicingSampleTest {
         Root dessert = cp.rootOf(Slice.class);
 
         // dependencies:
-        Slice allowedDependencies = cp.slice("java.lang|util|io|net..*");
+        Slice allowedDependencies = cp.slice("java.lang|util|io|nio|net..*");
 
         // requirement:
         assertThatSlice(dessert).usesOnly(allowedDependencies);
