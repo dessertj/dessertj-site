@@ -1,6 +1,6 @@
 == Release Notes
 
-=== dessert-core-0.6.2
+=== dessertj-core-0.6.2
 
 .Minor additions:
 - Documentation points to Java 21.
