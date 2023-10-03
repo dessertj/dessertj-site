@@ -491,7 +491,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#why-does-dessertj-find-more-dependencies-than-jdeps">7.2. Why does dessertj find more dependencies than <em>jdeps</em>?</a></li>
 </ul>
 </li>
-<li><a href="#plans-for-dessertj-core-0-6-x">8. Plans for dessertj-core 0.6.x</a></li>
+<li><a href="#plans-for-dessertj-core-0-7-x">8. Plans for dessertj-core 0.7.x</a></li>
 <li><a href="#release-notes">9. Release Notes</a>
 <ul class="sectlevel2">
 <li><a href="#dessertj-core-0-6-2">9.1. dessertj-core-0.6.2</a></li>
@@ -564,7 +564,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/dessertj/dessertj-core">0.6.2-SNAPSHOT</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/dessertj/dessertj-core">0.6.3-SNAPSHOT</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.github.io/dessertj-site/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.github.io/dessertj-core/index.html">javadoc</a></p></td>
 </tr>
@@ -606,7 +606,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.dessertj&lt;/groupId&gt;
     &lt;artifactId&gt;dessertj-core&lt;/artifactId&gt;
-    &lt;version&gt;0.6.2-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;0.6.3-SNAPSHOT&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -1195,12 +1195,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+org.dessertj.concepts.cycle.foo -&gt; org.dessertj.concepts.cycle.bar:
+	Foo -&gt; Bar
 org.dessertj.concepts.cycle.bar -&gt; org.dessertj.concepts.cycle:
 	Bar -&gt; CycleDump
 org.dessertj.concepts.cycle -&gt; org.dessertj.concepts.cycle.foo:
-	CycleDump -&gt; Foo
-org.dessertj.concepts.cycle.foo -&gt; org.dessertj.concepts.cycle.bar:
-	Foo -&gt; Bar</pre>
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2565,7 +2565,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect1">
-<h2 id="plans-for-dessertj-core-0-6-x"><a class="anchor" href="#plans-for-dessertj-core-0-6-x"></a>8. Plans for dessertj-core 0.6.x</h2>
+<h2 id="plans-for-dessertj-core-0-7-x"><a class="anchor" href="#plans-for-dessertj-core-0-7-x"></a>8. Plans for dessertj-core 0.7.x</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -2622,7 +2622,7 @@ cannot be detected in the .class file anymore.
 <p>Adds multi-release support for classes directories</p>
 </li>
 <li>
-<p>The dessertj-core JAR is no a multi-release jar with
+<p>The dessertj-core JAR is now a multi-release jar with
 module-info for Java 9 and above.</p>
 </li>
 <li>
@@ -2970,7 +2970,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-10-03 14:47:14 UTC
+Last updated 2023-10-03 20:45:31 UTC
 </div>
 </div>
 </body>
