@@ -80,6 +80,6 @@ include::{sample-dir}/src/test/java/org/dessertj/intro/ModulesSampleTest.java[]
 ----
 
 Through the `ModuleRegistry` modules can be accessed by name. `JavaModules` provides
-constants for all _java_ modules as of JDK 17. Both are available even for JDK 8 and
+constants for all _java_ modules as of JDK 21. Both are available even for JDK 8 and
 earlier. The `usesOnly` assertion makes sure only exported packages
 are used from the modules listed.

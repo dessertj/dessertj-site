@@ -61,7 +61,7 @@ one such extension that makes a slices' `toString` method return the name passed
 Dessert's JPMS support can be used through the `ModuleRegistry`.
 It's `getModule` method returns the corresponding module by name.
 `JavaModules` and `JdkModules` provides pre-defined constants
-for the corresponding JDK 17 modules:
+for the corresponding JDK 21 modules:
 
 [source, java, indent=0]
 ----
@@ -81,7 +81,7 @@ they are exported. The `JpmsModule` method `getExportsTo` returns the classes th
 to some certain module.
 
 The module API is fully supported for JDK 8 and earlier. Therefore, dessertj comes with `FixedModule`
-definitions which are based on JDK 17. They are used as fall-back if the current JDK does not
+definitions which are based on JDK 21. They are used as fall-back if the current JDK does not
 provide modules.
 
 _AssertionsKt_ has been excluded, because it adds dependencies to the Kotlin runtime system,
