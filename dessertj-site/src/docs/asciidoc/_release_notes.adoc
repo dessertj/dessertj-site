@@ -6,7 +6,7 @@
 - Documentation points to Java 21.
 - Tests updated to run with Java 21.
 - Adds multi-release support for classes directories
-- The dessertj-core JAR is no a multi-release jar with
+- The dessertj-core JAR is now a multi-release jar with
   module-info for Java 9 and above.
 - Native JRT filesystem support (without using reflection)
 - Minor changes in documentation
