@@ -1,5 +1,11 @@
 == Release Notes
 
+=== dessertj-core-0.6.3
+
+.Minor additions:
+- Documentation points to Java 23.
+- Tests updated to run with Java 23.
+
 === dessertj-core-0.6.2
 
 .Minor additions:

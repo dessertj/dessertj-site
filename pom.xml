@@ -18,7 +18,7 @@
 
     <properties>
         <java.version>21</java.version>
-        <dessert-java.version>21</dessert-java.version>
+        <dessert-java.version>23</dessert-java.version>
         <dessert-release.version>0.6.2</dessert-release.version>
     </properties>
 
