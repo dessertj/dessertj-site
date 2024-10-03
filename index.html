@@ -565,12 +565,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/dessertj/dessertj-core">0.6.3-SNAPSHOT</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/dessertj/dessertj-core">0.6.4-SNAPSHOT</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.github.io/dessertj-site/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.github.io/dessertj-core/index.html">javadoc</a></p></td>
 </tr>
 <tr>
-<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/dessertj/dessertj-core/releases/tag/dessertj-core-0.6.2">0.6.2</a></p></th>
+<th class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/dessertj/dessertj-core/releases/tag/dessertj-core-0.6.3">0.6.3</a></p></th>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.org/index.html">reference</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://dessertj.org/apidocs/index.html">javadoc</a></p></td>
 </tr>
@@ -591,7 +591,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.dessertj&lt;/groupId&gt;
     &lt;artifactId&gt;dessertj-core&lt;/artifactId&gt;
-    &lt;version&gt;0.6.2&lt;/version&gt;
+    &lt;version&gt;0.6.3&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -607,7 +607,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.dessertj&lt;/groupId&gt;
     &lt;artifactId&gt;dessertj-core&lt;/artifactId&gt;
-    &lt;version&gt;0.6.3-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;0.6.4-SNAPSHOT&lt;/version&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -1196,12 +1196,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
+org.dessertj.concepts.cycle -&gt; org.dessertj.concepts.cycle.foo:
+	CycleDump -&gt; Foo
 org.dessertj.concepts.cycle.foo -&gt; org.dessertj.concepts.cycle.bar:
 	Foo -&gt; Bar
 org.dessertj.concepts.cycle.bar -&gt; org.dessertj.concepts.cycle:
-	Bar -&gt; CycleDump
-org.dessertj.concepts.cycle -&gt; org.dessertj.concepts.cycle.foo:
-	CycleDump -&gt; Foo</pre>
+	Bar -&gt; CycleDump</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2985,7 +2985,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-09-23 19:14:51 UTC
+Last updated 2024-10-03 11:06:34 UTC
 </div>
 </div>
 </body>
