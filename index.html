@@ -494,22 +494,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#plans-for-dessertj-core-0-7-x">8. Plans for dessertj-core 0.7.x</a></li>
 <li><a href="#release-notes">9. Release Notes</a>
 <ul class="sectlevel2">
-<li><a href="#dessertj-core-0-6-3">9.1. dessertj-core-0.6.3</a></li>
-<li><a href="#dessertj-core-0-6-2">9.2. dessertj-core-0.6.2</a></li>
-<li><a href="#dessertj-core-0-6-1">9.3. dessertj-core-0.6.1</a></li>
-<li><a href="#dessertj-core-0-6-0">9.4. dessertj-core-0.6.0</a></li>
-<li><a href="#dessert-core-0-5-6">9.5. dessert-core-0.5.6</a></li>
-<li><a href="#dessert-core-0-5-5">9.6. dessert-core-0.5.5</a></li>
-<li><a href="#dessert-core-0-5-4">9.7. dessert-core-0.5.4</a></li>
-<li><a href="#dessert-core-0-5-3">9.8. dessert-core-0.5.3</a></li>
-<li><a href="#dessert-core-0-5-2">9.9. dessert-core-0.5.2</a></li>
-<li><a href="#dessert-core-0-5-1">9.10. dessert-core-0.5.1</a></li>
-<li><a href="#dessert-core-0-5-0">9.11. dessert-core-0.5.0</a></li>
-<li><a href="#dessert-core-0-4-3">9.12. dessert-core-0.4.3</a></li>
-<li><a href="#dessert-core-0-4-2">9.13. dessert-core-0.4.2</a></li>
-<li><a href="#dessert-core-0-4-1">9.14. dessert-core-0.4.1</a></li>
-<li><a href="#dessert-core-0-4-0">9.15. dessert-core-0.4.0</a></li>
-<li><a href="#older-releases">9.16. Older Releases</a></li>
+<li><a href="#dessertj-core-0-6-4">9.1. dessertj-core-0.6.4</a></li>
+<li><a href="#dessertj-core-0-6-3">9.2. dessertj-core-0.6.3</a></li>
+<li><a href="#dessertj-core-0-6-2">9.3. dessertj-core-0.6.2</a></li>
+<li><a href="#dessertj-core-0-6-1">9.4. dessertj-core-0.6.1</a></li>
+<li><a href="#dessertj-core-0-6-0">9.5. dessertj-core-0.6.0</a></li>
+<li><a href="#dessert-core-0-5-6">9.6. dessert-core-0.5.6</a></li>
+<li><a href="#dessert-core-0-5-5">9.7. dessert-core-0.5.5</a></li>
+<li><a href="#dessert-core-0-5-4">9.8. dessert-core-0.5.4</a></li>
+<li><a href="#dessert-core-0-5-3">9.9. dessert-core-0.5.3</a></li>
+<li><a href="#dessert-core-0-5-2">9.10. dessert-core-0.5.2</a></li>
+<li><a href="#dessert-core-0-5-1">9.11. dessert-core-0.5.1</a></li>
+<li><a href="#dessert-core-0-5-0">9.12. dessert-core-0.5.0</a></li>
+<li><a href="#dessert-core-0-4-3">9.13. dessert-core-0.4.3</a></li>
+<li><a href="#dessert-core-0-4-2">9.14. dessert-core-0.4.2</a></li>
+<li><a href="#dessert-core-0-4-1">9.15. dessert-core-0.4.1</a></li>
+<li><a href="#dessert-core-0-4-0">9.16. dessert-core-0.4.0</a></li>
+<li><a href="#older-releases">9.17. Older Releases</a></li>
 </ul>
 </li>
 <li><a href="#copyright-and-license">10. Copyright and License</a></li>
@@ -1196,12 +1197,12 @@ dessert(slice.partitionByPackage()).isCycleFree();</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre>java.lang.AssertionError: Cycle detected:
-org.dessertj.concepts.cycle -&gt; org.dessertj.concepts.cycle.foo:
-	CycleDump -&gt; Foo
 org.dessertj.concepts.cycle.foo -&gt; org.dessertj.concepts.cycle.bar:
 	Foo -&gt; Bar
 org.dessertj.concepts.cycle.bar -&gt; org.dessertj.concepts.cycle:
-	Bar -&gt; CycleDump</pre>
+	Bar -&gt; CycleDump
+org.dessertj.concepts.cycle -&gt; org.dessertj.concepts.cycle.foo:
+	CycleDump -&gt; Foo</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2466,7 +2467,7 @@ that might cause you a headache.</p>
 <p>Assertions should be robust against refactorings (no strings for class- or package names required)</p>
 </li>
 <li>
-<p>Compatibility to the <a href="https://docs.oracle.com/en/java/javase/23/docs/specs/man/jdeps.html">jdeps</a> utility.</p>
+<p>Compatibility to the <a href="https://docs.oracle.com/en/java/javase/24/docs/specs/man/jdeps.html">jdeps</a> utility.</p>
 </li>
 <li>
 <p>Focus on dependency assertions and nothing else</p>
@@ -2609,7 +2610,29 @@ cannot be detected in the .class file anymore.
 <h2 id="release-notes"><a class="anchor" href="#release-notes"></a>9. Release Notes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="dessertj-core-0-6-3"><a class="anchor" href="#dessertj-core-0-6-3"></a>9.1. dessertj-core-0.6.3</h3>
+<h3 id="dessertj-core-0-6-4"><a class="anchor" href="#dessertj-core-0-6-4"></a>9.1. dessertj-core-0.6.4</h3>
+<div class="ulist">
+<div class="title">Bugfix:</div>
+<ul>
+<li>
+<p><a href="https://github.com/dessertj/dessertj-core/issues/7">Handling of ConstantDynamic fixed</a></p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Minor updates:</div>
+<ul>
+<li>
+<p>Documentation points to Java 24.</p>
+</li>
+<li>
+<p>Tests updated to run with Java 24.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dessertj-core-0-6-3"><a class="anchor" href="#dessertj-core-0-6-3"></a>9.2. dessertj-core-0.6.3</h3>
 <div class="ulist">
 <div class="title">Minor additions:</div>
 <ul>
@@ -2623,7 +2646,7 @@ cannot be detected in the .class file anymore.
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessertj-core-0-6-2"><a class="anchor" href="#dessertj-core-0-6-2"></a>9.2. dessertj-core-0.6.2</h3>
+<h3 id="dessertj-core-0-6-2"><a class="anchor" href="#dessertj-core-0-6-2"></a>9.3. dessertj-core-0.6.2</h3>
 <div class="ulist">
 <div class="title">Minor additions:</div>
 <ul>
@@ -2650,7 +2673,7 @@ module-info for Java 9 and above.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessertj-core-0-6-1"><a class="anchor" href="#dessertj-core-0-6-1"></a>9.3. dessertj-core-0.6.1</h3>
+<h3 id="dessertj-core-0-6-1"><a class="anchor" href="#dessertj-core-0-6-1"></a>9.4. dessertj-core-0.6.1</h3>
 <div class="ulist">
 <div class="title">Bugfix:</div>
 <ul>
@@ -2663,7 +2686,7 @@ like signature of generics in field declarations.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessertj-core-0-6-0"><a class="anchor" href="#dessertj-core-0-6-0"></a>9.4. dessertj-core-0.6.0</h3>
+<h3 id="dessertj-core-0-6-0"><a class="anchor" href="#dessertj-core-0-6-0"></a>9.5. dessertj-core-0.6.0</h3>
 <div class="ulist">
 <div class="title">Project moved to dessertj.org:</div>
 <ul>
@@ -2700,7 +2723,7 @@ like signature of generics in field declarations.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-6"><a class="anchor" href="#dessert-core-0-5-6"></a>9.5. dessert-core-0.5.6</h3>
+<h3 id="dessert-core-0-5-6"><a class="anchor" href="#dessert-core-0-5-6"></a>9.6. dessert-core-0.5.6</h3>
 <div class="ulist">
 <div class="title">Minor additions:</div>
 <ul>
@@ -2726,7 +2749,7 @@ JDK-Modules on the class-path.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-5"><a class="anchor" href="#dessert-core-0-5-5"></a>9.6. dessert-core-0.5.5</h3>
+<h3 id="dessert-core-0-5-5"><a class="anchor" href="#dessert-core-0-5-5"></a>9.7. dessert-core-0.5.5</h3>
 <div class="paragraph">
 <p>Bugfix-release:</p>
 </div>
@@ -2742,7 +2765,7 @@ JDK-Modules on the class-path.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-4"><a class="anchor" href="#dessert-core-0-5-4"></a>9.7. dessert-core-0.5.4</h3>
+<h3 id="dessert-core-0-5-4"><a class="anchor" href="#dessert-core-0-5-4"></a>9.8. dessert-core-0.5.4</h3>
 <div class="paragraph">
 <p>Performance improvement:</p>
 </div>
@@ -2757,7 +2780,7 @@ library slices given by name-patterns that comprise many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-3"><a class="anchor" href="#dessert-core-0-5-3"></a>9.8. dessert-core-0.5.3</h3>
+<h3 id="dessert-core-0-5-3"><a class="anchor" href="#dessert-core-0-5-3"></a>9.9. dessert-core-0.5.3</h3>
 <div class="paragraph">
 <p>Bugfix-release:</p>
 </div>
@@ -2770,7 +2793,7 @@ library slices given by name-patterns that comprise many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-2"><a class="anchor" href="#dessert-core-0-5-2"></a>9.9. dessert-core-0.5.2</h3>
+<h3 id="dessert-core-0-5-2"><a class="anchor" href="#dessert-core-0-5-2"></a>9.10. dessert-core-0.5.2</h3>
 <div class="paragraph">
 <p>Minor additions and bugfixes:</p>
 </div>
@@ -2801,7 +2824,7 @@ library slices given by name-patterns that comprise many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>9.10. dessert-core-0.5.1</h3>
+<h3 id="dessert-core-0-5-1"><a class="anchor" href="#dessert-core-0-5-1"></a>9.11. dessert-core-0.5.1</h3>
 <div class="paragraph">
 <p>Bugfixes and minor enhancements:</p>
 </div>
@@ -2823,7 +2846,7 @@ library slices given by name-patterns that comprise many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>9.11. dessert-core-0.5.0</h3>
+<h3 id="dessert-core-0-5-0"><a class="anchor" href="#dessert-core-0-5-0"></a>9.12. dessert-core-0.5.0</h3>
 <div class="paragraph">
 <p>This feature release primarily adds support for the JPMS, even for JDK 8 and older:</p>
 </div>
@@ -2858,7 +2881,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>9.12. dessert-core-0.4.3</h3>
+<h3 id="dessert-core-0-4-3"><a class="anchor" href="#dessert-core-0-4-3"></a>9.13. dessert-core-0.4.3</h3>
 <div class="paragraph">
 <p>Preparation for 0.5.0:</p>
 </div>
@@ -2880,7 +2903,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>9.13. dessert-core-0.4.2</h3>
+<h3 id="dessert-core-0-4-2"><a class="anchor" href="#dessert-core-0-4-2"></a>9.14. dessert-core-0.4.2</h3>
 <div class="paragraph">
 <p>Bugfix-release:</p>
 </div>
@@ -2893,7 +2916,7 @@ to be used for older java versions</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>9.14. dessert-core-0.4.1</h3>
+<h3 id="dessert-core-0-4-1"><a class="anchor" href="#dessert-core-0-4-1"></a>9.15. dessert-core-0.4.1</h3>
 <div class="paragraph">
 <p>Some minor changes:</p>
 </div>
@@ -2917,7 +2940,7 @@ improves the performance if a package has many classes.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>9.15. dessert-core-0.4.0</h3>
+<h3 id="dessert-core-0-4-0"><a class="anchor" href="#dessert-core-0-4-0"></a>9.16. dessert-core-0.4.0</h3>
 <div class="paragraph">
 <p>Starting with this release dessert will be available on Maven Central. Therefore, the maven coordinates
 have been changed. The project has been renamed to dessert-core and everything that does not belong
@@ -2957,7 +2980,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>9.16. Older Releases</h3>
+<h3 id="older-releases"><a class="anchor" href="#older-releases"></a>9.17. Older Releases</h3>
 <div class="paragraph">
 <p>See <a href="https://github.com/hajo70/dessert-core/releases">GitHub releases</a>.</p>
 </div>
@@ -2968,7 +2991,7 @@ SliceContext renamed to Classpath and both implement Slice</p>
 <h2 id="copyright-and-license"><a class="anchor" href="#copyright-and-license"></a>10. Copyright and License</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Code and documentation copyright 2017–2023 <a href="https://github.com/hajo70">Hans Jörg Heßmann</a>.
+<p>Code and documentation copyright 2017–2025 <a href="https://github.com/hajo70">Hans Jörg Heßmann</a>.
 Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.</p>
 </div>
 </div>
@@ -2985,7 +3008,7 @@ Code released under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Ap
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-10-03 11:06:34 UTC
+Last updated 2025-05-29 19:34:59 UTC
 </div>
 </div>
 </body>
