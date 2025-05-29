@@ -54,5 +54,5 @@ include::_release_notes.adoc[]
 
 == Copyright and License
 
-Code and documentation copyright 2017–2023 https://github.com/hajo70[Hans Jörg Heßmann].
+Code and documentation copyright 2017–2025 https://github.com/hajo70[Hans Jörg Heßmann].
 Code released under the https://www.apache.org/licenses/LICENSE-2.0[Apache License 2.0].

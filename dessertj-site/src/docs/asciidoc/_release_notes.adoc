@@ -1,5 +1,14 @@
 == Release Notes
 
+=== dessertj-core-0.6.4
+
+.Bugfix:
+- https://github.com/dessertj/dessertj-core/issues/7[Handling of ConstantDynamic fixed]
+
+.Minor updates:
+- Documentation points to Java 24.
+- Tests updated to run with Java 24.
+
 === dessertj-core-0.6.3
 
 .Minor additions:

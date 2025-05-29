@@ -9,7 +9,7 @@ that might cause you a headache.
 * Easy and seamless integration with other testing or assertion frameworks
 * Simple and intuitive API (motivated by https://joel-costigliola.github.io/assertj/[AssertJ])
 * Assertions should be robust against refactorings (no strings for class- or package names required)
-* Compatibility to the https://docs.oracle.com/en/java/javase/23/docs/specs/man/jdeps.html[jdeps] utility.
+* Compatibility to the https://docs.oracle.com/en/java/javase/24/docs/specs/man/jdeps.html[jdeps] utility.
 * Focus on dependency assertions and nothing else
 * Support for projects of any scale
 * Speed
